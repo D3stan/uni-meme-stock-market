@@ -122,28 +122,43 @@ Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
 ### 1. Core Utenti
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`users`** | `id`, `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `last_daily_bonus_at`. |
+| **`users`** | `id`, `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `otp_hash`, `otp_expires_at`, `last_daily_bonus_at`, `created_at`, `updated_at`. |
 
 ### 2. Core Mercato
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`categories`** | `id`, `name`, `slug`. |
-| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `current_price`, `total_shares`, `status`, `created_at`. |
-| **`price_histories`** | `id`, `meme_id` (FK), `price`, `recorded_at` (usato per disegnare i grafici). |
+| **`categories`** | `id`, `name`, `slug`, `created_at`, `updated_at`. |
+| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price`, `total_shares`, `status`, `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
+| **`price_histories`** | `id`, `meme_id` (FK), `price`, `total_shares_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`. |
 
 ### 3. Finanza & Transazioni
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (essenziale per calcolare il P&L %). |
-| **`transactions`** | `id`, `user_id` (FK), `meme_id` (FK), `type` (buy, sell, ipo_fee, bonus), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `executed_at`. |
+| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price`, `created_at`, `updated_at`. |
+| **`transactions`** | `id`, `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
 
 ### 4. Utility
 | Tabella | Campi Chiave |
 | :--- | :--- |
 | **`global_settings`** | `key`, `value`. (Es. `listing_fee`, `tax_rate`). |
-| **`watchlists`** | `id`, `user_id` (FK), `meme_id` (FK). |
-| **`notifications`** | `id`, `user_id` (FK) nullable, `title`, `message`, `is_read` nullable. |
+| **`watchlists`** | `id`, `user_id` (FK), `meme_id` (FK), `created_at`, `updated_at`. |
+| **`notifications`** | `id`, `user_id` (FK) nullable, `title`, `message`, `is_read` nullable, `created_at`, `updated_at`. |
 
+### 5. Tabelle Aggiuntive (Gamification, Audit, Dividendi)
+| Tabella | Campi Chiave |
+| :--- | :--- |
+| **`badges`** | `id`, `name`, `description`, `icon_path`, `created_at`, `updated_at`. |
+| **`user_badges`** | `id`, `user_id` (FK), `badge_id` (FK), `awarded_at`. |
+| **`dividend_histories`** | `id`, `meme_id` (FK), `amount_per_share`, `total_distributed`, `distributed_at`. |
+| **`market_communications`** | `id`, `admin_id` (FK), `message`, `is_active`, `expires_at`, `created_at`, `updated_at`. |
+| **`admin_actions`** | `id`, `admin_id` (FK), `action_type`, `target_id`, `target_type`, `reason`, `created_at`. |
+
+
+## Note Strutturali e di Performance
+
+*   **Precisione Numerica:** Tutti i campi di tipo `DECIMAL` che rappresentano valori monetari o parametri di calcolo (es. `cfu_balance`, `current_price`, `base_price`, `slope`) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio `DECIMAL(15, 4)`.
+*   **Constraint e Indici:** È fondamentale aggiungere `UNIQUE constraints` per prevenire dati duplicati, in particolare su `portfolios(user_id, meme_id)` e `watchlists(user_id, meme_id)`. Inoltre, vanno creati indici (`INDEX`) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. `memes.status`, `transactions.executed_at`) per garantire performance ottimali.
+*   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
 
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
@@ -167,6 +182,13 @@ Per simulare un mercato azionario reale e premiare il comportamento di lungo ter
     * **Calcolo Dividendo:** Esempio: 1% del valore corrente dell'azione distribuito proporzionalmente tra gli azionisti attuali.
     * **Erogazione:** L'importo viene accreditato nel `cfu_balance` di ciascun azionista come transazione di tipo `dividend` nello storico.
 * **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
+
+### 3. Mercato Dinamico con Asset a Rischio Variabile
+Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bonding Curve non è una costante globale, ma un attributo specifico di ogni meme, impostato dall'Admin durante l'IPO.
+* **Come funziona:** Questo permette di creare diverse classi di asset con profili di rischio differenti.
+    * **Meme Stabili (Slope basso):** Titoli a bassa volatilità, simili a "blue chip", che crescono lentamente ma in modo costante. Attraggono investitori prudenti.
+    * **Meme Speculativi (Slope alto):** Titoli ad alta volatilità, con un alto potenziale di guadagno (e di perdita). Attraggono trader che cercano il "pump" rapido.
+* **Vantaggi:** Questa variabilità rende il mercato meno monotono e introduce un elemento di analisi fondamentale: gli utenti dovranno valutare non solo la popolarità di un meme, ma anche il suo profilo di rischio intrinseco.
 
 ---
 
