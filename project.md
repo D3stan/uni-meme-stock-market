@@ -10,7 +10,7 @@ La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiet
 * **Backend:** Framework **Laravel** (PHP). Verranno utilizzati:
     * **Eloquent ORM:** Per la gestione del database e delle relazioni.
     * **Migrations & Seeders:** Per la creazione dello schema e il popolamento iniziale di dati finti (utenti, meme, storico transazioni) necessari per la demo.
-    * **DB Transactions:** Per garantire l'atomicità delle operazioni finanziarie.
+    * **Transazioni Atomiche:** Per garantire l'indivisibilità delle operazioni finanziarie.
 * **Frontend:** HTML5, CSS, **Javascript "Vanilla"** (senza framework come React/Vue/Angular), TradingView Lightweight Charts per i grafici.
 
 ---
@@ -19,16 +19,16 @@ La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiet
 
 ### 1. Registrazione e Login (4 punti)
 * **Bonus Matricola:** Il sistema prevede un meccanismo di incentivazione all'ingresso. Ogni nuovo utente riceve una dotazione iniziale di **100 CFU**.
-* **Verifica Copertura:** Middleware o controlli lato server monitorano la disponibilità economica prima di ogni transazione, impedendo operazioni se il saldo è insufficiente.
+* **Verifica Copertura:** Appositi controlli di sistema monitorano la disponibilità economica prima di ogni transazione, impedendo operazioni se il saldo è insufficiente.
 
 ### 2. Profilo Utente: "Il Portafoglio" (4 punti)
 Una dashboard finanziaria personale, non un profilo social.
 * **Asset Allocation:** Grafico a torta (Chart.js) che mostra la composizione del patrimonio (Liquidità vs Investimenti).
-* **Valore Netto (Net Worth):** Indicatore calcolato in tempo reale: `Saldo Liquido + (Azioni Possedute * Prezzo Attuale)`.
+* **Valore Netto (Net Worth):** Indicatore calcolato in tempo reale: Saldo Liquido + (Azioni Possedute * Prezzo Attuale).
 * **Storico Transazioni:** Tabella paginata con ogni movimento: data, tipo, prezzo unitario e fee pagate.
 
 ### 3. Gestione Admin: "Il Rettorato" (8 punti - CRUD)
-* **IPO Maker (Create):** L'Admin approva i meme proposti dagli utenti (che hanno pagato la `Listing Fee`), stabilendo il prezzo di lancio (`base_price`) e il profilo di rischio (`slope`). Questo processo (Initial Public Offering) crea il primo record nello storico dei prezzi e rende il meme disponibile per il trading.
+* **IPO Maker (Create):** L'Admin approva i meme proposti dagli utenti (che hanno pagato la Listing Fee), stabilendo il prezzo di lancio (base price) e il profilo di rischio (slope). Questo processo (Initial Public Offering) crea il primo record nello storico dei prezzi e rende il meme disponibile per il trading.
 * **Sospensione Titoli (Update):** L'Admin può bloccare le contrattazioni su un titolo in caso di anomalie di mercato.
 * **Monitoraggio (Read):** Dashboard con metriche globali (es. Totale Fee raccolte, Inflazione del server).
 * **Delisting (Delete):** Soft delete dei meme "falliti" o obsoleti che non vengono scambiati da tempo.
@@ -58,28 +58,28 @@ Dove:
 * **$P$**: Prezzo corrente dell'azione.
 * **$P_{base}$**: Prezzo base di quotazione (es. 1.00 CFU), impostato dall'Admin all'IPO.
 * **$M$ (Slope)**: Coefficiente di volatilità (es. 0.1), impostato dall'Admin all'IPO. Determina di quanti CFU aumenta il prezzo per ogni singola azione emessa.
-* **$S$ (Circulating Supply)**: Numero totale di azioni *attualmente* in circolazione e detenute dagli utenti. **Questo valore è dinamico.**
+* **$S$ (Azioni in Circolazione)**: Numero totale di azioni *attualmente* in circolazione e detenute dagli utenti. **Questo valore è dinamico.**
 
 **Meccanica di Compravendita (Mint & Burn):**
 1.  **Acquisto (Minting):** Quando un utente compra, il sistema **conia (crea)** nuove azioni dal nulla e le assegna all'utente.
-    * *Effetto:* La Supply ($S$) aumenta $\rightarrow$ Il prezzo sale matematicamente per l'acquirente successivo.
+    * *Effetto:* Il numero di azioni ($S$) aumenta $\rightarrow$ Il prezzo sale matematicamente per l'acquirente successivo.
 2.  **Vendita (Burning):** Quando un utente vende, il sistema ritira le azioni dal portafoglio utente e le **brucia (distrugge)** definitivamente.
-    * *Effetto:* La Supply ($S$) diminuisce $\rightarrow$ Il prezzo scende.
+    * *Effetto:* Il numero di azioni ($S$) diminuisce $\rightarrow$ Il prezzo scende.
 
 **Vantaggi del Modello:**
 * **Liquidità Infinita:** È sempre possibile vendere le proprie azioni e incassare CFU, non serve aspettare che ci sia un altro studente disposto a comprare.
-* **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *Early Adopters* (chi compra quando $S$ è bassa) e creando rischio reale per chi entra tardi.
+* **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *Early Adopters* (chi compra quando il numero di azioni in circolazione è basso) e creando rischio reale per chi entra tardi.
 
 
 #### C. Compravendita e Commissioni
-* **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 5%). L'utente realizza un profitto solo se `Prezzo Vendita > Prezzo Acquisto + Fee`. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
-* **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle fee al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, tutto viene annullato (rollback), garantendo che non si perdano soldi o azioni nel nulla.
+* **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 5%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
+* **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
-Poiché lo stack è limitato a PHP (senza WebSocket/Node.js), l'aggiornamento "live" dei prezzi e dei grafici viene gestito tramite **AJAX Polling**:
-* Il client interroga il server ogni 5-10 secondi (implementato con `setInterval` in JavaScript vanilla) per scaricare le ultime variazioni di prezzo in formato JSON.
-* Il frontend riceve i payload JSON e aggiorna i valori in pagina e ridisegna i grafici (Chart.js / Lightweight Charts) senza ricaricare l'intera pagina.
-* Nota operativa: impostare intervalli adattivi (p.es. 10s in condizioni normali, 5s vicino a eventi di mercato) e meccanismi di backoff per preservare le risorse del server.
+Per mantenere i dati aggiornati in tempo reale, l'interfaccia utente adotta una strategia di **aggiornamenti periodici**:
+* A intervalli regolari (es. ogni 5-10 secondi), l'applicazione contatta il server per ricevere le ultime variazioni di prezzo in un formato dati standard.
+* Una volta ricevuti i dati, l'interfaccia aggiorna i valori e i grafici senza bisogno di ricaricare l'intera pagina.
+* Nota operativa: la frequenza degli aggiornamenti può essere regolata dinamicamente per ottimizzare le performance, con meccanismi di salvaguardia per non sovraccaricare il sistema.
 
 ---
 
@@ -156,10 +156,10 @@ Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
 
 ## Note Strutturali e di Performance
 
-*   **Precisione Numerica:** Tutti i campi di tipo `DECIMAL` che rappresentano valori monetari o parametri di calcolo (es. `cfu_balance`, `current_price`, `base_price`, `slope`) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio `DECIMAL(15, 4)`.
-*   **Coerenza del Prezzo:** Il campo `memes.current_price` è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula `P = P_base + (M * S)`.
-*   **Aggiornamento `avg_buy_price`:** Il campo `portfolios.avg_buy_price` è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: `new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty)`.
-*   **Constraint e Indici:** È fondamentale aggiungere `UNIQUE constraints` per prevenire dati duplicati, in particolare su `portfolios(user_id, meme_id)` e `watchlists(user_id, meme_id)`. Inoltre, vanno creati indici (`INDEX`) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. `memes.status`, `transactions.executed_at`) per garantire performance ottimali.
+*   **Precisione Numerica:** Tutti i campi di tipo DECIMAL che rappresentano valori monetari o parametri di calcolo (es. cfu_balance, current_price, base_price, slope) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio DECIMAL(15, 4).
+*   **Coerenza del Prezzo:** Il campo memes.current_price è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula P = P_base + (M * S).
+*   **Aggiornamento avg_buy_price:** Il campo portfolios.avg_buy_price è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty).
+*   **Constraint e Indici:** È fondamentale aggiungere UNIQUE constraints per prevenire dati duplicati, in particolare su portfolios(user_id, meme_id) e watchlists(user_id, meme_id). Inoltre, vanno creati indici (INDEX) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. memes.status, transactions.executed_at) per garantire performance ottimali.
 *   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
 
 ## Note
@@ -180,9 +180,9 @@ Per incentivare la competizione e l'uso continuativo dell'applicazione:
 
 ### 2. Meccanica dei Dividendi (Holding Incentive)
 Per simulare un mercato azionario reale e premiare il comportamento di lungo termine:
-* **Stacco Cedola:** Ogni notte (implementabile tramite `cron` o trigger eseguito al primo login del giorno) i meme che hanno mantenuto un trend positivo nelle ultime 24h distribuiscono un "Dividendo Accademico".
-    * **Calcolo Dividendo:** Il sistema cattura uno "snapshot" della `circulating_supply` a un'ora prestabilita. Il dividendo (es. 1% del valore di mercato totale in quel momento) viene quindi calcolato e diviso per la supply snapshot, ottenendo un `amount_per_share`.
-    * **Erogazione:** L'importo (`amount_per_share * quantità_posseduta`) viene accreditato nel `cfu_balance` di ciascun azionista (che detiene azioni al momento dello snapshot) come transazione di tipo `dividend` nello storico.
+* **Stacco Cedola:** Ogni notte (implementabile tramite un job schedulato o tramite un evento applicativo al primo accesso del giorno) i meme che hanno mantenuto un trend positivo nelle ultime 24h distribuiscono un "Dividendo Accademico".
+    * **Calcolo Dividendo:** Il sistema cattura uno snapshot della quantità di azioni in circolazione a un'ora prestabilita. Il dividendo (es. 1% del valore di mercato totale in quel momento) viene calcolato sul totale e poi ripartito in base allo snapshot, ottenendo un importo per azione.
+    * **Erogazione:** L'importo (importo per azione * quantità posseduta) viene accreditato nel saldo CFU di ciascun azionista che deteneva azioni allo snapshot; l'operazione è registrata nello storico come transazione di tipo dividend.
 * **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
 
 ### 3. Mercato Dinamico con Asset a Rischio Variabile
@@ -191,7 +191,3 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
     * **Meme Stabili (Slope basso):** Titoli a bassa volatilità, simili a "blue chip", che crescono lentamente ma in modo costante. Attraggono investitori prudenti.
     * **Meme Speculativi (Slope alto):** Titoli ad alta volatilità, con un alto potenziale di guadagno (e di perdita). Attraggono trader che cercano il "pump" rapido.
 * **Vantaggi:** Questa variabilità rende il mercato meno monotono e introduce un elemento di analisi fondamentale: gli utenti dovranno valutare non solo la popolarità di un meme, ma anche il suo profilo di rischio intrinseco.
-
----
-
-*Nota breve:* posso applicare un esempio di payload JSON per l'AJAX Polling o uno schema DB per i badge/dividendi se vuoi che aggiunga dettagli tecnici implementativi.
