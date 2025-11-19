@@ -1,4 +1,4 @@
-# Progetto #6: Meme Street (The Academic Stock Market)
+# Progetto #6: AlmaStreet (The Academic Stock Market)
 
 ## Visione del Progetto
 Un'applicazione web gestionale che simula una borsa valori all'interno dell'ateneo. Esistono **Ordini di Acquisto** e **Ordini di Vendita**.
