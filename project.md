@@ -1,7 +1,7 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
 ## Visione del Progetto
-Un'applicazione web gestionale che simula una borsa valori all'interno dell'ateneo. Esistono **Ordini di Acquisto** e **Ordini di Vendita**.
+Un'applicazione web gestionale che simula una borsa valori all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
 ---
@@ -28,7 +28,7 @@ Una dashboard finanziaria personale, non un profilo social.
 * **Storico Transazioni:** Tabella paginata con ogni movimento: data, tipo, prezzo unitario e fee pagate.
 
 ### 3. Gestione Admin: "Il Rettorato" (8 punti - CRUD)
-* **IPO Maker (Create):** L'Admin approva i meme caricati, stabilendo il prezzo di lancio. Questo crea il primo record nello storico dei prezzi.
+* **IPO Maker (Create):** L'Admin approva i meme proposti dagli utenti (che hanno pagato la `Listing Fee`), stabilendo il prezzo di lancio (`base_price`) e il profilo di rischio (`slope`). Questo processo (Initial Public Offering) crea il primo record nello storico dei prezzi e rende il meme disponibile per il trading.
 * **Sospensione Titoli (Update):** L'Admin può bloccare le contrattazioni su un titolo in caso di anomalie di mercato.
 * **Monitoraggio (Read):** Dashboard con metriche globali (es. Totale Fee raccolte, Inflazione del server).
 * **Delisting (Delete):** Soft delete dei meme "falliti" o obsoleti che non vengono scambiati da tempo.
@@ -44,8 +44,8 @@ Una dashboard finanziaria personale, non un profilo social.
 
 ### 4. Fruizione del Servizio: Trading Core (8 punti)
 
-#### A. Meccanica di Upload (Tassa di Quotazione)
-L'utente paga una **Listing Fee** (es. 20 CFU) per proporre un meme. Se il saldo è insufficiente, l'operazione viene bloccata. Questo disincentiva lo spam.
+#### A. Meccanica di Proposta (Tassa di Quotazione)
+Per proporre un nuovo meme, l'utente paga una **Listing Fee** (es. 20 CFU) non rimborsabile. Il meme viene quindi inserito in una coda di approvazione per il "Rettorato" (Admin). Se il saldo è insufficiente, l'operazione viene bloccata. Questo processo a due fasi (pagamento + approvazione admin) disincentiva lo spam e garantisce la qualità dei contenuti sul mercato. Se approvato, l'Admin lancia il meme sul mercato tramite l'IPO Maker.
 
 #### B. Algoritmo di Pricing (Linear Bonding Curve)
 Per garantire un mercato dinamico ed evitare stalli di liquidità (problema tipico dei simulatori con pochi utenti), il sistema abbandona il matching "peer-to-peer" in favore di un modello **Automated Market Maker (AMM)** a crescita lineare. Gli utenti fanno trading contro il "Banco" (il Sistema), che garantisce liquidità immediata.
@@ -56,9 +56,9 @@ $$P = P_{base} + (M \cdot S)$$
 
 Dove:
 * **$P$**: Prezzo corrente dell'azione.
-* **$P_{base}$**: Prezzo base di quotazione (es. 1.00 CFU).
-* **$M$ (Slope)**: Coefficiente di volatilità (es. 0.1). Determina di quanti CFU aumenta il prezzo per ogni singola azione emessa.
-* **$S$ (Circulating Supply)**: Numero totale di azioni *attualmente* detenute dagli utenti.
+* **$P_{base}$**: Prezzo base di quotazione (es. 1.00 CFU), impostato dall'Admin all'IPO.
+* **$M$ (Slope)**: Coefficiente di volatilità (es. 0.1), impostato dall'Admin all'IPO. Determina di quanti CFU aumenta il prezzo per ogni singola azione emessa.
+* **$S$ (Circulating Supply)**: Numero totale di azioni *attualmente* in circolazione e detenute dagli utenti. **Questo valore è dinamico.**
 
 **Meccanica di Compravendita (Mint & Burn):**
 1.  **Acquisto (Minting):** Quando un utente compra, il sistema **conia (crea)** nuove azioni dal nulla e le assegna all'utente.
@@ -128,13 +128,13 @@ Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
 | Tabella | Campi Chiave |
 | :--- | :--- |
 | **`categories`** | `id`, `name`, `slug`, `created_at`, `updated_at`. |
-| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price`, `total_shares`, `status`, `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
-| **`price_histories`** | `id`, `meme_id` (FK), `price`, `total_shares_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`. |
+| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
+| **`price_histories`** | `id`, `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`. |
 
 ### 3. Finanza & Transazioni
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price`, `created_at`, `updated_at`. |
+| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
 | **`transactions`** | `id`, `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
 
 ### 4. Utility
@@ -157,6 +157,8 @@ Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
 ## Note Strutturali e di Performance
 
 *   **Precisione Numerica:** Tutti i campi di tipo `DECIMAL` che rappresentano valori monetari o parametri di calcolo (es. `cfu_balance`, `current_price`, `base_price`, `slope`) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio `DECIMAL(15, 4)`.
+*   **Coerenza del Prezzo:** Il campo `memes.current_price` è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula `P = P_base + (M * S)`.
+*   **Aggiornamento `avg_buy_price`:** Il campo `portfolios.avg_buy_price` è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: `new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty)`.
 *   **Constraint e Indici:** È fondamentale aggiungere `UNIQUE constraints` per prevenire dati duplicati, in particolare su `portfolios(user_id, meme_id)` e `watchlists(user_id, meme_id)`. Inoltre, vanno creati indici (`INDEX`) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. `memes.status`, `transactions.executed_at`) per garantire performance ottimali.
 *   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
 
@@ -179,8 +181,8 @@ Per incentivare la competizione e l'uso continuativo dell'applicazione:
 ### 2. Meccanica dei Dividendi (Holding Incentive)
 Per simulare un mercato azionario reale e premiare il comportamento di lungo termine:
 * **Stacco Cedola:** Ogni notte (implementabile tramite `cron` o trigger eseguito al primo login del giorno) i meme che hanno mantenuto un trend positivo nelle ultime 24h distribuiscono un "Dividendo Accademico".
-    * **Calcolo Dividendo:** Esempio: 1% del valore corrente dell'azione distribuito proporzionalmente tra gli azionisti attuali.
-    * **Erogazione:** L'importo viene accreditato nel `cfu_balance` di ciascun azionista come transazione di tipo `dividend` nello storico.
+    * **Calcolo Dividendo:** Il sistema cattura uno "snapshot" della `circulating_supply` a un'ora prestabilita. Il dividendo (es. 1% del valore di mercato totale in quel momento) viene quindi calcolato e diviso per la supply snapshot, ottenendo un `amount_per_share`.
+    * **Erogazione:** L'importo (`amount_per_share * quantità_posseduta`) viene accreditato nel `cfu_balance` di ciascun azionista (che detiene azioni al momento dello snapshot) come transazione di tipo `dividend` nello storico.
 * **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
 
 ### 3. Mercato Dinamico con Asset a Rischio Variabile
