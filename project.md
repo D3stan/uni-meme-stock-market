@@ -1,7 +1,7 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
 ## Visione del Progetto
-Un'applicazione web gestionale che simula una borsa valori all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
+Un'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
 ---
@@ -11,21 +11,57 @@ La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiet
     * **Eloquent ORM:** Per la gestione del database e delle relazioni.
     * **Migrations & Seeders:** Per la creazione dello schema e il popolamento iniziale di dati finti (utenti, meme, storico transazioni) necessari per la demo.
     * **Transazioni Atomiche:** Per garantire l'indivisibilità delle operazioni finanziarie.
-* **Frontend:** HTML5, CSS, **Javascript "Vanilla"** (senza framework come React/Vue/Angular), TradingView Lightweight Charts per i grafici.
+* **Frontend:**
+    * HTML5, CSS, **Javascript "Vanilla"** (senza framework come React/Vue/Angular)
+    * Bootstrap / Flowbite
+    * **TradingView Lightweight Charts** e **Chart.js** per i grafici.
 
 ---
 
 ## Dettagli Funzionali e Implementativi (32 Punti)
 
-### 1. Registrazione e Login (4 punti)
-* **Bonus Matricola:** Il sistema prevede un meccanismo di incentivazione all'ingresso. Ogni nuovo utente riceve una dotazione iniziale di **100 CFU**.
-* **Verifica Copertura:** Appositi controlli di sistema monitorano la disponibilità economica prima di ogni transazione, impedendo operazioni se il saldo è insufficiente.
+### 1. [TODO] Design (4 punti)
 
-### 2. Profilo Utente: "Il Portafoglio" (4 punti)
-Una dashboard finanziaria personale, non un profilo social.
-* **Asset Allocation:** Grafico a torta (Chart.js) che mostra la composizione del patrimonio (Liquidità vs Investimenti).
-* **Valore Netto (Net Worth):** Indicatore calcolato in tempo reale: Saldo Liquido + (Azioni Possedute * Prezzo Attuale).
-* **Storico Transazioni:** Tabella paginata con ogni movimento: data, tipo, prezzo unitario e fee pagate.
+L'interfaccia è progettata per l'uso su smartphone a una mano (**Stacked Layout**), evitando colonne affiancate.
+
+#### A. Navbar Sitcky
+* **Navigazione:** icone della pagine fruibili in una sticky navbar.
+* **Responsiveness:**
+    * Mobile: navbar in basso
+    * Desktop: navbar in alto
+
+#### B. Marketplace (Homepage)
+* **Ticker:** Striscia scorrevole sotto l'header con i titoli più volatili.
+* **Lista Titoli (Feed Verticale):**
+    * Layout a **Card Verticali** (griglie da 2 per riga).
+    * **Contenuto Card:**
+        * [Immagine Meme - Larghezza 100%]
+        * Riga Info: Titolo (Bold) | Prezzo (Grande) | Badge Variazione 24h (Verde/Rosso).
+        * Footer Card: Bottone "Dettagli/Trade" (Full width).
+
+#### C. Trade Station (Pagina Operativa)
+Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
+* **Blocco 1 (Header):** Nome Meme, Prezzo Attuale gigante, Variazione %.
+* **Blocco 2 (Visualizzazione):**
+    * Immagine Meme.
+    * **Grafico Interattivo (Chart.js):** Altezza fissa, ottimizzato per touch.
+* **Blocco 3 (Pannello Comandi - Sticky Bottom):**
+    * **Tab Switch:** [ COMPRA ] [ VENDI ].
+    * **Input Area:** Campo "Quantità" con pulsanti +/- grandi.
+    * **Riepilogo Live (JS):** *Prezzo x Qta + Fee = Totale*.
+    * **Bottone Azione:** "CONFERMA ORDINE" (Colore distinto per Buy/Sell).
+
+#### D. Il Mio Portafoglio (Dashboard)
+* **Card Riepilogo (Top):** Grafico a Ciambella (Liquidità vs Investito) e Net Worth.
+* **Lista Asset (List View):**
+    * Righe cliccabili con: Miniatura, Nome, Valore Totale posseduto, P&L (Badge colorato).
+* **FAB (Floating Action Button):** Tasto "+" flottante in basso a destra per caricare un nuovo Meme (pagando la fee).
+
+### 2. Registrazione e Login (4 punti)
+* **Verifica:** verifica dell'account istituzionale con codice di conferma tramite email.
+* **Controllo dati inseriti:** verifica email, password forte (con conferma).
+* **Bonus Matricola:** Il sistema prevede un meccanismo di incentivazione all'ingresso. Ogni nuovo utente riceve una dotazione iniziale di **100 CFU**.
+* **Gestione account:** possibilita di cancellare / disattivare l'account.
 
 ### 3. Gestione Admin: "Il Rettorato" (8 punti - CRUD)
 * **IPO Maker (Create):** L'Admin approva i meme proposti dagli utenti (che hanno pagato la Listing Fee), stabilendo il prezzo di lancio (base price) e il profilo di rischio (slope). Questo processo (Initial Public Offering) crea il primo record nello storico dei prezzi e rende il meme disponibile per il trading.
@@ -42,10 +78,19 @@ Una dashboard finanziaria personale, non un profilo social.
     * **Messaggio del Rettore:** Campo per inserire testo breve (es. "Manutenzione server", "Chiusura borsa per festività").
     * **Ticker Globale:** Il messaggio appare come ticker scorrevole (banner) in tutte le pagine client fino a rimozione o scadenza.
 
-### 4. Fruizione del Servizio: Trading Core (8 punti)
+### 4. Profilo Utente: "Il Portafoglio" (4 punti)
+Una dashboard finanziaria personale, non un profilo social.
+* **Asset Allocation:** Grafico a torta (Chart.js) che mostra la composizione del patrimonio (Liquidità vs Investimenti).
+* **Valore Netto (Net Worth):** Indicatore calcolato in tempo reale: Saldo Liquido + (Azioni Possedute * Prezzo Attuale).
+* **Storico Transazioni:** Tabella paginata con ogni movimento: data, tipo, prezzo unitario e fee pagate.
+* **Verifica Copertura:** Appositi controlli di sistema monitorano la disponibilità economica prima di ogni transazione, impedendo operazioni se il saldo è insufficiente.
+* **Personalizzazione:** profile picture, "stato", nickname.
+
+
+### 5. Fruizione del Servizio: Trading Core (8 punti)
 
 #### A. Meccanica di Proposta (Tassa di Quotazione)
-Per proporre un nuovo meme, l'utente paga una **Listing Fee** (es. 20 CFU) non rimborsabile. Il meme viene quindi inserito in una coda di approvazione per il "Rettorato" (Admin). Se il saldo è insufficiente, l'operazione viene bloccata. Questo processo a due fasi (pagamento + approvazione admin) disincentiva lo spam e garantisce la qualità dei contenuti sul mercato. Se approvato, l'Admin lancia il meme sul mercato tramite l'IPO Maker.
+Per proporre un nuovo meme, l'utente paga una **Listing Fee** (es. 20 CFU) non rimborsabile. Il meme viene quindi inserito in una coda di approvazione per il "Rettorato" (che non implica il suo bloccaggio, ma solo una notifica per gli admin di controllarlo asap) ma è fin da subito visibile a tutti gli utenti. Dopo un certo delay (solitamente il giorno dopo) è possibile iniziare il  trading del meme (questo crea hype per le persone che credono che il meme possa andare virale). Se il saldo è insufficiente, l'operazione viene bloccata. Questo processo a due fasi (pagamento + approvazione admin) disincentiva lo spam e garantisce la qualità dei contenuti sul mercato.
 
 #### B. Algoritmo di Pricing (Linear Bonding Curve)
 Per garantire un mercato dinamico ed evitare stalli di liquidità (problema tipico dei simulatori con pochi utenti), il sistema abbandona il matching "peer-to-peer" in favore di un modello **Automated Market Maker (AMM)** a crescita lineare. Gli utenti fanno trading contro il "Banco" (il Sistema), che garantisce liquidità immediata.
@@ -56,8 +101,8 @@ $$P = P_{base} + (M \cdot S)$$
 
 Dove:
 * **$P$**: Prezzo corrente dell'azione.
-* **$P_{base}$**: Prezzo base di quotazione (es. 1.00 CFU), impostato dall'Admin all'IPO.
-* **$M$ (Slope)**: Coefficiente di volatilità (es. 0.1), impostato dall'Admin all'IPO. Determina di quanti CFU aumenta il prezzo per ogni singola azione emessa.
+* **$P_{base}$**: Prezzo base di quotazione (es. 1.00 CFU), impostato dal Rettorato.
+* **$M$ (Slope)**: Coefficiente di volatilità (es. 0.1), impostato dal Rettorato. Determina di quanti CFU aumenta il prezzo per ogni singola azione emessa.
 * **$S$ (Azioni in Circolazione)**: Numero totale di azioni *attualmente* in circolazione e detenute dagli utenti. **Questo valore è dinamico.**
 
 **Meccanica di Compravendita (Mint & Burn):**
@@ -68,11 +113,11 @@ Dove:
 
 **Vantaggi del Modello:**
 * **Liquidità Infinita:** È sempre possibile vendere le proprie azioni e incassare CFU, non serve aspettare che ci sia un altro studente disposto a comprare.
-* **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *Early Adopters* (chi compra quando il numero di azioni in circolazione è basso) e creando rischio reale per chi entra tardi.
+* **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *early adopters* (chi compra quando il numero di azioni in circolazione è basso) e creando rischio reale per chi entra tardi.
 
 
 #### C. Compravendita e Commissioni
-* **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 5%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
+* **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 2%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
 * **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
@@ -81,39 +126,29 @@ Per mantenere i dati aggiornati in tempo reale, l'interfaccia utente adotta una 
 * Una volta ricevuti i dati, l'interfaccia aggiorna i valori e i grafici senza bisogno di ricaricare l'intera pagina.
 * Nota operativa: la frequenza degli aggiornamenti può essere regolata dinamicamente per ottimizzare le performance, con meccanismi di salvaguardia per non sovraccaricare il sistema.
 
----
+### 6. Effetto WOW (4 punti)
 
-## Schema Interfacce (UI/UX Mobile First)
+#### A. Gamification: "La Dean's List"
+Per incentivare la competizione e l'uso continuativo dell'applicazione:
+* **Leaderboard Globale:** Classifica pubblica degli studenti ordinata per *Net Worth* (Patrimonio Totale).
+* **Badges Profilo:** Assegnazione automatica di medaglie visibili nel profilo utente al raggiungimento di milestone:
+    * **Diamond Hands:** Mantiene un titolo in portafoglio per > 1 settimana senza venderlo.
+    * **IPO Hunter:** Partecipa a 5 lanci di nuovi meme.
+    * **Liquidator:** Raggiunge 0 CFU di saldo (Badge "Bancarotta").
 
-L'interfaccia è progettata per l'uso su smartphone a una mano (**Stacked Layout**), evitando colonne affiancate.
+#### B. Meccanica dei Dividendi (Holding Incentive)
+Per simulare un mercato azionario reale e premiare il comportamento di lungo termine:
+* **Stacco Cedola:** Ogni notte (implementabile tramite un job schedulato o tramite un evento applicativo al primo accesso del giorno) i meme che hanno mantenuto un trend positivo nelle ultime 24h distribuiscono un "Dividendo Accademico".
+    * **Calcolo Dividendo:** Il sistema cattura uno snapshot della quantità di azioni in circolazione a un'ora prestabilita. Il dividendo (es. 1% del valore di mercato totale in quel momento) viene calcolato sul totale e poi ripartito in base allo snapshot, ottenendo un importo per azione.
+    * **Erogazione:** L'importo (importo per azione * quantità posseduta) viene accreditato nel saldo CFU di ciascun azionista che deteneva azioni allo snapshot; l'operazione è registrata nello storico come transazione di tipo dividend.
+* **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
 
-### 1. Marketplace (Homepage)
-* **Bottom Navbar Sticky:** Logo + Saldo CFU + Icona Menu.
-* **Ticker:** Striscia scorrevole sotto l'header con i titoli più volatili.
-* **Lista Titoli (Feed Verticale):**
-    * Layout a **Card Verticali** (una sotto l'altra).
-    * **Contenuto Card:**
-        * [Immagine Meme - Larghezza 100%]
-        * Riga Info: Titolo (Bold) | Prezzo (Grande) | Badge Variazione 24h (Verde/Rosso).
-        * Footer Card: Bottone "Dettagli/Trade" (Full width).
-
-### 2. Trade Station (Pagina Operativa)
-Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
-* **Blocco 1 (Header):** Nome Meme, Prezzo Attuale gigante, Variazione %.
-* **Blocco 2 (Visualizzazione):**
-    * Immagine Meme.
-    * **Grafico Interattivo (Chart.js):** Altezza fissa, ottimizzato per touch.
-* **Blocco 3 (Pannello Comandi - Sticky Bottom):**
-    * **Tab Switch:** [ COMPRA ] [ VENDI ].
-    * **Input Area:** Campo "Quantità" con pulsanti +/- grandi.
-    * **Riepilogo Live (JS):** *Prezzo x Qta + Fee = Totale*.
-    * **Bottone Azione:** "CONFERMA ORDINE" (Colore distinto per Buy/Sell).
-
-### 3. Il Mio Portafoglio (Dashboard)
-* **Card Riepilogo (Top):** Grafico a Ciambella (Liquidità vs Investito) e Net Worth.
-* **Lista Asset (List View):**
-    * Righe cliccabili con: Miniatura, Nome, Valore Totale posseduto, P&L (Badge colorato).
-* **FAB (Floating Action Button):** Tasto "+" flottante in basso a destra per caricare un nuovo Meme (pagando la fee).
+#### C. Mercato Dinamico con Asset a Rischio Variabile
+Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bonding Curve non è una costante globale, ma un attributo specifico di ogni meme, impostato dall'Admin durante l'IPO.
+* **Come funziona:** Questo permette di creare diverse classi di asset con profili di rischio differenti.
+    * **Meme Stabili (Slope basso):** Titoli a bassa volatilità, simili a "blue chip", che crescono lentamente ma in modo costante. Attraggono investitori prudenti.
+    * **Meme Speculativi (Slope alto):** Titoli ad alta volatilità, con un alto potenziale di guadagno (e di perdita). Attraggono trader che cercano il "pump" rapido.
+* **Vantaggi:** Questa variabilità rende il mercato meno monotono e introduce un elemento di analisi fondamentale: gli utenti dovranno valutare non solo la popolarità di un meme, ma anche il suo profilo di rischio intrinseco.
 
 ---
 
@@ -165,29 +200,3 @@ Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
 * Le notifiche con `user_id` nullo sono intese per tutti gli utenti
-
----
-
-## Effetto WOW e Funzioni Aggiuntive
-
-### 1. Gamification: "La Dean's List"
-Per incentivare la competizione e l'uso continuativo dell'applicazione:
-* **Leaderboard Globale:** Classifica pubblica degli studenti ordinata per *Net Worth* (Patrimonio Totale).
-* **Badges Profilo:** Assegnazione automatica di medaglie visibili nel profilo utente al raggiungimento di milestone:
-    * **Diamond Hands:** Mantiene un titolo in portafoglio per > 1 settimana senza venderlo.
-    * **IPO Hunter:** Partecipa a 5 lanci di nuovi meme.
-    * **Liquidator:** Raggiunge 0 CFU di saldo (Badge "Bancarotta").
-
-### 2. Meccanica dei Dividendi (Holding Incentive)
-Per simulare un mercato azionario reale e premiare il comportamento di lungo termine:
-* **Stacco Cedola:** Ogni notte (implementabile tramite un job schedulato o tramite un evento applicativo al primo accesso del giorno) i meme che hanno mantenuto un trend positivo nelle ultime 24h distribuiscono un "Dividendo Accademico".
-    * **Calcolo Dividendo:** Il sistema cattura uno snapshot della quantità di azioni in circolazione a un'ora prestabilita. Il dividendo (es. 1% del valore di mercato totale in quel momento) viene calcolato sul totale e poi ripartito in base allo snapshot, ottenendo un importo per azione.
-    * **Erogazione:** L'importo (importo per azione * quantità posseduta) viene accreditato nel saldo CFU di ciascun azionista che deteneva azioni allo snapshot; l'operazione è registrata nello storico come transazione di tipo dividend.
-* **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
-
-### 3. Mercato Dinamico con Asset a Rischio Variabile
-Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bonding Curve non è una costante globale, ma un attributo specifico di ogni meme, impostato dall'Admin durante l'IPO.
-* **Come funziona:** Questo permette di creare diverse classi di asset con profili di rischio differenti.
-    * **Meme Stabili (Slope basso):** Titoli a bassa volatilità, simili a "blue chip", che crescono lentamente ma in modo costante. Attraggono investitori prudenti.
-    * **Meme Speculativi (Slope alto):** Titoli ad alta volatilità, con un alto potenziale di guadagno (e di perdita). Attraggono trader che cercano il "pump" rapido.
-* **Vantaggi:** Questa variabilità rende il mercato meno monotono e introduce un elemento di analisi fondamentale: gli utenti dovranno valutare non solo la popolarità di un meme, ma anche il suo profilo di rischio intrinseco.
