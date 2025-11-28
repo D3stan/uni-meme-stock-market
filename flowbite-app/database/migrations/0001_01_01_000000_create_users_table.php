@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'trader'])->default('trader');
+            $table->decimal('cfu_balance', 15, 4)->default(0.0000);
+            $table->boolean('is_suspended')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

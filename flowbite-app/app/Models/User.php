@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'cfu_balance',
+        'is_suspended',
     ];
 
     /**
@@ -43,6 +46,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'cfu_balance' => 'decimal:4',
+            'is_suspended' => 'boolean',
         ];
     }
 }
