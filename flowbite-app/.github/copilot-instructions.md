@@ -304,3 +304,9 @@ it('has emails', function (string $email) {
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |
 </laravel-boost-guidelines>
+
+
+<flowbite-documentation>
+The whole flowbite documentation can be found at this link, where other links are contained and route to the specific topics.
+https://raw.githubusercontent.com/themesberg/flowbite/refs/heads/main/llms.txt
+</flowbite-documentation>
