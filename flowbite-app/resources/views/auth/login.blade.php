@@ -84,8 +84,8 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Redirect to home/dashboard
-                    window.location.href = '/';
+                    // Redirect to portfolio dashboard
+                    window.location.href = '/portfolio';
                 } else {
                     // Show error message
                     document.getElementById('error-text').textContent = data.message || 'Login failed. Please try again.';
