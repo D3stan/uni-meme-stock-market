@@ -144,7 +144,7 @@ Per simulare un mercato azionario reale e premiare il comportamento di lungo ter
 * **Obiettivi:** Incentivare il mantenimento dei titoli, ridurre il turnover istantaneo e creare storyline di lungo periodo attorno ai meme più solidi.
 
 #### C. Mercato Dinamico con Asset a Rischio Variabile
-Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bonding Curve non è una costante globale, ma un attributo specifico di ogni meme, impostato dall'Admin durante l'IPO.
+Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bonding Curve non è una costante globale, ma un attributo specifico di ogni meme, impostato globalmente dall'Admin e modificabili per ogni meme in qualunque momento.
 * **Come funziona:** Questo permette di creare diverse classi di asset con profili di rischio differenti.
     * **Meme Stabili (Slope basso):** Titoli a bassa volatilità, simili a "blue chip", che crescono lentamente ma in modo costante. Attraggono investitori prudenti.
     * **Meme Speculativi (Slope alto):** Titoli ad alta volatilità, con un alto potenziale di guadagno (e di perdita). Attraggono trader che cercano il "pump" rapido.
@@ -200,3 +200,8 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
 * Le notifiche con `user_id` nullo sono intese per tutti gli utenti
+* Mettere meme vari nell'applicazione (badge stonks/not_stonks, animazioni meme, interazione input troll)
+* Hashing monodirezionale per le password
+
+## Note correttive
+* Tabella di utility a parte per gli OTP dove poi vengono cancellate le righe una volta verificati
