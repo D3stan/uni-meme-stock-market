@@ -1,0 +1,78 @@
+@startuml
+title AlmaStreet - Flusso di Trading (Acquisto con Controllo Slippage)
+skinparam ConditionEndStyle hline
+
+|#e1f5fe|Utente|
+start
+:Seleziona Meme;
+:Inserisce Quantità (Qta);
+:Clicca "Anteprima Ordine";
+
+|#fff3e0|Frontend (JS)|
+:Richiede Calcolo Preview al Server;
+
+|#e8f5e9|Backend (Laravel)|
+:Legge Supply Attuale (S_view);
+:Calcola Prezzo Stimato\n(Formula Integrale);
+:Aggiunge Fee;
+:Restituisce Totale_Stimato;
+
+|Frontend (JS)|
+:Mostra Modal Riepilogo\n(Totale da pagare);
+
+|Utente|
+:Conferma "ACQUISTA";
+
+|Backend (Laravel)|
+:Riceve Ordine (MemeID, Qta, Totale_Stimato);
+note right
+  Inizio Transazione Database
+  per garantire atomicità
+end note
+:Start DB Transaction;
+
+|#eceff1|Database|
+:LOCK row Meme (SELECT ... FOR UPDATE);
+
+|Backend (Laravel)|
+:Legge Supply Reale Aggiornata (S_real);
+:Ricalcola Costo Reale (C_real) su S_real;
+
+if (Variazione Prezzo > Tolleranza?) then (Sì, Slippage Alto)
+    :Rollback Transaction;
+    |Frontend (JS)|
+    :Mostra Alert "Prezzo Aggiornato";
+    :Mostra Nuova Quotazione e C_real;
+    
+    |Utente|
+    if (Accetti il nuovo prezzo?) then (No)
+        stop
+    else (Sì)
+        |Frontend (JS)|
+        :Reinvia Ordine con nuovi parametri;
+        -> Torna al Backend;
+    endif
+else (No, Prezzo Stabile)
+    |Backend (Laravel)|
+    if (Saldo Utente < C_real?) then (No, Fondi insufficienti)
+        :Rollback Transaction;
+        |Frontend (JS)|
+        :Mostra Errore "Fondi Insufficienti";
+        stop
+    else (Sì)
+        |Database|
+        :UPDATE Users SET saldo = saldo - C_real;
+        :UPDATE Memes SET supply = supply + Qta;
+        :INSERT Transaction (History);
+        :UPDATE/INSERT Portfolio Utente;
+        
+        |Backend (Laravel)|
+        :Commit Transaction;
+        :Return Success;
+        
+        |Frontend (JS)|
+        :Aggiorna UI (Nuovo Saldo, Toast Successo);
+        stop
+    endif
+endif
+@enduml
