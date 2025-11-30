@@ -115,10 +115,48 @@ Dove:
 * **Liquidità Infinita:** È sempre possibile vendere le proprie azioni e incassare CFU, non serve aspettare che ci sia un altro studente disposto a comprare.
 * **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *early adopters* (chi compra quando il numero di azioni in circolazione è basso) e creando rischio reale per chi entra tardi.
 
+#### Calcolo dello Slippage (Formula Integrale O(1))
+
+**Problema:** La formula $P = P_{base} + (M \cdot S)$ fornisce il prezzo istantaneo, ma per ordini di $k$ azioni, ogni azione viene mintata a un prezzo crescente. Calcolare il costo con un loop è inefficiente e soggetto a errori di arrotondamento.
+
+**Soluzione:** Si usa il calcolo integrale (area sotto la curva di prezzo) per ottenere il costo totale in un'operazione atomica O(1).
+
+**Formula per l'Acquisto di $k$ Azioni:**
+
+Partendo da una supply corrente $S$, il costo totale per acquistare $k$ azioni è:
+
+$$\text{CostoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot ((S+k)^2 - S^2)$$
+
+**Derivazione:**
+$$\text{CostoTotale} = \int_{S}^{S+k} (P_{base} + M \cdot s) \, ds = P_{base} \cdot k + M \cdot \left[\frac{s^2}{2}\right]_{S}^{S+k}$$
+
+**Formula per la Vendita di $k$ Azioni:**
+
+Per vendere $k$ azioni (con $S \geq k$), l'incasso totale è:
+
+$$\text{IncassoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot (S^2 - (S-k)^2)$$
+
+**Implementazione nel Service Layer:**
+* Queste formule vanno implementate come metodi atomici nel Service Layer (es. `TradingService`).
+* Il calcolo deve essere eseguito all'interno di una transazione database per garantire consistenza in caso di concorrenza.
+* Le fee vengono applicate **dopo** il calcolo del costo/incasso: `CostoFinale = CostoTotale * (1 + TaxRate)` per acquisto, `IncassoFinale = IncassoTotale * (1 - TaxRate)` per vendita.
+* La supply viene aggiornata atomicamente: `circulating_supply = circulating_supply + k` per acquisti, `circulating_supply = circulating_supply - k` per vendite.
+
+**Gestione della Concorrenza:**
+* Si usano le transazioni database di Laravel con locking ottimistico o pessimistico (`FOR UPDATE`) per evitare race condition quando due utenti operano sullo stesso meme simultaneamente.
+* Il valore di $S$ deve essere letto e aggiornato all'interno della stessa transazione atomica per garantire la correttezza del calcolo.
+
 
 #### C. Compravendita e Commissioni
 * **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 2%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
 * **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
+* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal di conferma che evidenzia:
+    * Il prezzo inizialmente visualizzato
+    * Il prezzo attuale aggiornato
+    * Il costo totale ricalcolato (con fee incluse)
+    * La variazione percentuale (slippage)
+    * L'utente deve confermare esplicitamente per procedere, oppure può annullare l'operazione
+* Questo meccanismo garantisce trasparenza e previene sorprese per l'utente finale, assicurando che sia sempre consapevole del prezzo effettivo prima di completare la transazione.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
 Per mantenere i dati aggiornati in tempo reale, l'interfaccia utente adotta una strategia di **aggiornamenti periodici**:
@@ -197,8 +235,8 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 *   **Coerenza del Prezzo:** Il campo memes.current_price è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula P = P_base + (M * S).
 *   **Aggiornamento avg_buy_price:** Il campo portfolios.avg_buy_price è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty).
 *   **Constraint e Indici:** È fondamentale aggiungere UNIQUE constraints per prevenire dati duplicati, in particolare su portfolios(user_id, meme_id) e watchlists(user_id, meme_id). Inoltre, vanno creati indici (INDEX) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. memes.status, transactions.executed_at) per garantire performance ottimali.
-*   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
-* **Concorrenza:** se due studenti acquistano lo stesso meme nello stesso istante, il calcolo della *Supply* ($S$) e quindi del Prezzo ($P$) rischia di essere errato per il secondo utente.
+* **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
+* **Concorrenza:** Le operazioni di trading devono essere protette da transazioni database con row-level locking (es. `SELECT ... FOR UPDATE` in Laravel) per garantire che il valore di `circulating_supply` sia consistente quando più utenti operano simultaneamente sullo stesso meme. Il pattern di implementazione prevede: (1) inizio transazione, (2) lock della riga del meme, (3) lettura della supply corrente, (4) calcolo del costo con formula integrale, (5) aggiornamento atomico della supply e del saldo utente, (6) commit. In caso di deadlock, il sistema effettua retry automatico.
 
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
