@@ -1,4 +1,4 @@
-@startuml
+@startuml MemeLifecycle
 title AlmaStreet - Ciclo di Vita Meme (Proposta & IPO)
 
 |#e1f5fe|Studente|

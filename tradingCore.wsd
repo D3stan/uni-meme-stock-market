@@ -1,4 +1,4 @@
-@startuml
+@startuml TradingFlow
 title AlmaStreet - Flusso di Trading (Acquisto con Controllo Slippage)
 skinparam ConditionEndStyle hline
 
