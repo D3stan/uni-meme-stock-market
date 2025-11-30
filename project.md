@@ -157,45 +157,48 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 ### 1. Core Utenti
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`users`** | `id`, `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `otp_hash`, `otp_expires_at`, `last_daily_bonus_at`, `created_at`, `updated_at`. |
+| **`users`** | `id` (PK), `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `last_daily_bonus_at`, `created_at`, `updated_at`, `cached_net_worth` (DECIMAL). |
 
 ### 2. Core Mercato
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`categories`** | `id`, `name`, `slug`, `created_at`, `updated_at`. |
-| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
-| **`price_histories`** | `id`, `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`. |
+| **`categories`** | `id` (PK), `name`, `slug`, `created_at`, `updated_at`. |
+| **`memes`** | `id` (PK), `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT UNSIGNED, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
+| **`price_histories`** | `id` (PK), `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`, `volume_24h` (DECIMAL), `pct_change_24h` (DECIMAL), INDEX(meme_id, recorded_at). |
 
 ### 3. Finanza & Transazioni
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
-| **`transactions`** | `id`, `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
+| **`portfolios`** | `id` (PK), `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
+| **`transactions`** | `id` (PK), `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
 
 ### 4. Utility
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`global_settings`** | `key`, `value`. (Es. `listing_fee`, `tax_rate`). |
-| **`watchlists`** | `id`, `user_id` (FK), `meme_id` (FK), `created_at`, `updated_at`. |
-| **`notifications`** | `id`, `user_id` (FK) nullable, `title`, `message`, `is_read` nullable, `created_at`, `updated_at`. |
+| **`global_settings`** | `key` (PK), `value`. (Es. `listing_fee`, `tax_rate`). |
+| **`watchlists`** | `id` (PK), `user_id` (FK), `meme_id` (FK), `created_at`, `updated_at`. |
+| **`notifications`** | `id` (PK), `user_id` (FK) nullable, `title`, `message`, `is_read` nullable, `created_at`, `updated_at`. |
 
 ### 5. Tabelle Aggiuntive (Gamification, Audit, Dividendi)
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`badges`** | `id`, `name`, `description`, `icon_path`, `created_at`, `updated_at`. |
-| **`user_badges`** | `id`, `user_id` (FK), `badge_id` (FK), `awarded_at`. |
-| **`dividend_histories`** | `id`, `meme_id` (FK), `amount_per_share`, `total_distributed`, `distributed_at`. |
-| **`market_communications`** | `id`, `admin_id` (FK), `message`, `is_active`, `expires_at`, `created_at`, `updated_at`. |
-| **`admin_actions`** | `id`, `admin_id` (FK), `action_type`, `target_id`, `target_type`, `reason`, `created_at`. |
+| **`badges`** | `id` (PK), `name`, `description`, `icon_path`, `created_at`, `updated_at`. |
+| **`user_badges`** | `id` (PK), `user_id` (FK), `badge_id` (FK), `awarded_at`. |
+| **`dividend_histories`** | `id` (PK), `meme_id` (FK), `amount_per_share`, `total_distributed`, `distributed_at`. |
+| **`market_communications`** | `id` (PK), `admin_id` (FK), `message`, `is_active`, `expires_at`, `created_at`, `updated_at`. |
+| **`admin_actions`** | `id` (PK), `admin_id` (FK), `action_type`, `target_id`, `target_type`, `reason`, `created_at`. |
+| **`otp_verifications`** | `id` (PK), `email` (INDEX), `code_hash`, `expires_at`, `created_at`. |
+
 
 
 ## Note Strutturali e di Performance
 
-*   **Precisione Numerica:** Tutti i campi di tipo DECIMAL che rappresentano valori monetari o parametri di calcolo (es. cfu_balance, current_price, base_price, slope) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio DECIMAL(15, 4).
+*   **Precisione Numerica:** Tutti i campi di tipo DECIMAL che rappresentano valori monetari o parametri di calcolo (es. cfu_balance, current_price, base_price, slope) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio DECIMAL(15, 5).
 *   **Coerenza del Prezzo:** Il campo memes.current_price è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula P = P_base + (M * S).
 *   **Aggiornamento avg_buy_price:** Il campo portfolios.avg_buy_price è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty).
 *   **Constraint e Indici:** È fondamentale aggiungere UNIQUE constraints per prevenire dati duplicati, in particolare su portfolios(user_id, meme_id) e watchlists(user_id, meme_id). Inoltre, vanno creati indici (INDEX) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. memes.status, transactions.executed_at) per garantire performance ottimali.
 *   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
+* **Concorrenza:** se due studenti acquistano lo stesso meme nello stesso istante, il calcolo della *Supply* ($S$) e quindi del Prezzo ($P$) rischia di essere errato per il secondo utente.
 
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
