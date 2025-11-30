@@ -3,9 +3,8 @@ title AlmaStreet - Ciclo di Vita Meme (Proposta & IPO)
 
 |#e1f5fe|Studente|
 start
-:Carica Immagine e Titolo;
-:Visualizza costo "Listing Fee" (es. 20 CFU);
-:Conferma invio proposta;
+:Carica Immagine, Titolo, Descrizione e Categorie;
+:Conferma Listing meme;
 
 |#e8f5e9|Backend (Laravel)|
 if (Saldo Studente >= Listing Fee?) then (No)
@@ -13,14 +12,22 @@ if (Saldo Studente >= Listing Fee?) then (No)
     stop
 else (Sì)
     :Start Transaction;
-    :Addebita 20 CFU allo Studente;
-    :Crea Record Meme (Status: PENDING);
+    :Addebita costo in CFU allo Studente;
+    :Analisi immagine con IA;
+    if (Contenuto Inappropriato?) then (Sì)
+        :Rollback Transaction;
+        :Restituisce Errore di Contenuto;
+        stop
+    else (No)
+    :Crea Record Meme (Status: UPLOADED);
+    :Registra Prezzo Iniziale in PriceHistory;
     :Commit Transaction;
+    :Rende il meme visibile nel Market;
     :Invia Notifica al Rettorato;
 endif
 
 |#fff3e0|Rettorato (Admin)|
-:Riceve notifica "Nuova Proposta";
+:Riceve notifica "Nuova Meme da Esaminare";
 :Esamina Contenuto (Check policy);
 
 if (Meme Approvato?) then (No - Rifiutato)
@@ -31,20 +38,18 @@ if (Meme Approvato?) then (No - Rifiutato)
     stop
 else (Sì - Approvato)
     |Rettorato (Admin)|
-    :Imposta Parametri Finanziari;
+    :Valuta modifica ai Parametri Finanziari;
     split
         :Base Price (es. 1.00 CFU);
     split again
         :Slope (Rischio/Volatilità);
     end split
-    :Clicca "Lancia IPO";
 
     |Backend (Laravel)|
     :Start Transaction;
     :Update Meme Status: APPROVED;
-    :Registra Prezzo Iniziale in PriceHistory;
+    :Aggiorna Prezzo in PriceHistory;
     :Commit Transaction;
-    :Rende il titolo visibile nel Market;
     stop
 endif
 @enduml
