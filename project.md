@@ -170,7 +170,7 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 | Tabella | Campi Chiave |
 | :--- | :--- |
 | **`portfolios`** | `id` (PK), `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
-| **`transactions`** | `id` (PK), `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
+| **`transactions`** | `id` (PK), `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share` DECIMAL(16, 4), `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
 
 ### 4. Utility
 | Tabella | Campi Chiave |
