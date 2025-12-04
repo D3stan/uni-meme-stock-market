@@ -6,19 +6,18 @@ start
 :Carica Immagine, Titolo, Descrizione e Categorie;
 :Conferma Listing meme;
 
-|#e8f5e9|Backend (Laravel)|
+|#e8f5e9|Backend|
 if (Saldo Studente >= Listing Fee?) then (No)
     :Restituisce Errore;
     stop
 else (Sì)
-    :Start Transaction;
-    :Addebita costo in CFU allo Studente;
     :Analisi immagine con IA;
     if (Contenuto Inappropriato?) then (Sì)
-        :Rollback Transaction;
         :Restituisce Errore di Contenuto;
         stop
     else (No)
+    :Start Transaction;
+    :Addebita costo in CFU allo Studente;
     :Crea Record Meme (Status: UPLOADED);
     :Registra Prezzo Iniziale in PriceHistory;
     :Commit Transaction;
@@ -30,13 +29,16 @@ endif
 :Riceve notifica "Nuova Meme da Esaminare";
 :Esamina Contenuto (Check policy);
 
-if (Meme Approvato?) then (No - Rifiutato)
-    :Imposta Status: REJECTED;
+if (Meme Approvato?) then (No)
+    |Backend|
+    :Start Transaction;
+    :Update Meme Status: REJECTED;
     :Soft Delete record;
-    |Backend (Laravel)|
+    :Refund CFU allo Studente;
+    :Commit Transaction;
     :Invia notifica rifiuto allo Studente;
     stop
-else (Sì - Approvato)
+else (Sì)
     |Rettorato (Admin)|
     :Valuta modifica ai Parametri Finanziari;
     split
@@ -45,7 +47,7 @@ else (Sì - Approvato)
         :Slope (Rischio/Volatilità);
     end split
 
-    |Backend (Laravel)|
+    |Backend|
     :Start Transaction;
     :Update Meme Status: APPROVED;
     :Aggiorna Prezzo in PriceHistory;
