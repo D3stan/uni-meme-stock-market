@@ -11,11 +11,11 @@ start
 |#fff3e0|Frontend (JS)|
 :Richiede Calcolo Preview al Server;
 
-|#e8f5e9|Backend (Laravel)|
-:Legge Supply Attuale (S_view);
+|#e8f5e9|Backend|
+:Legge Supply Attuale;
 :Calcola Prezzo Stimato\n(Formula Integrale);
 :Aggiunge Fee;
-:Restituisce Totale_Stimato;
+:Restituisce Totale Stimato;
 
 |Frontend (JS)|
 :Mostra Modal Riepilogo\n(Totale da pagare);
@@ -23,26 +23,15 @@ start
 |Utente|
 :Conferma "ACQUISTA";
 
-|Backend (Laravel)|
-:Riceve Ordine (MemeID, Qta, Totale_Stimato);
-note right
-  Inizio Transazione Database
-  per garantire atomicità
-end note
-:Start DB Transaction;
-
-|#eceff1|Database|
-:LOCK row Meme (SELECT ... FOR UPDATE);
-
-|Backend (Laravel)|
-:Legge Supply Reale Aggiornata (S_real);
-:Ricalcola Costo Reale (C_real) su S_real;
+|Backend|
+:Riceve Ordine;
+:Legge Supply Reale Aggiornata;
+:Ricalcola Costo Reale;
 
 if (Variazione Prezzo > Tolleranza?) then (Sì, Slippage Alto)
-    :Rollback Transaction;
     |Frontend (JS)|
     :Mostra Alert "Prezzo Aggiornato";
-    :Mostra Nuova Quotazione e C_real;
+    :Mostra Nuova Quotazione e Costo Reale;
     
     |Utente|
     if (Accetti il nuovo prezzo?) then (No)
@@ -50,27 +39,26 @@ if (Variazione Prezzo > Tolleranza?) then (Sì, Slippage Alto)
     else (Sì)
         |Frontend (JS)|
         :Reinvia Ordine con nuovi parametri;
-        -> Torna al Backend;
+        note right
+            Torna a "Riceve Ordine"
+        end note
+        detach
     endif
 else (No, Prezzo Stabile)
-    |Backend (Laravel)|
-    if (Saldo Utente < C_real?) then (No, Fondi insufficienti)
-        :Rollback Transaction;
+    if (Saldo Utente < Costo Reale?) then (No, Fondi insufficienti)
         |Frontend (JS)|
         :Mostra Errore "Fondi Insufficienti";
         stop
     else (Sì)
-        |Database|
-        :UPDATE Users SET saldo = saldo - C_real;
-        :UPDATE Memes SET supply = supply + Qta;
-        :INSERT Transaction (History);
-        :UPDATE/INSERT Portfolio Utente;
-        
-        |Backend (Laravel)|
+        |Backend|
+        :Start Non-Concurrent Transaction;
+        :Aggiorna Saldo Utente;
+        :Aggiorna Supply Meme;
+        :Registra Transazione Storica;
         :Commit Transaction;
-        :Return Success;
         
         |Frontend (JS)|
+        :Conferma Acquisto;
         :Aggiorna UI (Nuovo Saldo, Toast Successo);
         stop
     endif
