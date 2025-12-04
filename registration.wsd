@@ -1,0 +1,89 @@
+@startuml RegistrationFlow
+title AlmaStreet - Processo di Registrazione e Verifica Email
+
+|#e1f5fe|Studente|
+start
+:Inserisce Dati\n(Nome, Email, Password + Conferma);
+:Clicca "Registrati";
+
+|#fff3e0|Frontend (JS)|
+:Valida Form Lato Client\n(Password Match, Formato Email);
+
+|#e8f5e9|Backend (Laravel)|
+:Riceve Richiesta Registrazione;
+
+if (Email Dominio Whitelisted?\n(es. @unibo.it, @studio.unibo.it)) then (No)
+    |#fff3e0|Frontend (JS)|
+    :Mostra Errore\n"Email Istituzionale Richiesta";
+    stop
+else (Sì)
+    if (Password Forte?\n(Min 8 char, Maiusc, Numero, Simbolo)) then (No)
+        |#fff3e0|Frontend (JS)|
+        :Mostra Errore\n"Password Troppo Debole";
+        stop
+    else (Sì)
+        if (Email Già Registrata?) then (Sì)
+            |#fff3e0|Frontend (JS)|
+            :Mostra Errore\n"Email Già in Uso";
+            stop
+        else (No)
+            |#e8f5e9|Backend (Laravel)|
+            :Genera Codice OTP (6 cifre);
+            :Hash OTP (bcrypt);
+            :INSERT otp_verifications\n(email, code_hash, expires_at);
+            note right
+              OTP valido per 10 minuti
+            end note
+            :Invia Email con Codice;
+            
+            |#fff3e0|Frontend (JS)|
+            :Mostra Form Verifica OTP;
+        endif
+    endif
+endif
+
+|#e1f5fe|Studente|
+'label inserimento_otp
+:Inserisce Codice OTP (6 cifre);
+:Clicca "Verifica";
+
+|#e8f5e9|Backend (Laravel)|
+if (OTP Scaduto?) then (Sì)
+    |#fff3e0|Frontend (JS)|
+    :Mostra Alert "Codice Scaduto";
+    :Mostra Bottone "Richiedi Nuovo Codice";
+    
+    |#e1f5fe|Studente|
+    :Richiede Nuovo OTP;
+    note right
+        Torna a "Genera Codice OTP"
+    end note
+    detach
+
+|#e8f5e9|Backend (Laravel)|
+else (No, OTP Valido)
+    if (Hash OTP Corretto?) then (No)
+        |#fff3e0|Frontend (JS)|
+        :Mostra Errore "Codice Errato";
+        note right
+            L'utente può riprovare
+            senza limiti fino a scadenza
+            Torna a "Inserisce Codice OTP"
+        end note
+        detach
+
+    else (Sì)
+        |#e8f5e9|Backend (Laravel)|
+        :Start Transaction;
+        :Registra Utente;
+        :Aggiungi Bonus Iniziale CFU;
+        :Commit Transaction;
+        
+        |#fff3e0|Frontend (JS)|
+        :Redirect a Dashboard/Marketplace;
+        :Mostra Toast "Benvenuto!";
+        stop
+    endif
+endif
+
+@enduml
