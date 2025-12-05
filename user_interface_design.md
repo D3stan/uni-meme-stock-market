@@ -9,17 +9,16 @@ Questo documento definisce la struttura delle pagine e il flusso di navigazione 
 ```mermaid
 graph TD
     %% Entry Points
-    Guest[Utente Non Autenticato] --> LandingPage
-    LandingPage -->|Login| LoginPage
-    LandingPage -->|Registrazione| RegisterPage
-    RegisterPage -->|Verifica OTP| OTPPage
-    OTPPage -->|Successo| OnboardingBonus
+    Guest[Utente Non Autenticato] --> LandingPage[Landing Page]
+    LandingPage -->|Login| LoginPage[Login]
+    LandingPage -->|Registrazione| RegisterPage[Registrazione]
+    RegisterPage -->|Verifica OTP| OTPPage[Verifica OTP]
+    OTPPage -->|Successo +100 CFU| MarketHome[Marketplace]
     LoginPage -->|Successo| MarketHome
-    OnboardingBonus --> MarketHome
 
     %% Main App Navigation
     subgraph AppShell [Applicazione Autenticata]
-        MarketHome[Marketplace]
+        MarketHome
         Portfolio[Portafoglio]
         CreateMeme[Crea Meme]
         Leaderboard[Classifica]
@@ -27,18 +26,12 @@ graph TD
     end
 
     %% Dettagli e Azioni
-    MarketHome -->|Click Card Meme| MemeDetail[Trade Station]
-    Portfolio -->|Click Asset| MemeDetail
+    MarketHome -->|Click Card Meme| TradeStation[Trade Station]
+    Portfolio -->|Click Asset| TradeStation
+    TradeStation -->|Tap COMPRA/VENDI| TradeStation
     
-    MemeDetail -->|Tap COMPRA| BuySheet[Bottom Sheet Acquisto]
-    MemeDetail -->|Tap VENDI| SellSheet[Bottom Sheet Vendita]
-    
-    BuySheet -->|Preview| SlippageModal[Modal Slippage]
-    SellSheet -->|Preview| SlippageModal
-    SlippageModal -->|Conferma| TransactionToast[Toast Esito]
-    
-    %% Profilo
-    Profile --> Settings[Impostazioni Account]
+    %% Profilo e Settings
+    Profile -->|Impostazioni| Settings[Impostazioni Account]
     
     %% Notifiche
     AppShell -->|Icona Campanella| NotificationPanel[Centro Notifiche]
@@ -397,15 +390,16 @@ graph TD
         *   Variazione percentuale "+12.5%" (font size 16px, font weight medium).
         *   Stesso colore del prezzo.
 
-*   **Blocco 2: Visualizzazione Dati (Switch View):**
+*   **Blocco 2: Visualizzazione Dati (Switch View - "L'altra faccia della medaglia"):**
     *   **Toggle Selector (altezza 40px, centrato):**
-        *   Segmented control con 2 opzioni: "Grafico" | "Meme".
+        *   Segmented control con 2 opzioni: "Grafico 📊" | "Meme 🖼️".
         *   Larghezza 60% dello schermo, border-radius 12px.
         *   Opzione attiva: sfondo primario, testo bianco.
         *   Opzione inattiva: sfondo trasparente, testo grigio.
         *   Animazione smooth dello sfondo quando si cambia.
-    *   **Area di Visualizzazione (altezza 300px):**
-        *   **Vista Grafico:**
+        *   **Tap sul toggle → Alterna tra le due viste.**
+    *   **Area di Visualizzazione (altezza dinamica, min 300px):**
+        *   **Vista Grafico (default):**
             *   Chart interattivo (TradingView Lightweight Charts o Chart.js).
             *   Tipo: Candlestick o linea (configurabile).
             *   Assi minimali su mobile (nascondi gridlines excessive).
@@ -413,30 +407,26 @@ graph TD
                 *   Chips orizzontali: "1H" | "1D" | "1W" | "ALL".
                 *   Chip attivo colorato primario.
                 *   Tap → Ricarica dati grafico per quel periodo.
-        *   **Vista Meme:**
-            *   Immagine meme centrata, max-width 100%, max-height 300px.
-            *   Aspect ratio preservato.
+        *   **Vista Meme (alternativa):**
+            *   **Immagine meme:** Centrata, max-width 100%, max-height 300px, aspect ratio preservato.
             *   Background sfumato se immagine non copre tutta l'area.
+            *   **Informazioni sotto l'immagine (padding 16px):**
+                *   **Nome completo meme:** Font size 20px, font weight bold.
+                *   **Categoria:** Badge pill (es. "Reaction", "Animali") con colore distintivo.
+                *   **Creatore:** Layout orizzontale con avatar circolare (32px) + nickname (font size 14px, grigio).
+                *   **Data IPO:** "Quotato il GG/MM/AAAA" (font size 12px, grigio).
+                *   **Descrizione:** Testo multi-riga (se presente), font size 14px, line-height 1.5, max 4 righe con "Leggi tutto" se troncato.
         *   **Gesture (opzionale):** Swipe left/right per alternare tra le due viste.
 
 *   **Blocco 3: Statistiche Chiave (padding 16px):**
+    *   **Visibile solo in Vista Grafico.**
     *   Griglia 2x2 con gap 12px.
     *   **Card Statistica singola:**
         *   Background grigio 850, border-radius 8px, padding 12px.
         *   Label sopra (font size 12px, grigio): "Market Cap", "Volume 24h", "Supply", "Rischio".
         *   Valore sotto (font size 18px, font weight bold): es. "1,250 CFU", "350 CFU", "500 azioni", "Alto ⚠️".
         *   Colore valore: Bianco per dati neutri, Rosso per rischio alto, Verde per rischio basso.
-
-*   **Blocco 4: Informazioni Meme (padding 16px, collapsible):**
-    *   Titolo "Informazioni" (font weight semibold).
-    *   **Accordion chiuso di default:**
-        *   Tap → Espande.
-        *   Contenuto espanso:
-            *   Nome completo meme (font size 16px).
-            *   Categoria (badge piccolo).
-            *   Data IPO (font size 12px, grigio).
-            *   Creatore (nome + avatar piccolo).
-            *   Descrizione breve (se presente).
+    *   **Nota:** Quando si attiva la Vista Meme, questo blocco viene nascosto e sostituito dalle informazioni testuali del meme (già incluse nella Vista Meme del Blocco 2).
 
 *   **Sticky Footer: Barra Azioni Trading (altezza 72px, sempre visibile in basso):**
     *   Sfondo solido (grigio 900), border-top sottile.
