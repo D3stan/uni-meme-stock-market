@@ -40,6 +40,22 @@ La struttura cambia drasticamente in base al device per garantire la migliore er
 
 ---
 
+#### B. Landing Page (Utenti Non Autenticati - Guest View)
+
+Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il pattern del "**Teaser**" per convertire i visitatori.
+
+* **Hero Section:**
+    * Titolo di impatto (es. "The Academic Stock Market") e sottotitolo esplicativo.
+    * **CTA Primaria:** Bottone "**Inizia a fare Trading**" ben visibile.
+* **Teaser Top Memes (Anteprima Limitata):**
+    * Lista verticale semplificata dei Top Meme per volume/trend.
+* **Visualizzazione "Paywall" (Fade Effect):**
+    * **Posizioni 1-3:** Card completamente visibili.
+    * **Posizione 4:** **Semi-Hidden**. Applicazione di un gradiente di trasparenza (overlay sfumato verso il colore di sfondo) che copre la metà inferiore della card, suggerendo la presenza di altro contenuto.
+    * **Posizione 5+:** Completamente nascosti.
+* **Conversion Block:**
+    * Subito sotto l'effetto fade (o sopra di esso in sovrimpressione), appare una **CTA Secondaria** ("**Registrati per sbloccare il mercato**") che porta al login/registrazione.
+
 #### B. Marketplace (Home & Discovery)
 
 Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing Out)** e interesse rapido.
