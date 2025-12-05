@@ -20,42 +20,91 @@ La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiet
 
 ## Dettagli Funzionali e Implementativi (32 Punti)
 
-### 1. [TODO] Design (4 punti)
+### 1. Design dell'Interfaccia Utente (Mobile First & UX) (4 punti)
 
-L'interfaccia è progettata per l'uso su smartphone a una mano (**Stacked Layout**), evitando colonne affiancate.
+L'interfaccia adotta un approccio **Mobile First** rigoroso, ottimizzato per l'utilizzo a una mano (**"Thumb-driven design"**). Lo stile visivo segue i canoni del **Modern Fintech** (pulizia, numeri grandi, contrasto elevato rosso/verde) unito all'estetica **Social** (immagini full-bleed, interazioni rapide).
 
-#### A. Navbar Sitcky
-* **Navigazione:** icone della pagine fruibili in una sticky navbar.
-* **Responsiveness:**
-    * Mobile: navbar in basso
-    * Desktop: navbar in alto
+È preferibile l'adozione di un **tema scuro (Dark Mode)** come default, per ridurre l'affaticamento visivo e allinearsi agli standard delle app di trading/crypto.
 
-#### B. Marketplace (Homepage)
-* **Ticker:** Striscia scorrevole sotto l'header con i titoli più volatili.
-* **Lista Titoli (Feed Verticale):**
-    * Layout a **Card Verticali** (griglie da 2 per riga).
-    * **Contenuto Card:**
-        * [Immagine Meme - Larghezza 100%]
-        * Riga Info: Titolo (Bold) | Prezzo (Grande) | Badge Variazione 24h (Verde/Rosso).
-        * Footer Card: Bottone "Dettagli/Trade" (Full width).
+---
+
+#### A. Navigazione Globale (Layout Shell)
+
+La struttura cambia drasticamente in base al device per garantire la migliore ergonomia:
+
+* **Mobile (Smartphone):**
+    * **Bottom Navigation Bar:** Barra fissa in basso contenente 4/5 icone principali (**Market, Trade/Search, Portafoglio, Classifica, Profilo**). È la "zona sicura" per il pollice.
+    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro" o azioni secondarie come le impostazioni).
+* **Desktop/Tablet:**
+    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle.
+
+---
+
+#### B. Marketplace (Home & Discovery)
+
+Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing Out)** e interesse rapido.
+
+* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale.
+* **Filtri Rapidi (Chips):** Pillole scorrevoli orizzontalmente per filtrare il feed: Tutti, Top Gainer, New Listing, High Risk.
+* **Feed Titoli (Meme Card):**
+    * Layout a colonna singola (**Instagram style**).
+    * **Anatomia della Card:**
+        * **Header:** Titolo Meme (es. "Surprised Pikachu") e Ticker (es. $PIKA).
+        * **Body:** Immagine del Meme (**Aspect Ratio** con larghezza fissa ma altezza variabile in base all’altezza del meme), cliccabile per il dettaglio.
+        * **Footer:** Prezzo attuale (**Font Monospace grande**) | Badge % 24h (Verde/Rosso acceso) | Tasto rapido **"Trade"** (Outline).
+
+---
 
 #### C. Trade Station (Pagina Operativa)
-Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
-* **Blocco 1 (Header):** Nome Meme, Prezzo Attuale gigante, Variazione %.
-* **Blocco 2 (Visualizzazione):**
-    * Immagine Meme.
-    * **Grafico Interattivo (Chart.js):** Altezza fissa, ottimizzato per touch.
-* **Blocco 3 (Pannello Comandi - Sticky Bottom):**
-    * **Tab Switch:** [ COMPRA ] [ VENDI ].
-    * **Input Area:** Campo "Quantità" con pulsanti +/- grandi.
-    * **Riepilogo Live (JS):** *Prezzo x Qta + Fee = Totale*.
-    * **Bottone Azione:** "CONFERMA ORDINE" (Colore distinto per Buy/Sell).
 
-#### D. Il Mio Portafoglio (Dashboard)
-* **Card Riepilogo (Top):** Grafico a Ciambella (Liquidità vs Investito) e Net Worth.
-* **Lista Asset (List View):**
-    * Righe cliccabili con: Miniatura, Nome, Valore Totale posseduto, P&L (Badge colorato).
-* **FAB (Floating Action Button):** Tasto "+" flottante in basso a destra per caricare un nuovo Meme (pagando la fee).
+Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. Layout a blocchi verticali:
+
+* **Blocco 1: Header Finanziario**
+    * Prezzo attuale in grande evidenza.
+    * Sotto-titolo con variazione assoluta (CFU) e percentuale. Il colore del testo cambia dinamicamente (**Verde/Rosso**).
+* **Blocco 2: Visualizzazione Dati**
+    * **Grafico (Chart.js/TradingView):** Interattivo, ma semplificato per mobile (nascondere assi/gridlines superflue su schermi piccoli).
+    * **Meme:** Visualizzazione meme alternata al grafico alla pressione di un pulsante o tramite gesture (es. swipe per "girare" la card).
+* **Blocco 3: Barra Azioni e Pop-up (Sticky Bottom)**
+    * **Barra Fissa:** In basso alla pagina sono sempre visibili due pulsanti affiancati (50% width ciascuno):
+        * `[ VENDI ]` (Rosso/Secondary)
+        * `[ COMPRA ]` (Verde/Primary)
+    * **Interazione Pop-up (Modal Bottom Sheet):**
+        * Premendo uno dei due pulsanti, si apre un pannello in sovrimpressione (dal basso verso l'alto) specifico per l'azione scelta.
+    * **Contenuto del Pop-up:**
+        * **Header:** Titolo operazione (es. "Acquista $DOGE") e Saldo disponibile.
+        * **Input Area:** Campo "**Quantità**" numerico centrale con focus automatico.
+        * **Shortcuts:** Slider rapido con marker snap "**25%**, **50%**, **75%**, **MAX**" per auto-compilare la quantità.
+        * **Riepilogo:** Dettaglio costi (Prezzo Stimato, Fee, Totale).
+        * **Conferma:** Bottone finale "**Esegui Acquisto/Vendita**" (Stato caricamento con spinner durante API call).
+
+---
+
+#### D. Il Mio Portafoglio (Dashboard Personale)
+
+Non una semplice lista, ma uno strumento di analisi.
+
+* **Hero Section:**
+    * **Net Worth Totale:** La cifra più grande della pagina.
+    * **PNL Giornaliero:** Badge che indica quanto l'utente ha guadagnato/perso oggi rispetto a ieri.
+    * **Chart Asset Allocation:** Grafico a Ciambella minimalista (Liquidità vs Investito).
+* **Lista Asset (Compact View):**
+    * Lista densa. Ogni riga contiene:
+        * **Sx:** Miniatura tonda + Ticker.
+        * **Centro:** Q.tà posseduta + Valore attuale.
+        * **Dx:** PNL della posizione (in % e assoluto).
+* **FAB (Floating Action Button):** Pulsante circolare flottante in basso a destra con icona `+` per "Listare un nuovo Meme" (**Create IPO**) che su Desktop diventa rettangolo molto arrotondato.
+
+---
+
+#### E. Feedback di Sistema e Stati (Micro-Interazioni)
+
+Per elevare la **qualità percepita (Perceived Quality)** del progetto:
+
+* **Skeleton Loading:** Durante il caricamento dati (**fetch API**), non usare semplici spinner, ma mostrare sagome grigie pulsanti (scheletri) della struttura della pagina. 
+
+* **Toast Notifications:** Per gli esiti delle transazioni (es. "Ordine Eseguito: +10 $DOGE", "Errore: Saldo insufficiente"). Devono apparire come popup non invasivi in alto o in basso, sparendo dopo 3 secondi.
+* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio (es. Slippage elevato rilevato).
 
 ### 2. Registrazione e Login (4 punti)
 * **Verifica:** verifica dell'account istituzionale con codice di conferma tramite email.
