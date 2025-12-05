@@ -1,7 +1,21 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
-## Visione del Progetto
-Un'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
+## Visione         * **Body:** Immagine del Meme (**Aspect Ratio** con larghezza fissa ma altezza variabile in base all'altezza del meme), cliccabile per navigare alla **Trade Station**.
+        * **Footer:** Prezzo attuale (**Font Monospace grande**) | Badge % 24h (Verde/Rosso acceso) | Tasto rapido **"Trade"** (Outline) che naviga alla Trade Station.
+
+---
+
+#### D. Trade Station (Pagina Operativa)
+
+Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. **Pagina separata** accessibile cliccando su una Meme Card dalla Marketplace. Layout a blocchi verticali:
+
+* **Blocco 1: Header Finanziario**
+    * Prezzo attuale in grande evidenza.
+    * Sotto-titolo con variazione assoluta (CFU) e percentuale. Il colore del testo cambia dinamicamente (**Verde/Rosso**).
+* **Blocco 2: Visualizzazione Dati (Toggle View)**
+    * **Vista predefinita:** Mostra il **Grafico** (Chart.js/TradingView) interattivo, ma semplificato per mobile (nascondere assi/gridlines superflue su schermi piccoli). Sotto il grafico è presente una lista compatta degli **ultimi ordini** eseguiti sul meme (ultimi 5-10 ordini con timestamp, tipo operazione, quantità, prezzo).
+    * **Vista alternativa:** Al click di un pulsante di switch (o swipe su mobile per "girare" la card), il **Grafico** viene sostituito dall'**Immagine del Meme** a dimensione piena, e la lista degli **ultimi ordini** viene sostituita dalla **Descrizione testuale** del meme.
+    * **Toggle Control:** Pulsante o tab chiaro per passare da una vista all'altra (es. "Grafico/Ordini" ↔ "Meme/Info").n'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
 ---
@@ -33,10 +47,10 @@ L'interfaccia adotta un approccio **Mobile First** rigoroso, ottimizzato per l'u
 La struttura cambia drasticamente in base al device per garantire la migliore ergonomia:
 
 * **Mobile (Smartphone):**
-    * **Bottom Navigation Bar:** Barra fissa in basso contenente 4/5 icone principali (**Market, Trade/Search, Portafoglio, Classifica, Profilo**). È la "zona sicura" per il pollice.
-    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro" o azioni secondarie come le impostazioni).
+    * **Bottom Navigation Bar:** Barra fissa in basso contenente 5 elementi (**Market, Portafoglio, Create [+], Classifica, Profilo**). Il pulsante centrale "**Create (+)**" è sopraelevato rispetto agli altri (elevated button) per dare enfasi all'azione di listing di un nuovo meme. È la "zona sicura" per il pollice.
+    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro", icona notifiche a campanella che apre un aside laterale da destra con lista compatta delle notifiche, o altre azioni secondarie come le impostazioni).
 * **Desktop/Tablet:**
-    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle.
+    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle. Il pulsante "**Create**" mantiene maggiore prominenza visiva rispetto agli altri elementi di navigazione.
 
 ---
 
@@ -48,7 +62,7 @@ Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il patte
     * Titolo di impatto (es. "The Academic Stock Market") e sottotitolo esplicativo.
     * **CTA Primaria:** Bottone "**Inizia a fare Trading**" ben visibile.
 * **Teaser Top Memes (Anteprima Limitata):**
-    * Lista verticale semplificata dei Top Meme per volume/trend.
+    * Lista verticale semplificata dei **Top Meme per volume**.
 * **Visualizzazione "Paywall" (Fade Effect):**
     * **Posizioni 1-3:** Card completamente visibili.
     * **Posizione 4:** **Semi-Hidden**. Applicazione di un gradiente di trasparenza (overlay sfumato verso il colore di sfondo) che copre la metà inferiore della card, suggerendo la presenza di altro contenuto.
@@ -56,11 +70,11 @@ Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il patte
 * **Conversion Block:**
     * Subito sotto l'effetto fade (o sopra di esso in sovrimpressione), appare una **CTA Secondaria** ("**Registrati per sbloccare il mercato**") che porta al login/registrazione.
 
-#### B. Marketplace (Home & Discovery)
+#### C. Marketplace (Home & Discovery)
 
 Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing Out)** e interesse rapido.
 
-* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale.
+* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale. Presente **solo nella Marketplace**.
 * **Filtri Rapidi (Chips):** Pillole scorrevoli orizzontalmente per filtrare il feed: Tutti, Top Gainer, New Listing, High Risk.
 * **Feed Titoli (Meme Card):**
     * Layout a colonna singola (**Instagram style**).
@@ -71,7 +85,7 @@ Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing 
 
 ---
 
-#### C. Trade Station (Pagina Operativa)
+#### D. Trade Station (Pagina Operativa)
 
 Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. Layout a blocchi verticali:
 
@@ -96,7 +110,7 @@ Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicure
 
 ---
 
-#### D. Il Mio Portafoglio (Dashboard Personale)
+#### E. Il Mio Portafoglio (Dashboard Personale)
 
 Non una semplice lista, ma uno strumento di analisi.
 
@@ -109,11 +123,10 @@ Non una semplice lista, ma uno strumento di analisi.
         * **Sx:** Miniatura tonda + Ticker.
         * **Centro:** Q.tà posseduta + Valore attuale.
         * **Dx:** PNL della posizione (in % e assoluto).
-* **FAB (Floating Action Button):** Pulsante circolare flottante in basso a destra con icona `+` per "Listare un nuovo Meme" (**Create IPO**) che su Desktop diventa rettangolo molto arrotondato.
 
 ---
 
-#### E. Feedback di Sistema e Stati (Micro-Interazioni)
+#### F. Feedback di Sistema e Stati (Micro-Interazioni)
 
 Per elevare la **qualità percepita (Perceived Quality)** del progetto:
 
