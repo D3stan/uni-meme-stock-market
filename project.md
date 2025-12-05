@@ -1,21 +1,8 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
-## Visione         * **Body:** Immagine del Meme (**Aspect Ratio** con larghezza fissa ma altezza variabile in base all'altezza del meme), cliccabile per navigare alla **Trade Station**.
-        * **Footer:** Prezzo attuale (**Font Monospace grande**) | Badge % 24h (Verde/Rosso acceso) | Tasto rapido **"Trade"** (Outline) che naviga alla Trade Station.
+## Visione
 
----
-
-#### D. Trade Station (Pagina Operativa)
-
-Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. **Pagina separata** accessibile cliccando su una Meme Card dalla Marketplace. Layout a blocchi verticali:
-
-* **Blocco 1: Header Finanziario**
-    * Prezzo attuale in grande evidenza.
-    * Sotto-titolo con variazione assoluta (CFU) e percentuale. Il colore del testo cambia dinamicamente (**Verde/Rosso**).
-* **Blocco 2: Visualizzazione Dati (Toggle View)**
-    * **Vista predefinita:** Mostra il **Grafico** (Chart.js/TradingView) interattivo, ma semplificato per mobile (nascondere assi/gridlines superflue su schermi piccoli). Sotto il grafico è presente una lista compatta degli **ultimi ordini** eseguiti sul meme (ultimi 5-10 ordini con timestamp, tipo operazione, quantità, prezzo).
-    * **Vista alternativa:** Al click di un pulsante di switch (o swipe su mobile per "girare" la card), il **Grafico** viene sostituito dall'**Immagine del Meme** a dimensione piena, e la lista degli **ultimi ordini** viene sostituita dalla **Descrizione testuale** del meme.
-    * **Toggle Control:** Pulsante o tab chiaro per passare da una vista all'altra (es. "Grafico/Ordini" ↔ "Meme/Info").n'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
+Un'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
 ---
