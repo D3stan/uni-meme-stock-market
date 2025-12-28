@@ -198,10 +198,9 @@ graph TD
 
 *   **Top Bar (Sticky, altezza 56px):**
     *   Sfondo con leggera trasparenza e backdrop blur.
-    *   **Sinistra:** Saldo utente corrente.
-        *   Testo "Saldo:" (font size 12px, grigio).
+    *   **Sinistra:** Titolo App con logo.
+    *   **Centro:** Saldo utente corrente.
         *   Importo "1,250.00 CFU" (font size 18px, font weight bold, font monospace, colore bianco/primario).
-    *   **Centro:** Titolo pagina corrente (es. "Marketplace", "Portafoglio") - visibile solo quando si scrolla.
     *   **Destra:** Icona campanella notifiche (24x24px).
         *   Badge rosso circolare con numero notifiche non lette (se presenti), posizionato top-right dell'icona.
         *   Tap → Apre pannello notifiche da destra.
@@ -209,27 +208,27 @@ graph TD
 *   **Bottom Navigation Bar (Sticky, altezza 64px):**
     *   5 tab items con layout orizzontale equidistanziato.
     *   **Struttura singolo item:**
-        *   Icona (24x24px) centrata.
-        *   Label sotto l'icona (font size 10px).
-        *   Stato attivo: Icona + label colore primario, indicatore sottile (2px) sopra l'icona.
-        *   Stato inattivo: Icona + label colore grigio.
+        * Icona (24x24px) centrata.
+        * Label sotto l'icona (font size 10px).
+        * Stato attivo: Icona + label colore primario, indicatore sottile (2px) sopra l'icona.
+        * Stato inattivo: Icona + label colore grigio.
     *   **Ordine da sinistra a destra:**
         1. **Market** (icona grafico/trending).
-        2. **Portafoglio** (icona wallet).
-        3. **Crea (+)** (bottone centrale sopraelevato - vedi sotto).
         4. **Classifica** (icona trofeo/podio).
+        3. **(+)** (bottone centrale sopraelevato - vedi sotto).
+        2. **Portafoglio** (icona wallet).
         5. **Profilo** (icona user/avatar).
-    *   **Bottone Centrale "Crea (+)":**
-        *   Bottone circolare (56x56px) elevato di 8px sopra la bottom bar.
-        *   Sfondo colore primario con gradiente.
-        *   Icona "+" bianca centrata (32x32px).
-        *   Ombra pronunciata (elevation 8).
-        *   Border bianco sottile (2px) per staccare dallo sfondo.
+    *   **Bottone Centrale "(+)":**
+        * Bottone circolare (56x56px) elevato di 8px sopra la bottom bar.
+        * Sfondo colore primario con gradiente.
+        * Icona "+" bianca centrata (32x32px).
+        * Ombra pronunciata (elevation 8).
+        * Border bianco sottile (2px) per staccare dallo sfondo.
 
 *   **Content Area:**
-    *   Occupa lo spazio tra Top Bar e Bottom Bar.
-    *   Scroll verticale indipendente.
-    *   Background colore scuro (se dark mode).
+    * Occupa lo spazio tra Top Bar e Bottom Bar.
+    * Scroll verticale indipendente.
+    * Background colore scuro (se dark mode).
 
 **Layout Desktop/Tablet:**
 
@@ -324,37 +323,36 @@ graph TD
     *   **Chip singolo:**
         *   Pillola con border-radius 20px, padding 8px 16px.
         *   Sfondo grigio se inattivo, colore primario se attivo.
-        *   Testo: "Tutti", "Top Gainer 🔥", "New Listing 🆕", "High Risk ⚠️".
+        *   Testo: "Tutti", "🔥 Top Gainer", "🆕 New Listing", "⚠️ High Risk".
         *   Tap → Filtra il feed sottostante + animazione smooth.
 
 *   **Meme Feed (Lista verticale, scroll infinito):**
     *   Padding laterale 16px.
     *   **Card Meme (stile Instagram feed):**
         *   Margine bottom 16px.
-        *   Border-radius 12px.
+        *   Border-radius 12px pronunciato.
         *   Sfondo elevato (grigio 850).
-        *   **Header Card (altezza 48px):**
-            *   Avatar creatore (32x32px, circolare) allineato a sinistra.
-            *   Nome utente creatore (font size 14px, font weight medium).
-            *   Ticker "$XXX" (font size 12px, grigio) sulla stessa riga.
-            *   Separator "•" tra nome e ticker.
+        *   **Header Card:**
+            *   Avatar Creatore (32x32px, circolare ritagliato) allineato a sinistra.
+            *   Titolo: nome meme (font size 14px, font weight medium).
+            *   Sottotitolo: ticker "$XXX" (font size 12px, grigio).
             *   Badge status "New" o "Pending" se applicabile (piccolo, top-right).
         *   **Media (Immagine Meme):**
             *   Full width della card.
             *   Aspect ratio originale preservato (o constraint max-height 400px).
             *   Border-radius solo top se no header, altrimenti no radius.
             *   Tap → Naviga a Trade Station.
-        *   **Info Bar (altezza 56px, padding 12px):**
+        *   **Info Bar:**
             *   Layout orizzontale con spazio distribuito.
             *   **Sinistra:**
                 *   Prezzo attuale (font monospace, font size 24px, font weight bold).
                 *   Sotto: "Prezzo" (font size 10px, grigio).
-            *   **Centro:**
+            *   **Destra:**
                 *   Badge variazione 24h (pill colorato):
                     *   Background verde se positivo, rosso se negativo.
                     *   Testo: "+12.5%" o "-3.2%" (font size 14px, font weight semibold).
                     *   Icona freccia ↑ o ↓ prima del numero.
-            *   **Destra:**
+            *   **Centro in basso:**
                 *   Bottone "Trade" (outline style, colore primario, border-radius 8px, padding 8px 20px).
                 *   Tap → Naviga a Trade Station.
 
@@ -455,7 +453,7 @@ graph TD
 **Interazione:**
 *   Apertura: Slide-up dal basso quando si preme COMPRA o VENDI nella Trade Station.
 *   Chiusura: Tap fuori dall'area, swipe down, o tap su icona "X".
-*   Comportamento: Modal che copre circa 70% dello schermo (mobile), con backdrop scuro (alpha 0.6).
+*   Comportamento: Modal che copre circa 60% dello schermo (mobile), con backdrop scuro (alpha 0.6).
 
 **Layout Mobile (Bottom Sheet Acquisto):**
 
@@ -466,36 +464,36 @@ graph TD
     *   Handle bar (maniglia) centrato in alto: linea orizzontale grigia (40px width, 4px height, border-radius 2px).
 
 *   **Header (altezza 64px):**
-    *   Icona "X" top-right per chiusura.
     *   **Titolo:** "Acquista $DOGE" (font size 20px, font weight bold).
-    *   **Saldo Disponibile sotto:** "Saldo: 850.00 CFU" (font size 14px, grigio, font monospace).
+    *   **Sottotitolo:** "Prezzo attuale:".
+    *   **Saldo Disponibile sotto:** "Saldo: 850.00 CFU" con icona portafoglio e sfondo piu scuro (font size 14px, grigio, font monospace).
 
 *   **Input Quantità (focus area centrale):**
     *   Label: "Quantità azioni" (font size 12px, grigio, uppercase).
     *   **Input Field gigante:**
-        *   Altezza 72px, border-radius 12px.
-        *   Border colore primario quando focused.
-        *   Font size 36px, font weight bold, font monospace, centrato.
-        *   Placeholder: "0".
-        *   Tastiera numerica auto-aperta (type="number" con attributo inputmode="decimal").
+        * Altezza 72px, border-radius 12px.
+        * Border colore primario quando focused.
+        * Font size 36px, font weight bold, font monospace, centrato.
+        * Placeholder: "0".
+        * Tastiera numerica auto-aperta (type="number" con attributo inputmode="decimal").
     *   **Valore Stimato sotto input:**
-        *   Testo: "≈ 50.20 CFU" (font size 16px, grigio, font monospace).
-        *   Aggiornamento in tempo reale mentre l'utente digita.
+        * Testo: "≈ 50.20 CFU" (font size 16px, grigio, font monospace).
+        * Aggiornamento in tempo reale mentre l'utente digita.
 
 *   **Shortcuts Percentuali (altezza 48px):**
-    *   4 bottoni affiancati con gap 8px: "25%" | "50%" | "75%" | "MAX".
-    *   Stile outline, border-radius 8px, padding 12px.
-    *   Tap → Auto-compila il campo quantità in base al saldo disponibile.
-    *   "MAX" → Calcola quante azioni si possono comprare con tutto il saldo (considerando il prezzo crescente per la bonding curve).
+    * 4 bottoni affiancati con gap 8px: "25%" | "50%" | "75%" | "MAX".
+    * Stile outline, border-radius 8px, padding 12px.
+    * Tap → Auto-compila il campo quantità in base al saldo disponibile.
+    * "MAX" → Calcola quante azioni si possono comprare con tutto il saldo (considerando il prezzo crescente per la bonding curve).
 
 *   **Riepilogo Costi (Accordion, chiuso di default):**
-    *   Tap su "Dettagli costi ▼" → Espande.
-    *   **Contenuto espanso:**
-        *   Riga: "Prezzo medio stimato" | "2.45 CFU" (font monospace).
-        *   Riga: "Slippage stimato" | "0.15 CFU (0.5%)" (colore giallo se >2%).
-        *   Riga: "Fee segreteria (2%)" | "1.00 CFU".
-        *   Separator line.
-        *   **Riga totale (bold):** "Costo totale" | "51.20 CFU".
+    * Tap su "Dettagli costi ▼" → Espande.
+    * **Contenuto espanso:**
+        * Riga: "Prezzo medio stimato" | "2.45 CFU" (font monospace).
+        * Riga: "Slippage stimato" | "0.15 CFU (0.5%)" (colore giallo se >2%).
+        * Riga: "Fee segreteria (2%)" | "1.00 CFU".
+        * Separator line.
+        * **Riga totale (bold):** "Costo totale" | "51.20 CFU".
 
 *   **CTA Principale (Bottone conferma):**
     *   Larghezza 100%, altezza 56px, border-radius 12px.
@@ -519,7 +517,7 @@ graph TD
 
 ---
 
-### 8. Modal Slippage Protection
+### 8. Pop-up Slippage Protection
 
 **Obiettivo:** Informare l'utente di variazioni di prezzo significative avvenute tra la preview e l'esecuzione, richiedendo conferma esplicita.
 
