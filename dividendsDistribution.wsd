@@ -1,0 +1,49 @@
+@startuml DividendsDistribution
+title AlmaStreet - Distribuzione Dividendi (Holding Incentive)
+skinparam ConditionEndStyle hline
+
+|#fff3e0|Scheduler/Sistema|
+start
+:Trigger Job Schedulato\n(es. Ogni notte alle 02:00);
+
+|#e8f5e9|Backend|
+:Recupera Lista Memes Attivi;
+
+repeat
+    :Seleziona Meme Corrente;
+    :Legge Prezzo Ultime 24h;
+    
+    if (Trend Positivo?) then (Sì)
+        :Calcola Valore Mercato Totale;
+        :Calcola Dividendo Totale\n(es. 1% del Valore Mercato);
+        :Calcola Importo per Azione\n(Dividendo Totale / Supply);
+        
+        :Crea Snapshot Supply Corrente;
+        :Recupera Lista Azionisti;
+        :Start Transaction;
+
+        repeat
+            :Seleziona Utente Azionista;
+            :Calcola Dividendo Personale\n(Importo per Azione x Quantità Posseduta);
+            :Accredita CFU al Saldo Utente;
+            :Registra Transazione;
+        repeat while (Altri Azionisti?) is (Sì) not (No);
+        
+        :Commit Transaction;
+                
+    else (No)
+        :Salta Meme\n(Nessun Dividendo);
+    endif
+    
+|Backend|
+repeat while (Altri Memes?) is (Sì) not (No);
+
+|#e3f2fd|Sistema di Notifiche|
+:Invia Riepilogo agli Azionisti\n("Unico per tutti i memes");
+
+:Log Completamento Distribuzione;
+:Aggiorna Timestamp Ultima Distribuzione;
+
+stop
+
+@enduml

@@ -1,0 +1,58 @@
+@startuml TradingFlow
+title AlmaStreet - Flusso di Trading (Acquisto con Controllo Slippage)
+skinparam ConditionEndStyle hline
+
+|#e1f5fe|Utente|
+start
+:Seleziona Meme;
+:Inserisce Quantità (Qta);
+:Clicca "Anteprima Ordine";
+
+|#fff3e0|Frontend (JS)|
+:Richiede Calcolo Preview al Server;
+
+|#e8f5e9|Backend|
+:Legge Supply Attuale;
+:Calcola Prezzo Stimato\n(Formula Integrale);
+:Aggiunge Fee;
+:Restituisce Totale Stimato;
+
+|Frontend (JS)|
+:Mostra Modal Riepilogo\n(Totale da pagare);
+
+|Utente|
+:Conferma "ACQUISTA";
+
+|Backend|
+:Riceve Ordine;
+:Legge Supply Reale Aggiornata;
+:Ricalcola Costo Reale;
+
+if (Variazione Prezzo > Tolleranza?) then (Sì, Slippage Alto)
+    |Frontend (JS)|
+    :Mostra Alert "Prezzo Aggiornato";
+    note left
+        Torna a "Richiede Calcolo Preview al Server"
+    end note
+    detach
+
+else (No, Prezzo Stabile)
+    if (Saldo Utente < Costo Reale?) then (No)
+        |Frontend (JS)|
+        :Mostra Errore "Fondi Insufficienti";
+        stop
+    else (Sì)
+        |Backend|
+        :Start Non-Concurrent Transaction;
+        :Aggiorna Saldo Utente;
+        :Aggiorna Supply Meme;
+        :Registra Transazione Storica;
+        :Commit Transaction;
+        
+        |Frontend (JS)|
+        :Conferma Acquisto;
+        :Aggiorna UI (Nuovo Saldo, Toast Successo);
+        stop
+    endif
+endif
+@enduml
