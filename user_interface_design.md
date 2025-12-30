@@ -519,7 +519,7 @@ graph TD
 
 ### 8. Pop-up Slippage Protection
 
-**Obiettivo:** Informare l'utente di variazioni di prezzo significative avvenute tra la preview e l'esecuzione, richiedendo conferma esplicita.
+**Obiettivo:** Informare l'utente che il prezzo è cambiato significativamente durante la preparazione dell'ordine e che deve rivedere i dati aggiornati.
 
 **Quando compare:**
 *   Dopo aver premuto "Conferma Acquisto/Vendita" nel Bottom Sheet, se il server rileva che il prezzo è cambiato di oltre una soglia (es. ±2%) rispetto al prezzo visualizzato.
@@ -538,10 +538,10 @@ graph TD
     *   Icona triangolo warning ⚠️ (48px, colore giallo/arancione).
 
 *   **Titolo:**
-    *   "Il prezzo è cambiato" (font size 20px, font weight bold, centrato).
+    *   "Prezzo cambiato!" (font size 20px, font weight bold, centrato).
 
 *   **Messaggio esplicativo:**
-    *   "Il prezzo del meme è variato mentre preparavi l'ordine." (font size 14px, grigio, centrato).
+    *   "Il prezzo del meme è variato mentre preparavi l'ordine. Controlla i nuovi valori e riprova." (font size 14px, grigio, centrato).
 
 *   **Confronto Prezzi (Box evidenziato):**
     *   Background grigio 800, border-radius 8px, padding 16px, margine verticale 16px.
@@ -549,18 +549,14 @@ graph TD
     *   **Riga 2:** "Prezzo attuale: 2.67 CFU" (font monospace, colore verde/rosso in base a direzione).
     *   **Riga 3:** "Variazione: +0.22 CFU (+9.0%)" (font weight bold, colore dinamico).
 
-*   **Nuovo Totale:**
-    *   "Nuovo costo totale: 53.40 CFU" (font size 18px, font weight bold, centrato).
-
-*   **Azioni (2 bottoni verticali):**
-    *   **Bottone Primario:** "Conferma comunque" (verde, altezza 48px, larghezza 100%, border-radius 12px).
-        *   Tap → Esegue la transazione al nuovo prezzo.
-    *   **Bottone Secondario:** "Annulla" (outline grigio, altezza 48px, larghezza 100%, margine top 12px).
-        *   Tap → Chiude modal, torna al Bottom Sheet con quantità ancora inserita.
+*   **Azione (bottone singolo):**
+    *   **Bottone Primario:** "Ho capito" (colore primario, altezza 48px, larghezza 100%, border-radius 12px).
+        *   Tap → Chiude il modal e torna al Bottom Sheet Trading con i dati ricalcolati (prezzi aggiornati, totale ricalcolato).
 
 **Note:**
-*   Se lo slippage è molto elevato (es. >10%), il messaggio diventa più critico: "⚠️ ATTENZIONE: Grande variazione di prezzo rilevata".
-*   Questo modal previene errori costosi e aumenta la fiducia dell'utente.
+*   Se lo slippage è molto elevato (es. >10%), il messaggio diventa più critico: "⚠️ ATTENZIONE: Grande variazione di prezzo rilevata!".
+*   Questo modal è puramente informativo: l'utente deve chiuderlo e poi rivedere i nuovi dati nella Trade Station prima di tentare nuovamente l'operazione.
+*   Dopo la chiusura, il Bottom Sheet rimane aperto con la quantità inserita mantenuta, ma tutti i valori (prezzo, totale, fees) vengono ricalcolati automaticamente in base al nuovo prezzo di mercato.
 ---
 
 ### 9. Toast Notifications (Feedback Transazioni)

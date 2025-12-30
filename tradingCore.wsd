@@ -31,21 +31,13 @@ start
 if (Variazione Prezzo > Tolleranza?) then (Sì, Slippage Alto)
     |Frontend (JS)|
     :Mostra Alert "Prezzo Aggiornato";
-    :Mostra Nuova Quotazione e Costo Reale;
-    
-    |Utente|
-    if (Accetti il nuovo prezzo?) then (No)
-        stop
-    else (Sì)
-        |Frontend (JS)|
-        :Reinvia Ordine con nuovi parametri;
-        note right
-            Torna a "Riceve Ordine"
-        end note
-        detach
-    endif
+    note left
+        Torna a "Richiede Calcolo Preview al Server"
+    end note
+    detach
+
 else (No, Prezzo Stabile)
-    if (Saldo Utente < Costo Reale?) then (No, Fondi insufficienti)
+    if (Saldo Utente < Costo Reale?) then (No)
         |Frontend (JS)|
         :Mostra Errore "Fondi Insufficienti";
         stop

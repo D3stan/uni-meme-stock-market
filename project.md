@@ -120,7 +120,7 @@ Per elevare la **qualità percepita (Perceived Quality)** del progetto:
 * **Skeleton Loading:** Durante il caricamento dati (**fetch API**), non usare semplici spinner, ma mostrare sagome grigie pulsanti (scheletri) della struttura della pagina. 
 
 * **Toast Notifications:** Per gli esiti delle transazioni (es. "Ordine Eseguito: +10 $DOGE", "Errore: Saldo insufficiente"). Devono apparire come popup non invasivi in alto o in basso, sparendo dopo 3 secondi.
-* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio (es. Slippage elevato rilevato).
+* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio.
 
 ### 2. Registrazione e Login (4 punti)
 * **Verifica:** verifica dell'account istituzionale con codice di conferma tramite email.
@@ -215,12 +215,7 @@ $$\text{IncassoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot (S^2 - (S-k)^2)$$
 #### C. Compravendita e Commissioni
 * **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 2%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
 * **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
-* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal di conferma che evidenzia:
-    * Il prezzo inizialmente visualizzato
-    * Il prezzo attuale aggiornato
-    * Il costo totale ricalcolato (con fee incluse)
-    * La variazione percentuale (slippage)
-    * L'utente deve confermare esplicitamente per procedere, oppure può annullare l'operazione
+* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal che segnala il cambiamento del prezzo. Una volta chiuso il modal viene ricalcolata la richiesta dell'utente con i nuovi dati e viene richiesto di confermare nuovamente l'operazione.
 * Questo meccanismo garantisce trasparenza e previene sorprese per l'utente finale, assicurando che sia sempre consapevole del prezzo effettivo prima di completare la transazione.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
