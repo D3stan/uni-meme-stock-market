@@ -1,6 +1,7 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
-## Visione del Progetto
+## Visione
+
 Un'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
@@ -33,10 +34,10 @@ L'interfaccia adotta un approccio **Mobile First** rigoroso, ottimizzato per l'u
 La struttura cambia drasticamente in base al device per garantire la migliore ergonomia:
 
 * **Mobile (Smartphone):**
-    * **Bottom Navigation Bar:** Barra fissa in basso contenente 4/5 icone principali (**Market, Trade/Search, Portafoglio, Classifica, Profilo**). È la "zona sicura" per il pollice.
-    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro" o azioni secondarie come le impostazioni).
+    * **Bottom Navigation Bar:** Barra fissa in basso contenente 5 elementi (**Market, Portafoglio, Create [+], Classifica, Profilo**). Il pulsante centrale "**Create (+)**" è sopraelevato rispetto agli altri (elevated button) per dare enfasi all'azione di listing di un nuovo meme. È la "zona sicura" per il pollice.
+    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro", icona notifiche a campanella che apre un aside laterale da destra con lista compatta delle notifiche, o altre azioni secondarie come le impostazioni).
 * **Desktop/Tablet:**
-    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle.
+    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle. Il pulsante "**Create**" mantiene maggiore prominenza visiva rispetto agli altri elementi di navigazione.
 
 ---
 
@@ -48,7 +49,7 @@ Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il patte
     * Titolo di impatto (es. "The Academic Stock Market") e sottotitolo esplicativo.
     * **CTA Primaria:** Bottone "**Inizia a fare Trading**" ben visibile.
 * **Teaser Top Memes (Anteprima Limitata):**
-    * Lista verticale semplificata dei Top Meme per volume/trend.
+    * Lista verticale semplificata dei **Top Meme per volume**.
 * **Visualizzazione "Paywall" (Fade Effect):**
     * **Posizioni 1-3:** Card completamente visibili.
     * **Posizione 4:** **Semi-Hidden**. Applicazione di un gradiente di trasparenza (overlay sfumato verso il colore di sfondo) che copre la metà inferiore della card, suggerendo la presenza di altro contenuto.
@@ -56,11 +57,11 @@ Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il patte
 * **Conversion Block:**
     * Subito sotto l'effetto fade (o sopra di esso in sovrimpressione), appare una **CTA Secondaria** ("**Registrati per sbloccare il mercato**") che porta al login/registrazione.
 
-#### B. Marketplace (Home & Discovery)
+#### C. Marketplace (Home & Discovery)
 
 Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing Out)** e interesse rapido.
 
-* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale.
+* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale. Presente **solo nella Marketplace**.
 * **Filtri Rapidi (Chips):** Pillole scorrevoli orizzontalmente per filtrare il feed: Tutti, Top Gainer, New Listing, High Risk.
 * **Feed Titoli (Meme Card):**
     * Layout a colonna singola (**Instagram style**).
@@ -71,7 +72,7 @@ Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing 
 
 ---
 
-#### C. Trade Station (Pagina Operativa)
+#### D. Trade Station (Pagina Operativa)
 
 Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. Layout a blocchi verticali:
 
@@ -96,7 +97,7 @@ Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicure
 
 ---
 
-#### D. Il Mio Portafoglio (Dashboard Personale)
+#### E. Il Mio Portafoglio (Dashboard Personale)
 
 Non una semplice lista, ma uno strumento di analisi.
 
@@ -109,18 +110,17 @@ Non una semplice lista, ma uno strumento di analisi.
         * **Sx:** Miniatura tonda + Ticker.
         * **Centro:** Q.tà posseduta + Valore attuale.
         * **Dx:** PNL della posizione (in % e assoluto).
-* **FAB (Floating Action Button):** Pulsante circolare flottante in basso a destra con icona `+` per "Listare un nuovo Meme" (**Create IPO**) che su Desktop diventa rettangolo molto arrotondato.
 
 ---
 
-#### E. Feedback di Sistema e Stati (Micro-Interazioni)
+#### F. Feedback di Sistema e Stati (Micro-Interazioni)
 
 Per elevare la **qualità percepita (Perceived Quality)** del progetto:
 
 * **Skeleton Loading:** Durante il caricamento dati (**fetch API**), non usare semplici spinner, ma mostrare sagome grigie pulsanti (scheletri) della struttura della pagina. 
 
 * **Toast Notifications:** Per gli esiti delle transazioni (es. "Ordine Eseguito: +10 $DOGE", "Errore: Saldo insufficiente"). Devono apparire come popup non invasivi in alto o in basso, sparendo dopo 3 secondi.
-* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio (es. Slippage elevato rilevato).
+* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio.
 
 ### 2. Registrazione e Login (4 punti)
 * **Verifica:** verifica dell'account istituzionale con codice di conferma tramite email.
@@ -215,12 +215,7 @@ $$\text{IncassoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot (S^2 - (S-k)^2)$$
 #### C. Compravendita e Commissioni
 * **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 2%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
 * **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
-* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal di conferma che evidenzia:
-    * Il prezzo inizialmente visualizzato
-    * Il prezzo attuale aggiornato
-    * Il costo totale ricalcolato (con fee incluse)
-    * La variazione percentuale (slippage)
-    * L'utente deve confermare esplicitamente per procedere, oppure può annullare l'operazione
+* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal che segnala il cambiamento del prezzo. Una volta chiuso il modal viene ricalcolata la richiesta dell'utente con i nuovi dati e viene richiesto di confermare nuovamente l'operazione.
 * Questo meccanismo garantisce trasparenza e previene sorprese per l'utente finale, assicurando che sia sempre consapevole del prezzo effettivo prima di completare la transazione.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
