@@ -25,11 +25,24 @@ layouts/
 └── minimal.blade.php      → Pagine speciali (Trade Station, Onboarding flow)
 ```
 
-**Criterio di scelta:**
-- **app.blade.php**: Pagine che necessitano di Bottom Bar + Top Bar (Market, Classifica, Portafoglio, Profilo)
-- **guest.blade.php**: Pagine pubbliche senza navigazione persistente
-- **admin.blade.php**: Area amministrativa con sidebar laterale e menu specifici
-- **minimal.blade.php**: Pagine full-immersive che richiedono focus totale (es. Trade Station durante operazione)
+### Criteri di Selezione Layout
+
+**app.blade.php** → Usa quando:
+- Serve Bottom Bar navigation
+- Serve Top Bar con CFU/Notifiche
+- Pagine principali del flow (Market, Portfolio, Leaderboard, Profile)
+
+**guest.blade.php** → Usa quando:
+- Utente non autenticato
+- No navigation necessaria
+
+**admin.blade.php** → Usa quando:
+- Area amministrativa
+- Serve sidebar con menu multipli
+
+**minimal.blade.php** → Usa quando:
+- Focus task specifico (trading, onboarding)
+- Serve eliminare distrazioni
 
 ---
 
