@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Meme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -81,9 +82,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 
-    Route::get('/profile', function () {
-        return view('pages.app.profile.index');
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::get('/meme/create', function () {
         // TODO: Implement meme creation page
