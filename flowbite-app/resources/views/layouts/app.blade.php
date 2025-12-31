@@ -12,18 +12,6 @@
     
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <style>
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-        /* Safe area for mobile devices with notch */
-        .safe-top { padding-top: env(safe-area-inset-top); }
-        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-    </style>
 </head>
 <body class="bg-gray-950 text-white antialiased">
     <div class="min-h-screen flex flex-col">
@@ -90,19 +78,26 @@
                             </svg>
                             Profilo
                         </a>
+                        <a href="{{ route('meme.create') }}" 
+                           class="flex items-center gap-2 ml-4 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-gray-900 text-sm font-semibold rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Nuovo
+                        </a>
                     </div>
                 </div>
             </nav>
         </header>
 
         {{-- Main Content Area --}}
-        <main class="flex-1 pt-14 pb-20 lg:pt-28 lg:pb-8">
+        <main class="flex-1 pt-14 pb-24 lg:pt-28 lg:pb-8">
             @yield('content')
         </main>
 
-        {{-- Mobile Bottom Navigation Bar --}}
-        <nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden safe-bottom bg-gray-950 border-t border-gray-800/50">
-            <div class="flex items-center justify-around h-16 px-2 relative">
+        {{-- Mobile Bottom Navigation Bar (hidden on lg screens and above) --}}
+        <nav class="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 bg-gray-950 border-t border-gray-800/50" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+            <div class="flex items-center justify-around h-16 px-2 relative w-full">
                 {{-- Market --}}
                 <a href="{{ route('marketplace') }}" class="flex flex-col items-center justify-center flex-1 py-2 group">
                     <svg class="w-6 h-6 {{ request()->routeIs('marketplace') ? 'text-emerald-500' : 'text-gray-500 group-hover:text-gray-300' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

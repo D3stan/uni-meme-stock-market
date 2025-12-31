@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\MarketplaceController;
 use App\Models\Meme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -71,13 +73,10 @@ Route::post('/api/resend-otp', [OtpController::class, 'resend'])->name('resend-o
 
 // Protected routes - App Shell pages
 Route::middleware('auth')->group(function () {
-    Route::get('/marketplace', function () {
-        return view('pages.app.marketplace.index');
-    })->name('marketplace');
+    Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('marketplace');
+    Route::get('/api/marketplace/load-more', [MarketplaceController::class, 'loadMore'])->name('marketplace.load-more');
 
-    Route::get('/leaderboard', function () {
-        return view('pages.app.leaderboard.index');
-    })->name('leaderboard');
+    Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 
     Route::get('/portfolio', function () {
         return view('pages.app.portfolio.index');
@@ -91,4 +90,9 @@ Route::middleware('auth')->group(function () {
         // TODO: Implement meme creation page
         return view('pages.app.marketplace.index');
     })->name('meme.create');
+
+    Route::get('/meme/{meme}', function (Meme $meme) {
+        // TODO: Implement meme detail/trading page
+        return view('pages.app.marketplace.index');
+    })->name('meme.show');
 });
