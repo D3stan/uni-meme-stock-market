@@ -1,12 +1,24 @@
 # Setup Database & Meme Images - AlmaStreet
 
+## Prerequisiti
+
+- PHP >= 8.2
+- Composer
+- Node.js >= 18 e npm
+- SQLite (o MySQL opzionale)
+
 ## 1. Installare le Dipendenze
 
-Prima di eseguire le migrazioni, assicurati di aver installato le dipendenze:
+Prima di tutto, installa le dipendenze PHP e Node.js:
 
 ```bash
 cd flowbite-app
+
+# Dipendenze PHP
 composer install
+
+# Dipendenze Node.js (Tailwind, Vite, Flowbite)
+npm install
 ```
 
 > **Nota:** Se hai problemi con `zip extension`, abilita l'estensione nel tuo `php.ini`:
@@ -16,20 +28,24 @@ composer install
 
 ## 2. Configurare il Database
 
-Crea il file `.env` se non esiste (copia da `.env.example`):
+Crea il file `.env` copiando da `.env.example`:
 
 ```bash
-cp .env.example .env
+copy .env.example .env   # Windows
+# oppure: cp .env.example .env   # Mac/Linux
+
 php artisan key:generate
 ```
 
-Il progetto usa SQLite di default. Se preferisci MySQL, modifica il `.env`:
+### Configurazione MySQL
+
+Se preferisci MySQL, lascia il `.env` così:
 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=almastreet
+DB_DATABASE=flowbite_app
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -86,10 +102,11 @@ flowbite-app/
 
 1. **Crea le cartelle** per ogni utente:
    ```bash
-   mkdir -p storage/memes/2
-   mkdir -p storage/memes/3
-   mkdir -p storage/memes/4
-   mkdir -p storage/memes/5
+   # Windows PowerShell
+   mkdir storage\memes\2, storage\memes\3, storage\memes\4, storage\memes\5
+   
+   # Mac/Linux
+   mkdir -p storage/memes/{2,3,4,5}
    ```
 
 2. **Copia le tue 5 immagini** rinominandole:
@@ -99,15 +116,47 @@ flowbite-app/
    - `meme4.jpg` → `storage/memes/2/meme4.jpg` (HODL)
    - `meme5.jpg` → `storage/memes/5/meme5.jpg` (Ultima domanda)
 
-## 5. Creare il Symbolic Link (Opzionale)
+## 5. Creare i Symbolic Links (OBBLIGATORIO)
 
-Per servire le immagini pubblicamente:
+Per servire le immagini pubblicamente, devi creare i symbolic links:
 
 ```bash
 php artisan storage:link
 ```
 
-## 6. Verifica
+> **Windows:** Potrebbe essere necessario eseguire il terminale come Amministratore.
+
+Questo creerà:
+- `public/storage` → `storage/app/public`
+- `public/storage/memes` → `storage/memes`
+
+## 6. Compilare gli Asset Frontend
+
+Compila CSS (Tailwind) e JavaScript con Vite:
+
+```bash
+npm run build
+```
+
+> **Per sviluppo** puoi usare `npm run dev` che attiva l'hot reload.
+
+## 7. Avviare il Server
+
+```bash
+php artisan serve
+```
+
+Il sito sarà disponibile su: **http://127.0.0.1:8000**
+
+### Credenziali di Test
+
+| Email | Password | Ruolo |
+|-------|----------|-------|
+| admin@unibo.it | password | Admin |
+| marco.rossi@studio.unibo.it | password | Trader |
+| giulia.bianchi@studio.unibo.it | password | Trader |
+
+## 8. Verifica
 
 Per verificare che tutto funzioni, puoi usare Tinker:
 
@@ -127,6 +176,22 @@ App\Models\Meme::approved()->get(['id', 'ticker', 'title', 'current_price']);
 
 // Vedi portafogli
 App\Models\Portfolio::with('meme:id,ticker')->get(['user_id', 'meme_id', 'quantity']);
+```
+
+## Riepilogo Comandi Rapido
+
+```bash
+# Setup completo in un colpo solo
+cd flowbite-app
+composer install
+npm install
+copy .env.example .env
+php artisan key:generate
+# Crea database/database.sqlite se usi SQLite
+php artisan migrate:fresh --seed
+php artisan storage:link
+npm run build
+php artisan serve
 ```
 
 ## Struttura Database Completa
@@ -151,3 +216,20 @@ Le tabelle create sono:
 - `sessions` - Sessioni utente
 - `cache` - Cache applicazione
 - `jobs` - Code lavori
+
+## Troubleshooting
+
+### Errore "Class not found"
+```bash
+composer dump-autoload
+```
+
+### CSS non caricato / pagina bianca
+```bash
+npm run build
+```
+
+### Immagini meme non visibili
+```bash
+php artisan storage:link
+```
