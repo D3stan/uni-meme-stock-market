@@ -14,12 +14,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('nickname')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'trader'])->default('trader');
-            $table->decimal('cfu_balance', 15, 4)->default(0.0000);
+            $table->decimal('cfu_balance', 15, 5)->default(100.00000); // Bonus iniziale 100 CFU
             $table->boolean('is_suspended')->default(false);
+            $table->string('profile_picture')->nullable();
+            $table->string('status')->nullable(); // Stato personalizzato utente
+            $table->timestamp('last_daily_bonus_at')->nullable();
+            $table->decimal('cached_net_worth', 15, 5)->default(100.00000);
             $table->rememberToken();
             $table->timestamps();
         });

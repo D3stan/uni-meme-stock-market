@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\GlobalSetting;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,40 +15,55 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@unibo.it',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'cfu_balance' => 1000.0000,
-            'email_verified_at' => now(),
-        ]);
-
-        // Create test trader user
-        User::factory()->create([
-            'name' => 'Test Trader',
-            'email' => 'trader@studio.unibo.it',
-            'password' => Hash::make('password'),
-            'role' => 'trader',
-            'cfu_balance' => 100.0000,
-            'email_verified_at' => now(),
+        // Seed in ordine corretto per rispettare le foreign keys
+        $this->call([
+            CategorySeeder::class,    // Prima le categorie
+            BadgeSeeder::class,       // Badge disponibili
+            UserSeeder::class,        // Utenti (admin + traders)
+            MemeSeeder::class,        // Meme creati dagli utenti
+            PortfolioSeeder::class,   // Posizioni nei portafogli
+            NotificationSeeder::class, // Notifiche di esempio
         ]);
 
         // Seed global settings
-        GlobalSetting::create([
-            'key' => 'listing_fee',
-            'value' => '20',
-        ]);
+        $this->seedGlobalSettings();
+    }
 
-        GlobalSetting::create([
-            'key' => 'tax_rate',
-            'value' => '0.02',
-        ]);
+    /**
+     * Seed impostazioni globali del sistema
+     */
+    private function seedGlobalSettings(): void
+    {
+        $settings = [
+            // Trading fees
+            'listing_fee' => '20',           // CFU per proporre un meme
+            'tax_rate' => '0.02',            // 2% su ogni transazione
+            
+            // Bonus e incentivi
+            'registration_bonus' => '100',   // CFU iniziali per nuovi utenti
+            'dividend_rate' => '0.01',       // 1% dividendi giornalieri
+            
+            // Limiti di sistema
+            'min_trade_quantity' => '1',     // Minimo 1 azione per trade
+            'max_trade_quantity' => '1000',  // Massimo 1000 azioni per trade
+            
+            // Parametri default meme
+            'default_base_price' => '1.00',  // Prezzo base default per nuovi meme
+            'default_slope' => '0.10',       // Slope default per nuovi meme
+            
+            // Timing
+            'trading_delay_hours' => '24',   // Ore prima che il trading sia abilitato dopo approvazione
+            'price_update_interval' => '10', // Secondi tra aggiornamenti prezzi lato client
+            
+            // Slippage protection
+            'slippage_threshold' => '0.02',  // 2% - soglia per avviso slippage
+        ];
 
-        GlobalSetting::create([
-            'key' => 'registration_bonus',
-            'value' => '100',
-        ]);
+        foreach ($settings as $key => $value) {
+            GlobalSetting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
     }
 }

@@ -1,46 +1,78 @@
 <?php
 
-use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Models\Meme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('/portfolio');
+        return redirect('/marketplace');
     }
 
-    return view('welcome');
+    // Get top memes by circulating supply (most traded)
+    $topMemes = Meme::where('status', 'approved')
+        ->orderByDesc('circulating_supply')
+        ->limit(4)
+        ->get()
+        ->map(function ($meme, $index) {
+            // Calculate 24h change from price history
+            $oldPrice = $meme->priceHistories()
+                ->where('recorded_at', '>=', now()->subDay())
+                ->orderBy('recorded_at')
+                ->first();
+            
+            $change = 0;
+            if ($oldPrice && $oldPrice->price > 0) {
+                $change = (($meme->current_price - $oldPrice->price) / $oldPrice->price) * 100;
+            }
+
+            return [
+                'rank' => $index + 1,
+                'id' => $meme->id,
+                'ticker' => $meme->ticker,
+                'title' => $meme->title,
+                'volume' => number_format($meme->circulating_supply * $meme->current_price, 1) . ' CFU',
+                'change' => round($change, 1),
+                'image_path' => $meme->image_path,
+            ];
+        });
+
+    return view('pages.landing', compact('topMemes'));
 })->name('home');
 
 Route::get('/login', function () {
-    return view('auth.login');
+    return view('pages.auth.login');
 })->name('login.page');
 
 Route::get('/register', function () {
-    return view('auth.register');
+    return view('pages.auth.register');
 })->name('register.page');
+
+Route::get('/verify-otp', function () {
+    return view('pages.auth.verify-otp');
+})->name('verify-otp.page');
+
+Route::get('/onboarding', function () {
+    return view('pages.auth.onboarding');
+})->middleware('auth')->name('onboarding');
 
 // Authentication routes
 Route::post('/api/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/api/login', [LoginController::class, 'login'])->name('login');
 Route::post('/api/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
-// Protected routes
+// OTP verification routes
+Route::post('/api/verify-otp', [OtpController::class, 'verify'])->name('verify-otp');
+Route::post('/api/resend-otp', [OtpController::class, 'resend'])->name('resend-otp');
+
+// Protected routes (placeholder - pages to be implemented)
 Route::middleware('auth')->group(function () {
-    Route::get('/portfolio', function () {
-        return view('portfolio.index');
-    })->name('portfolio');
-
-    Route::get('/profile', function () {
-        return view('profile.show');
-    })->name('profile');
-});
-
-// User profile API routes (protected)
-Route::middleware('auth')->prefix('api')->group(function () {
-    Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
-    Route::patch('/user/profile', [UserProfileController::class, 'update'])->name('profile.update');
+    Route::get('/marketplace', function () {
+        // TODO: Implement marketplace page
+        return redirect('/');
+    })->name('marketplace');
 });

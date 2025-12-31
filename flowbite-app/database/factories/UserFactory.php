@@ -25,9 +25,17 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'nickname' => fake()->optional(0.7)->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'trader',
+            'cfu_balance' => 100.00000, // Bonus iniziale
+            'is_suspended' => false,
+            'profile_picture' => null,
+            'status' => fake()->optional(0.5)->sentence(3),
+            'last_daily_bonus_at' => null,
+            'cached_net_worth' => 100.00000,
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +47,39 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Create an admin user.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+            'cfu_balance' => 10000.00000,
+            'cached_net_worth' => 10000.00000,
+        ]);
+    }
+
+    /**
+     * Create a trader with specific balance.
+     */
+    public function withBalance(float $balance): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'cfu_balance' => $balance,
+            'cached_net_worth' => $balance,
+        ]);
+    }
+
+    /**
+     * Create a suspended user.
+     */
+    public function suspended(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_suspended' => true,
         ]);
     }
 }

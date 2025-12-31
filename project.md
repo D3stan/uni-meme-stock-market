@@ -1,6 +1,7 @@
 # Progetto #6: AlmaStreet (The Academic Stock Market)
 
-## Visione del Progetto
+## Visione
+
 Un'applicazione web gestionale che simula una borsa all'interno dell'ateneo. A differenza di un mercato tradizionale basato su ordini, le transazioni avvengono in modo istantaneo contro un protocollo **Automated Market Maker (AMM)**, che garantisce liquidità costante.
 La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiettivo degli studenti è massimizzare il valore del proprio portafoglio speculando sulla popolarità dei contenuti (Meme) generati dalla community.
 
@@ -20,42 +21,106 @@ La valuta di scambio sono i **CFU (Credito Finanziario Universitario)**. L'obiet
 
 ## Dettagli Funzionali e Implementativi (32 Punti)
 
-### 1. [TODO] Design (4 punti)
+### 1. Design dell'Interfaccia Utente (Mobile First & UX) (4 punti)
 
-L'interfaccia è progettata per l'uso su smartphone a una mano (**Stacked Layout**), evitando colonne affiancate.
+L'interfaccia adotta un approccio **Mobile First** rigoroso, ottimizzato per l'utilizzo a una mano (**"Thumb-driven design"**). Lo stile visivo segue i canoni del **Modern Fintech** (pulizia, numeri grandi, contrasto elevato rosso/verde) unito all'estetica **Social** (immagini full-bleed, interazioni rapide).
 
-#### A. Navbar Sitcky
-* **Navigazione:** icone della pagine fruibili in una sticky navbar.
-* **Responsiveness:**
-    * Mobile: navbar in basso
-    * Desktop: navbar in alto
+È preferibile l'adozione di un **tema scuro (Dark Mode)** come default, per ridurre l'affaticamento visivo e allinearsi agli standard delle app di trading/crypto.
 
-#### B. Marketplace (Homepage)
-* **Ticker:** Striscia scorrevole sotto l'header con i titoli più volatili.
-* **Lista Titoli (Feed Verticale):**
-    * Layout a **Card Verticali** (griglie da 2 per riga).
-    * **Contenuto Card:**
-        * [Immagine Meme - Larghezza 100%]
-        * Riga Info: Titolo (Bold) | Prezzo (Grande) | Badge Variazione 24h (Verde/Rosso).
-        * Footer Card: Bottone "Dettagli/Trade" (Full width).
+---
 
-#### C. Trade Station (Pagina Operativa)
-Pagina dedicata all'acquisto/vendita, strutturata a blocchi verticali.
-* **Blocco 1 (Header):** Nome Meme, Prezzo Attuale gigante, Variazione %.
-* **Blocco 2 (Visualizzazione):**
-    * Immagine Meme.
-    * **Grafico Interattivo (Chart.js):** Altezza fissa, ottimizzato per touch.
-* **Blocco 3 (Pannello Comandi - Sticky Bottom):**
-    * **Tab Switch:** [ COMPRA ] [ VENDI ].
-    * **Input Area:** Campo "Quantità" con pulsanti +/- grandi.
-    * **Riepilogo Live (JS):** *Prezzo x Qta + Fee = Totale*.
-    * **Bottone Azione:** "CONFERMA ORDINE" (Colore distinto per Buy/Sell).
+#### A. Navigazione Globale (Layout Shell)
 
-#### D. Il Mio Portafoglio (Dashboard)
-* **Card Riepilogo (Top):** Grafico a Ciambella (Liquidità vs Investito) e Net Worth.
-* **Lista Asset (List View):**
-    * Righe cliccabili con: Miniatura, Nome, Valore Totale posseduto, P&L (Badge colorato).
-* **FAB (Floating Action Button):** Tasto "+" flottante in basso a destra per caricare un nuovo Meme (pagando la fee).
+La struttura cambia drasticamente in base al device per garantire la migliore ergonomia:
+
+* **Mobile (Smartphone):**
+    * **Bottom Navigation Bar:** Barra fissa in basso contenente 5 elementi (**Market, Portafoglio, Create [+], Classifica, Profilo**). Il pulsante centrale "**Create (+)**" è sopraelevato rispetto agli altri (elevated button) per dare enfasi all'azione di listing di un nuovo meme. È la "zona sicura" per il pollice.
+    * **Top Bar Contestuale:** Cambia in base alla pagina (contiene titolo, pulsante "Indietro", icona notifiche a campanella che apre un aside laterale da destra con lista compatta delle notifiche, o altre azioni secondarie come le impostazioni).
+* **Desktop/Tablet:**
+    * La **Bottom Bar** diventa una **Top Navbar** classica, sfruttando lo spazio orizzontale per mostrare più dettagli nelle tabelle. Il pulsante "**Create**" mantiene maggiore prominenza visiva rispetto agli altri elementi di navigazione.
+
+---
+
+#### B. Landing Page (Utenti Non Autenticati - Guest View)
+
+Pagina vetrina (**"One Page"**) accessibile a tutti, progettata secondo il pattern del "**Teaser**" per convertire i visitatori.
+
+* **Hero Section:**
+    * Titolo di impatto (es. "The Academic Stock Market") e sottotitolo esplicativo.
+    * **CTA Primaria:** Bottone "**Inizia a fare Trading**" ben visibile.
+* **Teaser Top Memes (Anteprima Limitata):**
+    * Lista verticale semplificata dei **Top Meme per volume**.
+* **Visualizzazione "Paywall" (Fade Effect):**
+    * **Posizioni 1-3:** Card completamente visibili.
+    * **Posizione 4:** **Semi-Hidden**. Applicazione di un gradiente di trasparenza (overlay sfumato verso il colore di sfondo) che copre la metà inferiore della card, suggerendo la presenza di altro contenuto.
+    * **Posizione 5+:** Completamente nascosti.
+* **Conversion Block:**
+    * Subito sotto l'effetto fade (o sopra di esso in sovrimpressione), appare una **CTA Secondaria** ("**Registrati per sbloccare il mercato**") che porta al login/registrazione.
+
+#### C. Marketplace (Home & Discovery)
+
+Il punto di ingresso dell'utente, progettato per creare **FOMO (Fear Of Missing Out)** e interesse rapido.
+
+* **Ticker "Marquee":** Striscia scorrevole in alto (sotto l'header) stile borsa, che mostra i top titoli per volatilità/volume in tempo reale. Presente **solo nella Marketplace**.
+* **Filtri Rapidi (Chips):** Pillole scorrevoli orizzontalmente per filtrare il feed: Tutti, Top Gainer, New Listing, High Risk.
+* **Feed Titoli (Meme Card):**
+    * Layout a colonna singola (**Instagram style**).
+    * **Anatomia della Card:**
+        * **Header:** Titolo Meme (es. "Surprised Pikachu") e Ticker (es. $PIKA).
+        * **Body:** Immagine del Meme (**Aspect Ratio** con larghezza fissa ma altezza variabile in base all’altezza del meme), cliccabile per il dettaglio.
+        * **Footer:** Prezzo attuale (**Font Monospace grande**) | Badge % 24h (Verde/Rosso acceso) | Tasto rapido **"Trade"** (Outline).
+
+---
+
+#### D. Trade Station (Pagina Operativa)
+
+Il cuore dell'applicazione. Deve prevenire errori cognitivi e trasmettere sicurezza. Layout a blocchi verticali:
+
+* **Blocco 1: Header Finanziario**
+    * Prezzo attuale in grande evidenza.
+    * Sotto-titolo con variazione assoluta (CFU) e percentuale. Il colore del testo cambia dinamicamente (**Verde/Rosso**).
+* **Blocco 2: Visualizzazione Dati**
+    * **Grafico (Chart.js/TradingView):** Interattivo, ma semplificato per mobile (nascondere assi/gridlines superflue su schermi piccoli).
+    * **Meme:** Visualizzazione meme alternata al grafico alla pressione di un pulsante o tramite gesture (es. swipe per "girare" la card).
+* **Blocco 3: Barra Azioni e Pop-up (Sticky Bottom)**
+    * **Barra Fissa:** In basso alla pagina sono sempre visibili due pulsanti affiancati (50% width ciascuno):
+        * `[ VENDI ]` (Rosso/Secondary)
+        * `[ COMPRA ]` (Verde/Primary)
+    * **Interazione Pop-up (Modal Bottom Sheet):**
+        * Premendo uno dei due pulsanti, si apre un pannello in sovrimpressione (dal basso verso l'alto) specifico per l'azione scelta.
+    * **Contenuto del Pop-up:**
+        * **Header:** Titolo operazione (es. "Acquista $DOGE") e Saldo disponibile.
+        * **Input Area:** Campo "**Quantità**" numerico centrale con focus automatico.
+        * **Shortcuts:** Slider rapido con marker snap "**25%**, **50%**, **75%**, **MAX**" per auto-compilare la quantità.
+        * **Riepilogo:** Dettaglio costi (Prezzo Stimato, Fee, Totale).
+        * **Conferma:** Bottone finale "**Esegui Acquisto/Vendita**" (Stato caricamento con spinner durante API call).
+
+---
+
+#### E. Il Mio Portafoglio (Dashboard Personale)
+
+Non una semplice lista, ma uno strumento di analisi.
+
+* **Hero Section:**
+    * **Net Worth Totale:** La cifra più grande della pagina.
+    * **PNL Giornaliero:** Badge che indica quanto l'utente ha guadagnato/perso oggi rispetto a ieri.
+    * **Chart Asset Allocation:** Grafico a Ciambella minimalista (Liquidità vs Investito).
+* **Lista Asset (Compact View):**
+    * Lista densa. Ogni riga contiene:
+        * **Sx:** Miniatura tonda + Ticker.
+        * **Centro:** Q.tà posseduta + Valore attuale.
+        * **Dx:** PNL della posizione (in % e assoluto).
+
+---
+
+#### F. Feedback di Sistema e Stati (Micro-Interazioni)
+
+Per elevare la **qualità percepita (Perceived Quality)** del progetto:
+
+* **Skeleton Loading:** Durante il caricamento dati (**fetch API**), non usare semplici spinner, ma mostrare sagome grigie pulsanti (scheletri) della struttura della pagina. 
+
+* **Toast Notifications:** Per gli esiti delle transazioni (es. "Ordine Eseguito: +10 $DOGE", "Errore: Saldo insufficiente"). Devono apparire come popup non invasivi in alto o in basso, sparendo dopo 3 secondi.
+* **Modali di Conferma:** Per azioni distruttive (es. "Vendi tutto", "Cancella Account") o ad alto rischio.
 
 ### 2. Registrazione e Login (4 punti)
 * **Verifica:** verifica dell'account istituzionale con codice di conferma tramite email.
@@ -115,10 +180,43 @@ Dove:
 * **Liquidità Infinita:** È sempre possibile vendere le proprie azioni e incassare CFU, non serve aspettare che ci sia un altro studente disposto a comprare.
 * **Volatilità Garantita:** Anche con un numero ristretto di utenti (es. 20), il prezzo reagisce immediatamente alla domanda e all'offerta, premiando gli *early adopters* (chi compra quando il numero di azioni in circolazione è basso) e creando rischio reale per chi entra tardi.
 
+#### Calcolo dello Slippage (Formula Integrale O(1))
+
+**Problema:** La formula $P = P_{base} + (M \cdot S)$ fornisce il prezzo istantaneo, ma per ordini di $k$ azioni, ogni azione viene mintata a un prezzo crescente. Calcolare il costo con un loop è inefficiente e soggetto a errori di arrotondamento.
+
+**Soluzione:** Si usa il calcolo integrale (area sotto la curva di prezzo) per ottenere il costo totale in un'operazione atomica O(1).
+
+**Formula per l'Acquisto di $k$ Azioni:**
+
+Partendo da una supply corrente $S$, il costo totale per acquistare $k$ azioni è:
+
+$$\text{CostoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot ((S+k)^2 - S^2)$$
+
+**Derivazione:**
+$$\text{CostoTotale} = \int_{S}^{S+k} (P_{base} + M \cdot s) \, ds = P_{base} \cdot k + M \cdot \left[\frac{s^2}{2}\right]_{S}^{S+k}$$
+
+**Formula per la Vendita di $k$ Azioni:**
+
+Per vendere $k$ azioni (con $S \geq k$), l'incasso totale è:
+
+$$\text{IncassoTotale} = P_{base} \cdot k + \frac{M}{2} \cdot (S^2 - (S-k)^2)$$
+
+**Implementazione nel Service Layer:**
+* Queste formule vanno implementate come metodi atomici nel Service Layer (es. `TradingService`).
+* Il calcolo deve essere eseguito all'interno di una transazione database per garantire consistenza in caso di concorrenza.
+* Le fee vengono applicate **dopo** il calcolo del costo/incasso: `CostoFinale = CostoTotale * (1 + TaxRate)` per acquisto, `IncassoFinale = IncassoTotale * (1 - TaxRate)` per vendita.
+* La supply viene aggiornata atomicamente: `circulating_supply = circulating_supply + k` per acquisti, `circulating_supply = circulating_supply - k` per vendite.
+
+**Gestione della Concorrenza:**
+* Si usano le transazioni database di Laravel con locking ottimistico o pessimistico (`FOR UPDATE`) per evitare race condition quando due utenti operano sullo stesso meme simultaneamente.
+* Il valore di $S$ deve essere letto e aggiornato all'interno della stessa transazione atomica per garantire la correttezza del calcolo.
+
 
 #### C. Compravendita e Commissioni
 * **Fee di Segreteria:** Su ogni transazione viene trattenuta una percentuale (es. 2%). L'utente realizza un profitto solo se il prezzo di vendita è maggiore del prezzo d'acquisto più le fee. Questo meccanismo scoraggia lo "scalping" (compravendita frenetica per micro-guadagni).
 * **Atomicità:** Il prelievo dei CFU dal saldo utente, l'accredito delle commissioni al sistema e l'assegnazione delle azioni avvengono in un unico blocco indivisibile. Se una qualsiasi di queste operazioni fallisce, l'intera transazione viene annullata, garantendo che non si perdano fondi o azioni.
+* **Anteprima Ordine e Protezione Slippage:** Prima di eseguire definitivamente un ordine di acquisto o vendita, il sistema effettua una richiesta di preview al server che calcola il costo/incasso reale in base alla supply corrente. Se il prezzo è cambiato rispetto a quello visualizzato dall'utente (a causa di transazioni avvenute nel frattempo), viene mostrato un modal che segnala il cambiamento del prezzo. Una volta chiuso il modal viene ricalcolata la richiesta dell'utente con i nuovi dati e viene richiesto di confermare nuovamente l'operazione.
+* Questo meccanismo garantisce trasparenza e previene sorprese per l'utente finale, assicurando che sia sempre consapevole del prezzo effettivo prima di completare la transazione.
 
 #### D. Aggiornamento Dati (Strategia Tecnica)
 Per mantenere i dati aggiornati in tempo reale, l'interfaccia utente adotta una strategia di **aggiornamenti periodici**:
@@ -157,45 +255,48 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 ### 1. Core Utenti
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`users`** | `id`, `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `otp_hash`, `otp_expires_at`, `last_daily_bonus_at`, `created_at`, `updated_at`. |
+| **`users`** | `id` (PK), `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `last_daily_bonus_at`, `created_at`, `updated_at`, `cached_net_worth` (DECIMAL). |
 
 ### 2. Core Mercato
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`categories`** | `id`, `name`, `slug`, `created_at`, `updated_at`. |
-| **`memes`** | `id`, `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
-| **`price_histories`** | `id`, `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`. |
+| **`categories`** | `id` (PK), `name`, `slug`, `created_at`, `updated_at`. |
+| **`memes`** | `id` (PK), `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT UNSIGNED, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
+| **`price_histories`** | `id` (PK), `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`, `volume_24h` (DECIMAL), `pct_change_24h` (DECIMAL), INDEX(meme_id, recorded_at). |
 
 ### 3. Finanza & Transazioni
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`portfolios`** | `id`, `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
-| **`transactions`** | `id`, `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share`, `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
+| **`portfolios`** | `id` (PK), `user_id` (FK), `meme_id` (FK), `quantity`, `avg_buy_price` (DECIMAL), `created_at`, `updated_at`. |
+| **`transactions`** | `id` (PK), `user_id` (FK), `meme_id` (FK, **nullable**), `type` (buy, sell, listing_fee, bonus, dividend), `quantity`, `price_per_share` DECIMAL(16, 4), `fee_amount`, `total_amount`, `cfu_balance_after`, `executed_at`. |
 
 ### 4. Utility
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`global_settings`** | `key`, `value`. (Es. `listing_fee`, `tax_rate`). |
-| **`watchlists`** | `id`, `user_id` (FK), `meme_id` (FK), `created_at`, `updated_at`. |
-| **`notifications`** | `id`, `user_id` (FK) nullable, `title`, `message`, `is_read` nullable, `created_at`, `updated_at`. |
+| **`global_settings`** | `key` (PK), `value`. (Es. `listing_fee`, `tax_rate`). |
+| **`watchlists`** | `id` (PK), `user_id` (FK), `meme_id` (FK), `created_at`, `updated_at`. |
+| **`notifications`** | `id` (PK), `user_id` (FK) nullable, `title`, `message`, `is_read` nullable, `created_at`, `updated_at`. |
 
 ### 5. Tabelle Aggiuntive (Gamification, Audit, Dividendi)
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`badges`** | `id`, `name`, `description`, `icon_path`, `created_at`, `updated_at`. |
-| **`user_badges`** | `id`, `user_id` (FK), `badge_id` (FK), `awarded_at`. |
-| **`dividend_histories`** | `id`, `meme_id` (FK), `amount_per_share`, `total_distributed`, `distributed_at`. |
-| **`market_communications`** | `id`, `admin_id` (FK), `message`, `is_active`, `expires_at`, `created_at`, `updated_at`. |
-| **`admin_actions`** | `id`, `admin_id` (FK), `action_type`, `target_id`, `target_type`, `reason`, `created_at`. |
+| **`badges`** | `id` (PK), `name`, `description`, `icon_path`, `created_at`, `updated_at`. |
+| **`user_badges`** | `id` (PK), `user_id` (FK), `badge_id` (FK), `awarded_at`. |
+| **`dividend_histories`** | `id` (PK), `meme_id` (FK), `amount_per_share`, `total_distributed`, `distributed_at`. |
+| **`market_communications`** | `id` (PK), `admin_id` (FK), `message`, `is_active`, `expires_at`, `created_at`, `updated_at`. |
+| **`admin_actions`** | `id` (PK), `admin_id` (FK), `action_type`, `target_id`, `target_type`, `reason`, `created_at`. |
+| **`otp_verifications`** | `id` (PK), `email` (INDEX), `code_hash`, `expires_at`, `created_at`. |
+
 
 
 ## Note Strutturali e di Performance
 
-*   **Precisione Numerica:** Tutti i campi di tipo DECIMAL che rappresentano valori monetari o parametri di calcolo (es. cfu_balance, current_price, base_price, slope) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio DECIMAL(15, 4).
+*   **Precisione Numerica:** Tutti i campi di tipo DECIMAL che rappresentano valori monetari o parametri di calcolo (es. cfu_balance, current_price, base_price, slope) dovrebbero utilizzare una precisione e scala adeguate per evitare errori di arrotondamento, ad esempio DECIMAL(15, 5).
 *   **Coerenza del Prezzo:** Il campo memes.current_price è una forma di denormalizzazione (cache) per ottimizzare le letture. Il suo valore viene ricalcolato e aggiornato ad ogni transazione (acquisto/vendita) basandosi sulla formula della bonding curve. La fonte di verità rimane sempre la formula P = P_base + (M * S).
 *   **Aggiornamento avg_buy_price:** Il campo portfolios.avg_buy_price è cruciale per il calcolo del Profit & Loss. Viene aggiornato ad ogni acquisto con la seguente formula: new_avg = ((old_qty * old_avg) + (new_qty * new_price)) / (old_qty + new_qty).
 *   **Constraint e Indici:** È fondamentale aggiungere UNIQUE constraints per prevenire dati duplicati, in particolare su portfolios(user_id, meme_id) e watchlists(user_id, meme_id). Inoltre, vanno creati indici (INDEX) su tutte le Foreign Keys e sui campi utilizzati frequentemente nelle query (es. memes.status, transactions.executed_at) per garantire performance ottimali.
-*   **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
+* **Timestamps Standard Laravel:** Per coerenza con le best practice di Laravel e per facilitare il debugging, quasi tutte le tabelle dovrebbero includere i campi `created_at` e `updated_at`, gestiti automaticamente da Eloquent.
+* **Concorrenza:** Le operazioni di trading devono essere protette da transazioni database con row-level locking (es. `SELECT ... FOR UPDATE` in Laravel) per garantire che il valore di `circulating_supply` sia consistente quando più utenti operano simultaneamente sullo stesso meme. Il pattern di implementazione prevede: (1) inizio transazione, (2) lock della riga del meme, (3) lettura della supply corrente, (4) calcolo del costo con formula integrale, (5) aggiornamento atomico della supply e del saldo utente, (6) commit. In caso di deadlock, il sistema effettua retry automatico.
 
 ## Note
 * Registrazione possibile solo con email istituzionale (con OTP)
