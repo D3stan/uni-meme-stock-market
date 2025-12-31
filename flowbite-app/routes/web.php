@@ -69,10 +69,26 @@ Route::post('/api/logout', [LoginController::class, 'logout'])->middleware('auth
 Route::post('/api/verify-otp', [OtpController::class, 'verify'])->name('verify-otp');
 Route::post('/api/resend-otp', [OtpController::class, 'resend'])->name('resend-otp');
 
-// Protected routes (placeholder - pages to be implemented)
+// Protected routes - App Shell pages
 Route::middleware('auth')->group(function () {
     Route::get('/marketplace', function () {
-        // TODO: Implement marketplace page
-        return redirect('/');
+        return view('pages.app.marketplace.index');
     })->name('marketplace');
+
+    Route::get('/leaderboard', function () {
+        return view('pages.app.leaderboard.index');
+    })->name('leaderboard');
+
+    Route::get('/portfolio', function () {
+        return view('pages.app.portfolio.index');
+    })->name('portfolio');
+
+    Route::get('/profile', function () {
+        return view('pages.app.profile.index');
+    })->name('profile');
+
+    Route::get('/meme/create', function () {
+        // TODO: Implement meme creation page
+        return view('pages.app.marketplace.index');
+    })->name('meme.create');
 });
