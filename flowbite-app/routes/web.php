@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\PortfolioController;
 use App\Models\Meme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -78,9 +79,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 
-    Route::get('/portfolio', function () {
-        return view('pages.app.portfolio.index');
-    })->name('portfolio');
+    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 
     Route::get('/profile', function () {
         return view('pages.app.profile.index');

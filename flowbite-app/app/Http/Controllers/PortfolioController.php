@@ -45,3 +45,61 @@ class PortfolioController extends Controller
                     'creator' => $meme->creator,
                     'quantity' => $portfolio->quantity,
                     'current_price' => (float) $meme->current_price,
+                    'current_value' => $portfolio->current_value,
+                    'avg_buy_price' => (float) $portfolio->avg_buy_price,
+                    'profit_loss' => $portfolio->profit_loss,
+                    'profit_loss_percent' => $portfolio->profit_loss_percent,
+                    'change_24h' => round($change24h, 1),
+                    'change_24h_value' => round($change24hValue, 2),
+                ];
+            })
+            ->sortByDesc('current_value')
+            ->values();
+        
+        // Calculate portfolio totals
+        $investedValue = $holdings->sum('current_value');
+        $liquidBalance = (float) $user->cfu_balance;
+        $totalValue = $investedValue + $liquidBalance;
+        
+        // Calculate invested percentage
+        $investedPercent = $totalValue > 0 ? round(($investedValue / $totalValue) * 100) : 0;
+        $liquidPercent = 100 - $investedPercent;
+        
+        // Calculate total profit/loss from initial 100 CFU
+        $initialBalance = 100; // Starting bonus
+        $totalGain = $totalValue - $initialBalance;
+        $totalGainPercent = $initialBalance > 0 ? (($totalValue - $initialBalance) / $initialBalance) * 100 : 0;
+        
+        // Get recent transactions
+        $recentTransactions = $user->transactions()
+            ->with('meme')
+            ->orderByDesc('executed_at')
+            ->limit(10)
+            ->get()
+            ->map(function ($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'type' => $transaction->type,
+                    'meme_ticker' => $transaction->meme?->ticker,
+                    'meme_title' => $transaction->meme?->title,
+                    'meme_image' => $transaction->meme?->image_path,
+                    'quantity' => $transaction->quantity,
+                    'price_per_share' => (float) $transaction->price_per_share,
+                    'total_amount' => (float) $transaction->total_amount,
+                    'executed_at' => $transaction->executed_at,
+                ];
+            });
+        
+        return view('pages.app.portfolio.index', compact(
+            'holdings',
+            'totalValue',
+            'investedValue',
+            'liquidBalance',
+            'investedPercent',
+            'liquidPercent',
+            'totalGain',
+            'totalGainPercent',
+            'recentTransactions'
+        ));
+    }
+}
