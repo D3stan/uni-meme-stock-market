@@ -55,3 +55,59 @@ This plan prioritizes **speed to MVP** for a showcase project. The strategy is v
     * Watchlists
     * Detailed dividend history
     * AI content moderation
+
+---
+
+## Team Division Strategy (2 Full-Stack Developers)
+
+The work should be divided based on **domain ownership** and **parallelizable workflows** to maximize velocity and minimize dependencies.
+
+### **Developer A: "Trading & Auth Domain"**
+
+**Phase 1 (Days 1-3):**
+- **Backend:** Bootstrap Laravel project, all 15 migrations, Eloquent models with relationships
+- **Backend:** Authentication system (registration, OTP, login, 100 CFU bonus)
+- **Frontend:** Auth flow UI (Landing Page, Register, Login, OTP verification, Onboarding bonus modal)
+- **Frontend:** App Shell layout (top bar, bottom navigation, notification panel structure)
+
+**Phase 2 (Days 4-6):**
+- **Backend:** Trading Core implementation - the bonding curve AMM logic, `TradingService`, atomic transactions
+- **Frontend:** Trade Station UI (price display, chart integration, buy/sell modals, slippage protection)
+- **Backend:** Order execution endpoints and validation
+
+**Phase 3 (Days 7-8):**
+- **Backend:** Portfolio calculations (Net Worth, PNL, holdings aggregation)
+- **Frontend:** Portfolio dashboard and transaction history
+- **Polish:** Toast notifications for trading actions
+
+### **Developer B: "Content & Admin Domain"**
+
+**Phase 1 (Days 1-3):**
+- **Frontend:** Design system setup (Tailwind configuration, component library)
+- **Frontend:** Meme card components and marketplace feed UI
+- **Backend:** Meme model, image handling, basic CRUD operations
+- **Frontend:** Marketplace filtering and infinite scroll
+
+**Phase 2 (Days 4-6):**
+- **Backend:** Admin panel functionality (meme approval workflow, IPO maker)
+- **Frontend:** Admin interface (approval queue, surveillance dashboard, communications ticker)
+- **Backend:** File upload handling and validation for meme images
+- **Frontend:** Create Meme form with image upload
+
+**Phase 3 (Days 7-8):**
+- **Backend:** Leaderboard calculations and ranking logic
+- **Frontend:** "Dean's List" leaderboard with podium design
+- **Backend:** Scheduled jobs setup (dividends distribution, price updates)
+- **Polish:** Skeleton loading states, empty states, pull-to-refresh
+
+### **Parallel Work Opportunities**
+
+- **Days 1-2:** While Dev A sets up the Laravel foundation, Dev B can work on static UI components and design system in a separate branch.
+- **Days 3-4:** Dev A focuses on complex trading logic while Dev B builds the content management and admin features.
+- **Days 5-6:** Both can work on their respective frontend implementations using the APIs they've built.
+
+### **Integration Points**
+
+- **Day 3:** Merge branches and establish API contracts
+- **Day 5:** Integration testing of trading flow end-to-end  
+- **Day 7:** Final integration and cross-testing
