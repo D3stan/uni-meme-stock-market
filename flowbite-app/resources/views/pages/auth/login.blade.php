@@ -93,7 +93,7 @@
                         id="email" 
                         name="email" 
                         class="bg-gray-900/80 border border-gray-700 text-white text-sm rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block w-full pl-12 pr-4 py-4 placeholder-gray-500"
-                        placeholder="Email universitaria" 
+                        placeholder="nome.cognome@studio.unibo.it" 
                         required
                         autocomplete="email"
                     >
