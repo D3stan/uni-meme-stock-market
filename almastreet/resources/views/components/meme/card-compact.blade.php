@@ -12,10 +12,10 @@
     $sparklineColor = $isPositive ? '#10b981' : '#ef4444';
 @endphp
 
-<div {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-gray-800 rounded-lg p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-700']) }}>
+<div {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-gray-800 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-gray-700']) }}>
     {{-- Immagine Meme --}}
     <img 
-        src="{{ $image ?? asset('storage/test/meme.webp') }}" 
+        src="{{  asset($image) }}" 
         alt="{{ $name }}"
         class="w-16 h-16 rounded-lg object-cover flex-shrink-0"
     >

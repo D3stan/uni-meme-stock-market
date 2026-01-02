@@ -124,5 +124,62 @@
                 </div>
             </div>
         </section>
+
+        {{-- Test Meme Card Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-white mb-6">Test Meme Card Components</h1>
+            
+            <div class="space-y-8">
+                {{-- Compact Card (per Landing/Profilo) --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">Compact Card(Landing/Profile)</h3>
+                    <div class="space-y-3">
+                        <x-meme.card-compact 
+                            name="Meme Everywhere"
+                            image="storage/test/meme.webp" 
+                            ticker="MEVR"
+                            :price="42.50"
+                            :change="15.8"
+                        />
+                        
+                        <x-meme.card-compact 
+                            name="Un segreto è un segreto"
+                            image="storage/test/meme.jpeg" 
+                            ticker="SCRT"
+                            :price="127.30"
+                            :change="-3.2"
+                        />
+                    </div>
+                </div>
+
+                {{-- Extended Card (Marketplace) --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">Extended Card (Marketplace)</h3>
+                    <div class="space-y-4">
+                        <x-meme.card 
+                            name="Un segreto è un segreto"
+                            image="storage/test/meme.jpeg" 
+                            ticker="SCRT"
+                            :price="42.50"
+                            :change="15.8"
+                            creatorName="Mario Rossi"
+                            status="new"
+                            tradeUrl="#"
+                        />
+                        
+                        <x-meme.card 
+                            name="Meme Everywhere"
+                            image="storage/test/meme.webp" 
+                            ticker="MEVR"
+                            :price="127.30"
+                            :change="-3.2"
+                            creatorName="Luigi Verdi"
+                            status="pending"
+                            tradeUrl="#"
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </x-app-layout>

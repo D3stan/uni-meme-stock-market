@@ -11,7 +11,7 @@
 ])
 
 
-<div {{ $attributes->merge(['class' => 'bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700']) }}>
+<div {{ $attributes->merge(['class' => 'bg-gray-800 rounded-4xl overflow-hidden shadow-lg border border-gray-700']) }}>
     {{-- Header Card --}}
     <div class="flex items-center justify-between p-4">
         <div class="flex items-center gap-3">
@@ -46,7 +46,7 @@
     {{-- Media (Immagine Meme) --}}
     <a href="{{ $tradeUrl }}" class="block">
         <img 
-            src="{{ $image ?? asset('storage/test/meme.webp') }}" 
+            src="{{ asset($image) }}" 
             alt="{{ $name }}"
             class="w-full h-auto hover:opacity-90 transition-opacity"
         >
