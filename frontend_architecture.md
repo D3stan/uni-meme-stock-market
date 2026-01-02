@@ -19,13 +19,23 @@ Il sistema prevede **layout multipli** in base al contesto di autenticazione e f
 
 ```
 layouts/
-├── app.blade.php          → Utenti autenticati (con App Shell completa)
-├── guest.blade.php        → Utenti non autenticati (Landing, Login, Register)
-├── admin.blade.php        → Dashboard amministrativa (diversa UX)
-└── minimal.blade.php      → Pagine speciali (Trade Station, Onboarding flow)
+├── base.blade.php         → Foundation layer (HTML structure, meta tags, core assets)
+├── app.blade.php          → Utenti autenticati (extends base, App Shell completa)
+├── guest.blade.php        → Utenti non autenticati (extends base, minimal)
+├── admin.blade.php        → Dashboard amministrativa (extends base, sidebar)
+└── minimal.blade.php      → Pagine speciali (extends base, no chrome)
 ```
 
+**Pattern:** Tutti i layout specifici estendono `base.blade.php` usando `@extends` per garantire consistenza di meta tags, assets core e struttura HTML, mantenendo la flessibilità di aggiungere risorse specifiche via `@push/@stack`.
+
 ### Criteri di Selezione Layout
+
+**base.blade.php** → Foundation (non usato direttamente nelle view):
+- HTML doctype, meta tags essenziali (charset, viewport, CSRF)
+- Title con @yield, favicon
+- Core CSS/JS (Tailwind, app.js bootstrap)
+- @stack directives per estensibilità (styles, scripts, page-scripts)
+- Tutti gli altri layout lo estendono
 
 **app.blade.php** → Usa quando:
 - Serve Bottom Bar navigation
@@ -54,10 +64,11 @@ resources/
 ├── views/
 │   │
 │   ├── layouts/                    # Layout base
-│   │   ├── app.blade.php           # Shell autenticato (Bottom Bar + Top Bar)
-│   │   ├── guest.blade.php         # Shell pubblico (header semplice + footer)
-│   │   ├── admin.blade.php         # Shell admin (sidebar + top navbar)
-│   │   └── minimal.blade.php       # Shell minimale (solo top bar minimale)
+│   │   ├── base.blade.php          # Foundation (HTML + meta + core assets)
+│   │   ├── app.blade.php           # Shell autenticato (extends base, Bottom Bar + Top Bar)
+│   │   ├── guest.blade.php         # Shell pubblico (extends base, header + footer)
+│   │   ├── admin.blade.php         # Shell admin (extends base, sidebar + navbar)
+│   │   └── minimal.blade.php       # Shell minimale (extends base, no chrome)
 │   │
 │   ├── components/                 # Componenti riutilizzabili
 │   │   │
@@ -305,10 +316,11 @@ Definire utility classes custom in `app.css`:
 
 ### Fase 1: Setup Struttura Base
 1. Creare struttura directory completa
-2. Implementare layout base (app, guest, admin, minimal)
-3. Creare componenti navigation (top bar, bottom bar)
-4. Setup Vite/Laravel Mix per JavaScript modules
-5. Implementare core utilities (api, events, state)
+2. Implementare `base.blade.php` (foundation layer)
+3. Implementare layout specifici che estendono base (app, guest, admin, minimal)
+4. Creare componenti navigation (top bar, bottom bar)
+5. Setup Vite/Laravel Mix per JavaScript modules
+6. Implementare core utilities (api, events, state)
 
 ### Fase 2: Componenti UI Atomici
 1. Badge, button, input, toast (componenti più piccoli)
@@ -352,6 +364,8 @@ Prima di scrivere nuovo codice, verificare:
 - [ ] Questa validazione è già implementata in validation.js?
 - [ ] Questo formato è già implementato in format.js?
 - [ ] Posso usare eventi invece di dipendenze dirette?
+- [ ] Questo meta tag/asset va in base.blade.php o nel layout specifico?
+- [ ] Sto usando @push invece di duplicare imports?
 
 **Golden Rule:** Se copi-incolli codice due volte, alla terza volta refactorizza in component/service/utility.
 
