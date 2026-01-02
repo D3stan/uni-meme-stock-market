@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="it" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Componenti</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-[#0f2216] p-8">
-    <main class="max-w-2xl mx-auto space-y-12">
+<x-app-layout>
+    <main class="max-w-2xl mx-auto space-y-12 my-6">
         
         {{-- Test Input Component --}}
         <section>
@@ -97,5 +89,4 @@
             </div>
         </section>
     </main>
-</body>
-</html>
+</x-app-layout>
