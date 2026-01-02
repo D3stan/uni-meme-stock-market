@@ -12,6 +12,7 @@
                     <x-forms.input 
                         name="email" 
                         type="email" 
+                        icon="school" 
                         placeholder="nome.cognome@studio.unibo.it" 
                     />
                 </div>
@@ -21,6 +22,7 @@
                     <label class="block mb-2 text-sm font-medium text-white">Password</label>
                     <x-forms.input 
                         name="username" 
+                        icon="lock" 
                         type="password" 
                         placeholder="Password"
                     />
