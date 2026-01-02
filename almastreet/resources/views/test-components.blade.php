@@ -1,5 +1,5 @@
 <x-app-layout>
-    <main class="max-w-2xl mx-auto space-y-12 my-6">
+    <main class="max-w-2xl mx-4 md:mx-auto space-y-12 my-6">
         
         {{-- Test Input Component --}}
         <section>
