@@ -16,6 +16,13 @@
     /* Colors */
     --color-success-light: #10b981;
     --color-danger-light: #ef4444;
+    --color-background: #0f2216;
+}
+
+@layer base {
+    body {
+        @apply bg-background text-white min-h-screen;
+    }
 }
 
 /* Custom modification */
