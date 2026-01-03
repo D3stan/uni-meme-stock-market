@@ -2,12 +2,13 @@
     <div class="min-h-screen pb-20 lg:pb-8 lg:pt-18">
         
         {{-- Ticker Tape - Full Width --}}
-        <x-navigation.ticker :memes="$tickerMemes" />
-        
-        <div class="max-w-7xl mx-auto mt-2">
-            
-            {{-- Filtri Chips --}}
-            <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-input-background/50 border-b border-gray-800/50 rounded-xl">
+        <div class="sticky top-[44px] lg:top-18 z-30">
+            <x-navigation.ticker :memes="$tickerMemes" />
+        </div>
+
+        {{-- Filtri Chips --}}
+        <div class="sticky top-[84px] lg:top-[112px] z-20">
+            <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-input-background border-b border-gray-800 rounded-b-xl">
                 <div class="flex gap-2 min-w-max">
                     <a href="{{ route('market', ['filter' => 'all']) }}" class="whitespace-nowrap">
                         <x-ui.chip 
@@ -49,6 +50,9 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-2 px-2">
 
             {{-- Meme Feed --}}
             <div class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
