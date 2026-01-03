@@ -1,6 +1,10 @@
 <x-app :active="'market'" :balance="$balance">
-    <div class="min-h-screen pb-20 lg:pb-8 lg:pt-20">
-        <div class="max-w-7xl mx-auto">
+    <div class="min-h-screen pb-20 lg:pb-8 lg:pt-18">
+        
+        {{-- Ticker Tape - Full Width --}}
+        <x-navigation.ticker :memes="$tickerMemes" />
+        
+        <div class="max-w-7xl mx-auto mt-2">
             
             {{-- Filtri Chips --}}
             <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-input-background/50 border-b border-gray-800/50 rounded-xl">
@@ -47,7 +51,7 @@
             </div>
 
             {{-- Meme Feed --}}
-            <div class="px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
                 @forelse($memes as $meme)
                     <x-meme.card 
                         :name="$meme['name']"
