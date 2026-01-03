@@ -45,3 +45,6 @@ Route::get('/test-navbar', function () {
 Route::get('/trade/{id}', function ($id) {
     return view('pages.trade-station', ['memeId' => $id]);
 })->name('trade');
+
+// Debug (to be removed)
+Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');

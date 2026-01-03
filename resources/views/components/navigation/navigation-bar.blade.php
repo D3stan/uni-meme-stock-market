@@ -1,7 +1,7 @@
 @props(['active' => null, 'balance' => null ])
 
 {{-- Mobile Top Bar --}}
-<div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-[#11271a] px-4 py-2 flex items-center justify-between rounded-b-2xl shadow-lg">
+<div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-[#11271a] px-4 py-2 flex items-center justify-between shadow-lg">
     <img src="{{ asset('favicon.ico') }}" alt="Favicon" class="w-7 h-7">
     <span class="font-mono font-bold text-white">
         {{ $balance ?? '1,250.00' }} <span class="text-green-400">CFU</span>

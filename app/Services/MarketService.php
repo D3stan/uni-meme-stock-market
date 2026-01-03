@@ -430,6 +430,48 @@ class MarketService
     }
 
     /**
+     * Get top gainers for ticker tape.
+     * 
+     * @param int $limit
+     * @return \Illuminate\Support\Collection
+     */
+    public function getTickerMemes(int $limit = 10)
+    {
+        return Meme::where('status', 'approved')
+            ->whereNotNull('approved_at')
+            ->leftJoin('price_histories as ph_24h', function ($join) {
+                $join->on('memes.id', '=', 'ph_24h.meme_id')
+                    ->where('ph_24h.recorded_at', '>=', now()->subHours(24))
+                    ->where('ph_24h.recorded_at', '=', function ($subQuery) {
+                        $subQuery->select(DB::raw('MIN(recorded_at)'))
+                            ->from('price_histories as ph_inner')
+                            ->whereColumn('ph_inner.meme_id', 'memes.id')
+                            ->where('ph_inner.recorded_at', '>=', now()->subHours(24));
+                    });
+            })
+            ->select(
+                'memes.ticker',
+                'memes.current_price',
+                DB::raw('COALESCE(ph_24h.price, memes.base_price) as price_24h_ago'),
+                DB::raw('CASE 
+                    WHEN COALESCE(ph_24h.price, memes.base_price) > 0 
+                    THEN ((memes.current_price - COALESCE(ph_24h.price, memes.base_price)) / COALESCE(ph_24h.price, memes.base_price) * 100)
+                    ELSE 0 
+                END as pct_change_24h')
+            )
+            ->orderByRaw('ABS(pct_change_24h) DESC')
+            ->limit($limit)
+            ->get()
+            ->map(function ($meme) {
+                return [
+                    'ticker' => $meme->ticker,
+                    'price' => round($meme->current_price, 2),
+                    'change' => round($meme->pct_change_24h ?? 0, 2),
+                ];
+            });
+    }
+
+    /**
      * Get market surveillance data for admins.
      * 
      * @return array
