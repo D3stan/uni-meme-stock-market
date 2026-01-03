@@ -18,7 +18,6 @@
     {{-- Message --}}
     <p class="text-sm text-gray-400 text-center max-w-sm">{{ $message }}</p>
     
-    {{-- Slot for additional content (e.g., CTA button) --}}
     @if($slot->isNotEmpty())
         <div class="mt-6">
             {{ $slot }}

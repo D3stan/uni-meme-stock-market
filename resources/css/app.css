@@ -24,6 +24,14 @@
     body {
         @apply bg-background text-white min-h-screen;
     }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 /* Custom modification */
