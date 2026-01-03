@@ -63,14 +63,12 @@ resources/
 │
 ├── views/
 │   │
-│   ├── layouts/                    # Layout base
+│   ├── components/                 # Componenti riutilizzabili
 │   │   ├── base.blade.php          # Foundation (HTML + meta + core assets)
 │   │   ├── app.blade.php           # Shell autenticato (extends base, Bottom Bar + Top Bar)
 │   │   ├── guest.blade.php         # Shell pubblico (extends base, header + footer)
 │   │   ├── admin.blade.php         # Shell admin (extends base, sidebar + navbar)
-│   │   └── minimal.blade.php       # Shell minimale (extends base, no chrome)
-│   │
-│   ├── components/                 # Componenti riutilizzabili
+│   │   ├── minimal.blade.php       # Shell minimale (extends base, no chrome)
 │   │   │
 │   │   ├── navigation/             # Elementi di navigazione
 │   │   │   ├── bottom-bar.blade.php       # Bottom navigation mobile (5 items)
