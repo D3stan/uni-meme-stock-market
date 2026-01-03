@@ -11,7 +11,12 @@ use App\Models\Admin\GlobalSetting;
 use App\Models\Admin\AdminAction;
 use App\Models\Admin\MarketCommunication;
 use App\Exceptions\Financial\InsufficientFundsException;
+use App\Notifications\MemeProposedNotification;
+use App\Notifications\MemeApprovedNotification;
+use App\Notifications\MemeSuspendedNotification;
+use App\Notifications\MemeDelistedNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -76,7 +81,9 @@ class MarketService
                 'executed_at' => now(),
             ]);
 
-            // TODO: Send notification to admins about new pending meme
+            // Notify all admins about new pending meme
+            $admins = User::where('role', 'admin')->get();
+            Notification::send($admins, new MemeProposedNotification($meme));
 
             return $meme;
         });
@@ -126,7 +133,8 @@ class MarketService
                 'created_at' => now(),
             ]);
 
-            // TODO: Notify creator that meme was approved
+            // Notify creator that meme was approved
+            $meme->creator->notify(new MemeApprovedNotification($meme));
 
             return true;
         });
@@ -156,7 +164,11 @@ class MarketService
                 'created_at' => now(),
             ]);
 
-            // TODO: Notify all holders of the meme
+            // Notify all holders of the meme
+            $holders = User::whereHas('portfolios', function ($query) use ($meme) {
+                $query->where('meme_id', $meme->id);
+            })->get();
+            Notification::send($holders, new MemeSuspendedNotification($meme, $reason));
 
             return true;
         });
@@ -214,7 +226,11 @@ class MarketService
                 'created_at' => now(),
             ]);
 
-            // TODO: Notify holders that meme was delisted
+            // Notify holders that meme was delisted
+            $holders = User::whereHas('portfolios', function ($query) use ($meme) {
+                $query->where('meme_id', $meme->id);
+            })->get();
+            Notification::send($holders, new MemeDelistedNotification($meme, $reason));
 
             return true;
         });

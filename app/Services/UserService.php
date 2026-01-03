@@ -7,6 +7,7 @@ use App\Models\Financial\Transaction;
 use App\Models\Financial\Portfolio;
 use App\Models\Gamification\Badge;
 use App\Models\Gamification\UserBadge;
+use App\Notifications\BadgeAwardedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -228,6 +229,9 @@ class UserService
                     'awarded_at' => now(),
                 ]);
                 $newBadges->push($badge);
+                
+                // Notify user about new badge
+                $user->notify(new BadgeAwardedNotification($badge));
             }
         }
 
