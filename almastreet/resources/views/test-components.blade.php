@@ -183,5 +183,53 @@
                 </div>
             </div>
         </section>
+
+        {{-- Test Chip Component --}}
+        <section>
+            <h1 class="text-2xl font-bold text-white mb-6">Test Chip Component</h1>
+            
+            <div class="space-y-6">
+                {{-- Base Variants --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">Variants</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <x-ui.chip variant="white">Tutti</x-ui.chip>
+                        <x-ui.chip variant="outline">Outline</x-ui.chip>
+                        <x-ui.chip variant="success">Success</x-ui.chip>
+                    </div>
+                </div>
+
+                {{-- With/Without emoji --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">With/Without Emoji</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <x-ui.chip variant="outline" icon="🚀">Top Gainer</x-ui.chip>
+                        <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
+                    </div>
+                </div>
+
+                {{-- Active state --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">Active state</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <x-ui.chip active>Tutti</x-ui.chip>
+                        <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
+                    </div>
+                </div>
+
+                {{-- Marketplace Filters --}}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-400 mb-3">Marketplace Filters</h3>
+                    <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                        <div class="flex gap-2 overflow-x-auto">
+                            <x-ui.chip variant="white">Tutti</x-ui.chip>
+                            <x-ui.chip variant="outline" icon="🔥">Top Gainer</x-ui.chip>
+                            <x-ui.chip variant="outline" icon="🆕">New Listing</x-ui.chip>
+                            <x-ui.chip variant="outline" icon="⚠️">High Risk</x-ui.chip>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </x-base>
