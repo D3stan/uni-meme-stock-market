@@ -18,7 +18,7 @@ L'architettura frontend adotta un approccio **Blade Components + JavaScript Modu
 Il sistema prevede **layout multipli** in base al contesto di autenticazione e funzionalità:
 
 ```
-layouts/
+components/
 ├── base.blade.php         → Foundation layer (HTML structure, meta tags, core assets)
 ├── app.blade.php          → Utenti autenticati (extends base, App Shell completa)
 ├── guest.blade.php        → Utenti non autenticati (extends base, minimal)
@@ -26,7 +26,7 @@ layouts/
 └── minimal.blade.php      → Pagine speciali (extends base, no chrome)
 ```
 
-**Pattern:** Tutti i layout specifici estendono `base.blade.php` usando `@extends` per garantire consistenza di meta tags, assets core e struttura HTML, mantenendo la flessibilità di aggiungere risorse specifiche via `@push/@stack`.
+**Pattern:** Tutti i layout specifici estendono `base.blade.php` mediante `@{{ slot }}` come da linee guida Laravel 8+.
 
 ### Criteri di Selezione Layout
 
