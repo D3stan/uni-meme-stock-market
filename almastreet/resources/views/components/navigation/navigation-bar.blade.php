@@ -1,10 +1,10 @@
-@props(['active' => null ])
+@props(['active' => null, 'balance' => null ])
 
 {{-- Mobile Top Bar --}}
 <div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-[#11271a] px-4 py-2 flex items-center justify-between rounded-b-2xl shadow-lg">
     <img src="{{ asset('favicon.ico') }}" alt="Favicon" class="w-7 h-7">
     <span class="font-mono font-bold text-white">
-        1,250.00 <span class="text-green-400">CFU</span>
+        {{ $balance ?? '1,250.00' }} <span class="text-green-400">CFU</span>
     </span>
     <div class="relative">
         <span class="material-icons text-white text-2xl">notifications</span>
@@ -91,8 +91,8 @@
 
         {{-- User Balance & Notifications --}}
         <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg">
-                <span class="font-mono font-bold text-white">1,250.00 CFU</span>
+            <div class="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg border-2 border-green-800">
+                <span class="font-mono font-bold text-white">{{ $balance ?? '1,250.00' }} CFU</span>
             </div>
             
             <button class="relative p-2 text-gray-300 hover:text-white transition-colors">
