@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-base>
     <main class="max-w-2xl mx-4 md:mx-auto space-y-12 my-6">
         
         {{-- Test Input Component --}}
@@ -184,4 +184,4 @@
             </div>
         </section>
     </main>
-</x-app-layout>
+</x-base>
