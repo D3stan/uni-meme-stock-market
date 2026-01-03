@@ -30,3 +30,10 @@
 @layer components {
     
 }
+
+/* Media query for top status bar */
+@media (max-width: 1023px) {
+  body {
+    padding-top: 2rem;
+  }
+}
