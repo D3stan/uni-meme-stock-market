@@ -42,7 +42,7 @@ Route::get('/trade/{id}', function ($id) {
 
 // Test routes (can be removed in production)
 Route::get('/admin-panel', function () {
-    return view('admin-panel');
+    return view('pages.admin.admin-panel');
 });
 
 // Test routes (can be removed in production)
