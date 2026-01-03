@@ -9,21 +9,18 @@
     $isNegative = $value < 0;
     $isNeutral = $value == 0;
     
-    // Formatta il valore con segno
     $formattedValue = $isPositive ? '+' . number_format($value, 2) : number_format($value, 2);
     
-    // Classi dimensioni (Flowbite badge sizes)
     $sizeClasses = match($size) {
         'sm' => 'text-xs px-2 py-0.5',
         'lg' => 'text-base px-3 py-1',
         default => 'text-sm px-2.5 py-0.5',
     };
     
-    // Classi colori (Flowbite badge colors)
     $colorClasses = match(true) {
-        $isPositive => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-        $isNegative => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-        default => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+        $isPositive => 'bg-green-900 text-green-300',
+        $isNegative => 'bg-red-900 text-red-300',
+        default => 'bg-gray-700 text-gray-300',
     };
 @endphp
 

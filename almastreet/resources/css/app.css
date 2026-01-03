@@ -17,6 +17,7 @@
     --color-success-light: #10b981;
     --color-danger-light: #ef4444;
     --color-background: #0f2216;
+    --color-input-background: #1a2e23;
 }
 
 @layer base {
@@ -27,21 +28,5 @@
 
 /* Custom modification */
 @layer components {
-    /* Price variation (red/green) */
-    .price-badge-positive {
-        @apply inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-green-500/20 text-green-400;
-    }
     
-    .price-badge-negative {
-        @apply inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-red-500/20 text-red-400;
-    }
-    
-    /* Overroide button to use green */
-    .btn-trade-buy {
-        @apply text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
-    }
-    
-    .btn-trade-sell {
-        @apply text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900;
-    }
 }

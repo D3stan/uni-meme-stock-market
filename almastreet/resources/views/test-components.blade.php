@@ -220,7 +220,7 @@
                 {{-- Marketplace Filters --}}
                 <div>
                     <h3 class="text-sm font-medium text-gray-400 mb-3">Marketplace Filters</h3>
-                    <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <div class="bg-input-background rounded-lg p-4 border border-gray-700">
                         <div class="flex gap-2 overflow-x-auto">
                             <x-ui.chip variant="white">Tutti</x-ui.chip>
                             <x-ui.chip variant="outline" icon="🔥">Top Gainer</x-ui.chip>
