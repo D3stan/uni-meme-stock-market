@@ -10,8 +10,10 @@
 /.nova
 /.phpunit.cache
 /.vscode
+/.github
 /.zed
 /auth.json
+/boost.json
 /node_modules
 /public/build
 /public/hot
