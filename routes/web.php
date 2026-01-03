@@ -32,6 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', fn() => redirect('/test-navbar'))->name('profile');
 });
 
+// Trade route (placeholder)
+Route::get('/trade/{id}', function ($id) {
+    return view('pages.trade-station', ['memeId' => $id]);
+})->name('trade');
+
+// Test routes (can be removed in production)
+Route::get('/admin-panel', function () {
+    return view('admin-panel');
+});
+
 // Test routes (can be removed in production)
 Route::get('/test-components', function () {
     return view('test-components');
@@ -40,11 +50,6 @@ Route::get('/test-components', function () {
 Route::get('/test-navbar', function () {
     return view('test-navbar');
 });
-
-// Trade route (placeholder)
-Route::get('/trade/{id}', function ($id) {
-    return view('pages.trade-station', ['memeId' => $id]);
-})->name('trade');
 
 // Debug (to be removed)
 Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
