@@ -255,13 +255,13 @@ Per aumentare la profondità strategica, il parametro **Slope ($M$)** della Bond
 ### 1. Core Utenti
 | Tabella | Campi Chiave |
 | :--- | :--- |
-| **`users`** | `id` (PK), `name`, `email`, `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `email_verified_at`, `last_daily_bonus_at`, `created_at`, `updated_at`, `cached_net_worth` (DECIMAL). |
+| **`users`** | `id` (PK), `name`, `email`, `email_verified_at`, `avatar` (default: 'default.png'), `password`, `role` (admin/trader), `cfu_balance` (DECIMAL), `is_suspended` (boolean), `last_daily_bonus_at`, `created_at`, `updated_at`, `cached_net_worth` (DECIMAL). |
 
 ### 2. Core Mercato
 | Tabella | Campi Chiave |
 | :--- | :--- |
 | **`categories`** | `id` (PK), `name`, `slug`, `created_at`, `updated_at`. |
-| **`memes`** | `id` (PK), `creator_id` (FK), `category_id` (FK), `title`, `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT UNSIGNED, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
+| **`memes`** | `id` (PK), `creator_id` (FK), `category_id` (FK), `title`, `ticker` (UNIQUE), `image_path`, `base_price` (DECIMAL), `slope` (DECIMAL), `current_price` (DECIMAL, cache), `circulating_supply` (BIGINT UNSIGNED, dinamico), `status` (pending/approved/suspended), `approved_at`, `approved_by` (FK), `created_at`, `updated_at`, `deleted_at`. |
 | **`price_histories`** | `id` (PK), `meme_id` (FK), `price`, `circulating_supply_snapshot`, `trigger_type` (buy/sell/ipo), `recorded_at`, `volume_24h` (DECIMAL), `pct_change_24h` (DECIMAL), INDEX(meme_id, recorded_at). |
 
 ### 3. Finanza & Transazioni
