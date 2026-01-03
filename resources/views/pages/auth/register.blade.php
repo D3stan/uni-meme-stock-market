@@ -1,0 +1,107 @@
+<x-guest title="Registrati - AlmaStreet">
+    <div class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <img src="{{ asset('icon.png') }}" alt="AlmaStreet" class="h-12 w-12 mx-auto mb-3">
+                <h1 class="text-2xl font-bold text-white mb-2">Crea il tuo account</h1>
+                <p class="text-sm text-gray-400">Usa la tua email istituzionale</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-gray-800 shadow-xl">
+                <form method="POST" action="{{ route('auth.register.post') }}" class="space-y-4">
+                    @csrf
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                            Email Istituzionale
+                        </label>
+                        <x-forms.input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="nome.cognome@studio.unibo.it"
+                            icon="email"
+                            required
+                            :value="old('email')"
+                        />
+                        <x-forms.validation-error field="email" />
+                    </div>
+
+                    <!-- Username Field -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-300 mb-2">
+                            Username
+                        </label>
+                        <x-forms.input
+                            type="text"
+                            name="username"
+                            id="username"
+                            placeholder="Scegli un username"
+                            icon="person"
+                            required
+                            :value="old('username')"
+                        />
+                        <x-forms.validation-error field="username" />
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                            Password
+                        </label>
+                        <x-forms.input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Minimo 8 caratteri"
+                            icon="lock"
+                            required
+                        />
+                        <x-forms.validation-error field="password" />
+                    </div>
+
+                    <!-- Password Confirmation Field -->
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-300 mb-2">
+                            Conferma Password
+                        </label>
+                        <x-forms.input
+                            type="password"
+                            name="password_confirmation"
+                            id="password_confirmation"
+                            placeholder="Ripeti la password"
+                            icon="lock"
+                            required
+                        />
+                        <x-forms.validation-error field="password_confirmation" />
+                    </div>
+
+                    <!-- General Errors -->
+                    <x-forms.validation-error />
+
+                    <!-- Submit Button -->
+                    <x-forms.button 
+                        type="submit" 
+                        variant="success"
+                        class="w-full py-3 text-base font-bold rounded-xl mt-6"
+                    >
+                        Crea Account
+                    </x-forms.button>
+                </form>
+            </div>
+
+            <!-- Footer Link -->
+            <div class="text-center mt-6">
+                <p class="text-sm text-gray-400">
+                    Hai già un account? 
+                    <a href="{{ route('auth.login') }}" class="text-green-500 hover:text-green-400 font-medium transition-colors">
+                        Accedi
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</x-guest>

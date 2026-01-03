@@ -26,7 +26,7 @@ class AuthController extends Controller
      */
     public function showRegister(): View
     {
-        return view('auth.register');
+        return view('pages.auth.register');
     }
 
     /**
@@ -64,7 +64,7 @@ class AuthController extends Controller
                 ->with('error', 'No pending registration found. Please register first.');
         }
 
-        return view('auth.verify-otp', [
+        return view('pages.auth.verify-otp', [
             'email' => $pendingRegistration['email']
         ]);
     }
@@ -132,7 +132,7 @@ class AuthController extends Controller
      */
     public function showLogin(): View
     {
-        return view('auth.login');
+        return view('pages.auth.login');
     }
 
     /**
