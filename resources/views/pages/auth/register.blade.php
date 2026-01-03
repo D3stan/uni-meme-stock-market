@@ -30,21 +30,21 @@
                         <x-forms.validation-error field="email" />
                     </div>
 
-                    <!-- Username Field -->
+                    <!-- Name Field -->
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-300 mb-2">
-                            Username
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">
+                            Nome Completo
                         </label>
                         <x-forms.input
                             type="text"
-                            name="username"
-                            id="username"
-                            placeholder="Scegli un username"
+                            name="name"
+                            id="name"
+                            placeholder="Mario Rossi"
                             icon="person"
                             required
-                            :value="old('username')"
+                            :value="old('name')"
                         />
-                        <x-forms.validation-error field="username" />
+                        <x-forms.validation-error field="name" />
                     </div>
 
                     <!-- Password Field -->

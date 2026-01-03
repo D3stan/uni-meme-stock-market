@@ -29,6 +29,9 @@
                 <form method="POST" action="{{ route('auth.verify-otp.post') }}" id="otp-form">
                     @csrf
 
+                    <!-- Hidden email field -->
+                    <input type="hidden" name="email" value="{{ session('pending_registration.email', $email ?? '') }}">
+
                     <!-- OTP Input Container -->
                     <div class="flex justify-center gap-2 mb-6" id="otp-inputs">
                         @for($i = 0; $i < 6; $i++)
@@ -45,10 +48,11 @@
                     </div>
 
                     <!-- Hidden input to store complete OTP -->
-                    <input type="hidden" name="otp" id="otp-value">
+                    <input type="hidden" name="code" id="otp-value">
 
                     <!-- Error Display -->
-                    <x-forms.validation-error field="otp" />
+                    <x-forms.validation-error field="code" />
+                    <x-forms.validation-error field="email" />
                     <x-forms.validation-error />
 
                     <!-- Loading State -->
