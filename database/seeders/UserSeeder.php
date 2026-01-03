@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'cfu_balance' => 10000.00,
             'is_suspended' => false,
-            'avatar' => 'default.png',
         ]);
 
         // Regular traders
@@ -43,7 +42,6 @@ class UserSeeder extends Seeder
                 'role' => 'trader',
                 'cfu_balance' => $trader['cfu_balance'],
                 'is_suspended' => false,
-                'avatar' => 'default.png',
             ]);
         }
     }

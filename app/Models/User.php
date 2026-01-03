@@ -114,6 +114,16 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function avatarUrl(): string
+    {
+        if ($this->avatar) {
+            return asset('storage/data/' . $this->id . '/' . $this->avatar);
+        }
+
+        // Generate default avatar using ui-avatars.com API
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=10b981&color=fff';
+    }
+
     public function isTrader(): bool
     {
         return $this->role === 'trader';

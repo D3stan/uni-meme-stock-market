@@ -76,6 +76,7 @@
                         :price="$meme['price']"
                         :change="$meme['change']"
                         :creatorName="$meme['creatorName']"
+                        :creatorAvatar="$meme['creatorAvatar']"
                         :status="$meme['status']"
                         :tradeUrl="route('trade', ['id' => $meme['id']])"
                     />

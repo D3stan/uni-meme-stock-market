@@ -16,9 +16,8 @@
     <div class="flex items-center justify-between p-4">
         <div class="flex items-center gap-3">
             {{-- Avatar Creatore --}}
-            <!-- TODO -> Change profile avatar -->
             <img 
-                src="{{ $creatorAvatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($creatorName) . '&background=10b981&color=fff' }}" 
+                src="{{ $creatorAvatar }}" 
                 alt="{{ $creatorName }}"
                 class="w-8 h-8 rounded-full object-cover"
             >

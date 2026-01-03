@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('avatar')->default('default.png');
+            $table->string('avatar')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'trader'])->default('trader');
             $table->decimal('cfu_balance', 15, 5)->default(0);

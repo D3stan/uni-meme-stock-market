@@ -334,7 +334,7 @@ class MarketService
      */
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
     {
-        $query = Meme::with(['creator:id,name,email', 'category:id,name'])
+        $query = Meme::with(['creator:id,name,email,avatar', 'category:id,name'])
             ->where('status', 'approved')
             ->whereNotNull('approved_at');
 
@@ -416,6 +416,7 @@ class MarketService
                 'change' => round($meme->pct_change_24h ?? 0, 2),
                 'creatorId' => $meme->creator_id,
                 'creatorName' => $meme->creator->name ?? 'Unknown',
+                'creatorAvatar' => $meme->creator->avatarUrl(),
                 'status' => $statusBadge,
                 'marketCap' => round($meme->current_price * $meme->circulating_supply, 2),
                 'volume24h' => round($volume24h, 2),
