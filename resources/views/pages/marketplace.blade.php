@@ -1,5 +1,17 @@
 <x-app :active="'market'" :balance="$balance">
     <div class="min-h-screen pb-20 lg:pb-8 lg:pt-18">
+
+        <x-ui.modal id="onboarding-bonus" :show="session('show_onboarding_modal', false)">
+            <div class="p-8 text-center">
+                <div class="mb-4">🎉</div>
+                <h2 class="text-3xl font-bold mb-2">Benvenuto su AlmaStreet!</h2>
+                <p class="text-5xl font-black text-green-500 mb-2">+100 CFU</p>
+                <p class="text-gray-400 mb-6">Usa questi CFU per iniziare a fare trading!</p>
+                <button onclick="hideModal('onboarding-bonus')" class="...">
+                    Vai al Mercato
+                </button>
+            </div>
+        </x-ui.modal>
         
         {{-- Ticker Tape - Full Width --}}
         <div class="sticky top-[44px] lg:top-18 z-30">
