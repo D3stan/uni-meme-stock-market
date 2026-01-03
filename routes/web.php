@@ -6,7 +6,10 @@ use App\Http\Controllers\AuthController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('market');
+    }
+    return view('pages.landing');
 })->name('welcome');
 
 // Authentication routes (Guest only)
