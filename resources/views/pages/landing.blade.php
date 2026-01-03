@@ -51,34 +51,25 @@
             <div class="space-y-4 relative">
                 <!-- Meme Preview Cards (3 visible) -->
                 @for($i = 1; $i <= 3; $i++)
-                <div class="bg-gray-900 border border-gray-800 rounded-lg p-4 flex items-center gap-4">
-                    <div class="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center">
-                        <span class="text-2xl">🎓</span>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-white">MEME #{{ $i }}</span>
-                            <span class="text-xs px-2 py-0.5 bg-green-900/30 text-green-400 rounded-full font-medium">
-                                +{{ 12 + $i * 5 }}.{{ rand(0, 9) }}%
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-400">{{ rand(50, 200) }} traders attivi</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-lg font-bold text-white font-mono">{{ number_format(rand(100, 500) / 10, 2) }} CFU</p>
-                        <p class="text-xs text-gray-500">Prezzo corrente</p>
-                    </div>
-                </div>
+                <x-meme.card-compact 
+                    name="Un segreto è un segreto"
+                    image="storage/test/meme.jpeg" 
+                    ticker="SCRT"
+                    :price="127.30"
+                    :change="-3.2"
+                />
                 @endfor
                 
                 <!-- Blurred 4th card + Conversion Block -->
                 <div class="relative">
-                    <div class="bg-gray-900 border border-gray-800 rounded-lg p-4 flex items-center gap-4 blur-sm opacity-50">
-                        <div class="w-16 h-16 bg-gray-800 rounded-lg"></div>
-                        <div class="flex-1">
-                            <div class="h-4 bg-gray-800 rounded w-24 mb-2"></div>
-                            <div class="h-3 bg-gray-800 rounded w-32"></div>
-                        </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-lg flex items-center gap-4 blur-sm opacity-50">
+                        <x-meme.card-compact 
+                            name="Un segreto è un segreto"
+                            image="storage/test/meme.jpeg" 
+                            ticker="SCRT"
+                            :price="127.30"
+                            :change="-3.2"
+                        />
                     </div>
                     
                     <!-- Conversion Overlay -->
