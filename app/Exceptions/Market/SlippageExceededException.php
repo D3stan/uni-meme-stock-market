@@ -9,7 +9,7 @@ class SlippageExceededException extends Exception
     public function __construct(
         float $expectedPrice,
         float $actualPrice,
-        string $message = null
+        ?string $message = null
     ) {
         $defaultMessage = sprintf(
             'Price has changed: expected %.4f CFU, actual %.4f CFU. Please review and confirm.',

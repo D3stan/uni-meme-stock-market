@@ -6,7 +6,7 @@ use Exception;
 
 class MarketSuspendedException extends Exception
 {
-    public function __construct(string $ticker = null, string $message = null)
+    public function __construct(?string $ticker = null, ?string $message = null)
     {
         $defaultMessage = $ticker
             ? "Trading is currently suspended for $ticker."

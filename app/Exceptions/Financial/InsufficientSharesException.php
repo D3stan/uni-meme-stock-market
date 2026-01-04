@@ -6,7 +6,7 @@ use Exception;
 
 class InsufficientSharesException extends Exception
 {
-    public function __construct(int $requested, int $available, string $ticker = null, string $message = null)
+    public function __construct(int $requested, int $available, ?string $ticker = null, ?string $message = null)
     {
         $tickerInfo = $ticker ? " for $ticker" : '';
         $defaultMessage = sprintf(
