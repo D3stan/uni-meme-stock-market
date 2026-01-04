@@ -7,7 +7,7 @@
 <div {{ $attributes->merge(['class' => 'flex flex-col items-center justify-center py-12 px-4']) }}>
     {{-- Icon --}}
     <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-4">
-        <span class="material-icons text-gray-400 text-4xl">{{ $icon }}</span>
+        <span class="material-icons text-gray-400 text-4xl" aria-hidden="true">{{ $icon }}</span>
     </div>
     
     {{-- Title (optional) --}}

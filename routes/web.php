@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
@@ -29,21 +30,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
-    Route::get('/portfolio', fn() => redirect('/test-navbar'))->name('portfolio');
+    Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
     Route::get('/create', fn() => redirect('/test-navbar'))->name('create');
-    Route::get('/leaderboard', fn() => redirect('/test-navbar'))->name('leaderboard');
-    Route::get('/profile', fn() => redirect('/test-navbar'))->name('profile');
+    Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
+    Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
+});
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
+    Route::get('/events', function () { return view('pages.admin.events'); })->name('events');
+    Route::get('/ledger', [AdminController::class, 'ledger'])->name('ledger');
+    Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
+    Route::get('/notifications', function () { return view('pages.admin.notifications'); })->name('notifications');
 });
 
 // Trade route (placeholder)
 Route::get('/trade/{id}', function ($id) {
     return view('pages.trade-station', ['memeId' => $id]);
 })->name('trade');
-
-// Test routes (can be removed in production)
-Route::get('/admin-panel', function () {
-    return view('pages.admin.admin-panel');
-});
 
 // Test routes (can be removed in production)
 Route::get('/test-components', function () {

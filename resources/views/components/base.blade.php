@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>{{ $title ?? 'AlmaStreet' }}</title>
+    <title>{{ isset($title) ? "AlmaStreet - $title" : 'AlmaStreet' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
