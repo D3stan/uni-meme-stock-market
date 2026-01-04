@@ -14,7 +14,7 @@ class AdminService
      * @param int $perPage Number of transactions per page
      * @return LengthAwarePaginator
      */
-    public function getTransactions(string $type = 'all', int $perPage = 50): LengthAwarePaginator
+    public function getTransactions(string $type = 'all', int $perPage = 20): LengthAwarePaginator
     {
         $query = Transaction::with(['user', 'meme']);
 

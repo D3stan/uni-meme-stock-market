@@ -30,7 +30,7 @@ class AdminController extends Controller
     {
         $type = $request->get('type', 'all');
         
-        $transactions = $this->adminService->getTransactions($type, 50);
+        $transactions = $this->adminService->getTransactions($type);
         $stats = $this->adminService->getTransactionStats();
 
         return view('pages.admin.ledger', [
