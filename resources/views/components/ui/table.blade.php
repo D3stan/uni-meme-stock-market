@@ -4,6 +4,7 @@
     'caption',
     'paginate' => false,
     'emptyMessage' => 'Nessun dato disponibile',
+    'actions' => null, // Slot per azioni nella caption
 ])
 
 <div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
@@ -12,8 +13,13 @@
      role="region" 
      aria-labelledby="table-caption">
         <table class="w-full">
-            <caption class="py-4">
-                <p>{{ $caption }}<p>
+            <caption class="py-4 px-6">
+                <div class="flex items-center justify-between">
+                    <p class="text-left">{{ $caption }}</p>
+                    @if($actions)
+                        <div>{{ $actions }}</div>
+                    @endif
+                </div>
             </caption>
             <thead class="bg-gray-800">
                 <tr>
