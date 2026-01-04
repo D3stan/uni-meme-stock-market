@@ -56,4 +56,21 @@ class AdminController extends Controller
             'currentFilter' => $filter,
         ]);
     }
+
+    /**
+     * Show market communications list.
+     */
+    public function events(Request $request): View
+    {
+        $filter = $request->get('filter', 'all');
+        
+        $communications = $this->adminService->getMarketCommunications($filter);
+        $stats = $this->adminService->getMarketCommunicationStats();
+
+        return view('pages.admin.events', [
+            'communications' => $communications,
+            'stats' => $stats,
+            'currentFilter' => $filter,
+        ]);
+    }
 }
