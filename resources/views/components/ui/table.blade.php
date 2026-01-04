@@ -4,6 +4,7 @@
     'caption',
     'paginate' => false,
     'emptyMessage' => 'Nessun dato disponibile',
+    'actions' => null, // Slot per azioni nella caption
 ])
 
 <div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
@@ -12,8 +13,13 @@
      role="region" 
      aria-labelledby="table-caption">
         <table class="w-full">
-            <caption class="py-4">
-                <p>{{ $caption }}<p>
+            <caption class="py-4 px-6">
+                <div class="flex items-center justify-between">
+                    <p class="text-left">{{ $caption }}</p>
+                    @if($actions)
+                        <div>{{ $actions }}</div>
+                    @endif
+                </div>
             </caption>
             <thead class="bg-gray-800">
                 <tr>
@@ -39,17 +45,19 @@
                             @php
                                 $key = $column['key'] ?? '';
                                 $align = $column['align'] ?? 'left';
+                                $wrap = $column['wrap'] ?? false;
                                 $alignClass = match($align) {
                                     'right' => 'text-right',
                                     'center' => 'text-center',
                                     default => 'text-left',
                                 };
+                                $wrapClass = $wrap ? 'whitespace-normal break-words' : 'whitespace-nowrap';
                                 $hasRenderCallback = isset($column['render']) && is_callable($column['render']);
                                 $isFirstColumn = $index === 0;
                             @endphp
                             
                             @if($isFirstColumn)
-                                <th scope="row" class="px-6 py-4 whitespace-nowrap text-sm text-gray-300 {{ $alignClass }}">
+                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-gray-300 {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
@@ -59,7 +67,7 @@
                                     @endif
                                 </th>
                             @else
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300 {{ $alignClass }}">
+                                <td class="px-6 py-4 {{ $wrapClass }} text-sm text-gray-300 {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)

@@ -6,7 +6,7 @@
 ])
 
 @php
-    $baseClasses = 'font-medium rounded-lg focus:ring-4 focus:outline-none transition-colors';
+    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-lg focus:ring-4 focus:outline-none transition-colors';
     
     $variantClasses = match($variant) {
         'primary' => 'text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800',
