@@ -36,7 +36,8 @@
             [
                 'label' => 'Messaggio',
                 'key' => 'message',
-                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)->limit(60)) . '</span>'
+                'wrap' => true,
+                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)) . '</span>'
             ],
             [
                 'label' => 'Scadenza',
@@ -57,6 +58,14 @@
                         return '<span class="px-2 py-1 bg-red-600/20 text-red-500 rounded-full text-xs font-semibold">SCADUTO</span>';
                     }
                 }
+            ],
+            [
+                'label' => 'Azioni',
+                'key' => 'actions',
+                'align' => 'center',
+                'render' => fn($row) => '<button class="p-2 hover:bg-gray-800 rounded-lg transition-colors" title="Modifica evento">
+                    <span class="material-icons text-gray-400 hover:text-white text-xl">edit</span>
+                </button>'
             ],
         ];
     @endphp
