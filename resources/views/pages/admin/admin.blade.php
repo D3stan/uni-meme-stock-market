@@ -5,8 +5,8 @@
             {{-- Header --}}
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-3xl font-bold text-white">Rettorato Admin</h1>
-                <a href="{{ route('market') }}" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                    <span class="material-icons text-white text-3xl">home</span>
+                <a href="{{ route('market') }}" aria-label="Torna al Marketplace" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+                    <span class="material-icons text-white text-3xl" aria-hidden="true">home</span>
                 </a>
             </div>
 

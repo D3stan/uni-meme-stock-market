@@ -11,7 +11,7 @@
 
 <div class="relative w-full">
     @if($icon)
-        <span class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">{{ $icon }}</span>
+        <span aria-hidden="true" class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">{{ $icon }}</span>
     @endif
     <input 
         type="{{ $type }}"
