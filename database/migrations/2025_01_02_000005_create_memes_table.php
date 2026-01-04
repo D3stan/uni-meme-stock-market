@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('ticker')->unique();
             $table->string('image_path');
+            $table->text('text_alt')->nullable();
             $table->decimal('base_price', 15, 5);
             $table->decimal('slope', 15, 5);
             $table->decimal('current_price', 15, 5)->default(0);

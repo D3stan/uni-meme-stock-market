@@ -25,6 +25,7 @@ class Meme extends Model
         'title',
         'ticker',
         'image_path',
+        'text_alt',
         'base_price',
         'slope',
         'current_price',

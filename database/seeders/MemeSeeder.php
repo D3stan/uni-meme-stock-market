@@ -145,7 +145,61 @@ class MemeSeeder extends Seeder
                 'status' => 'approved',
                 'approved_at' => now()->subDays(6),
             ],
+            // Pending memes
+            [
+                'title' => 'Galaxy Brain',
+                'ticker' => 'BRAIN',
+                'base_price' => 2.80,
+                'slope' => 0.004,
+                'current_price' => 2.80,
+                'circulating_supply' => 0,
+                'status' => 'pending',
+                'approved_at' => null,
+            ],
+            [
+                'title' => 'Change My Mind',
+                'ticker' => 'MIND',
+                'base_price' => 3.20,
+                'slope' => 0.003,
+                'current_price' => 3.20,
+                'circulating_supply' => 0,
+                'status' => 'pending',
+                'approved_at' => null,
+            ],
+            [
+                'title' => 'Expanding Brain',
+                'ticker' => 'XBRAIN',
+                'base_price' => 1.90,
+                'slope' => 0.002,
+                'current_price' => 1.90,
+                'circulating_supply' => 0,
+                'status' => 'pending',
+                'approved_at' => null,
+            ],
+            // Suspended memes
+            [
+                'title' => 'Inappropriate Content',
+                'ticker' => 'INAP',
+                'base_price' => 5.00,
+                'slope' => 0.005,
+                'current_price' => 5.00,
+                'circulating_supply' => 0,
+                'status' => 'suspended',
+                'approved_at' => null,
+            ],
+            [
+                'title' => 'Offensive Meme',
+                'ticker' => 'OFF',
+                'base_price' => 4.50,
+                'slope' => 0.004,
+                'current_price' => 4.50,
+                'circulating_supply' => 0,
+                'status' => 'suspended',
+                'approved_at' => null,
+            ],
         ];
+
+        $textAlt = 'Frodo Baggins dal Signore degli Anelli sorride in modo complice e ironico. Sottotitolo: Va bene, tieniti pure i tuoi segreti.';
 
         foreach ($memes as $index => $memeData) {
             Meme::create([
@@ -154,13 +208,14 @@ class MemeSeeder extends Seeder
                 'title' => $memeData['title'],
                 'ticker' => $memeData['ticker'],
                 'image_path' => 'meme.jpeg',
+                'text_alt' => $textAlt,
                 'base_price' => $memeData['base_price'],
                 'slope' => $memeData['slope'],
                 'current_price' => $memeData['current_price'],
                 'circulating_supply' => $memeData['circulating_supply'],
                 'status' => $memeData['status'],
                 'approved_at' => $memeData['approved_at'],
-                'approved_by' => $admin->id,
+                'approved_by' => $memeData['status'] === 'approved' ? $admin->id : null,
             ]);
         }
     }
