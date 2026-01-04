@@ -21,26 +21,98 @@
             </div>
 
             {{-- Filters --}}
-            <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
-                <a href="{{ route('admin.ledger', ['type' => 'all']) }}">
-                    <x-ui.chip :active="$currentType === 'all'">Tutte</x-ui.chip>
-                </a>
-                <a href="{{ route('admin.ledger', ['type' => 'buy']) }}">
-                    <x-ui.chip :active="$currentType === 'buy'">Acquisti</x-ui.chip>
-                </a>
-                <a href="{{ route('admin.ledger', ['type' => 'sell']) }}">
-                    <x-ui.chip :active="$currentType === 'sell'">Vendite</x-ui.chip>
-                </a>
-                <a href="{{ route('admin.ledger', ['type' => 'bonus']) }}">
-                    <x-ui.chip :active="$currentType === 'bonus'">Bonus</x-ui.chip>
-                </a>
-                <a href="{{ route('admin.ledger', ['type' => 'dividend']) }}">
-                    <x-ui.chip :active="$currentType === 'dividend'">Dividendi</x-ui.chip>
-                </a>
-                <a href="{{ route('admin.ledger', ['type' => 'listing_fee']) }}">
-                    <x-ui.chip :active="$currentType === 'listing_fee'">Listing Fee</x-ui.chip>
-                </a>
-            </div>
+            <nav class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'all'])" :active="$currentType === 'all'">Tutte</x-ui.chip>
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'buy'])" :active="$currentType === 'buy'">Acquisti</x-ui.chip>
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'sell'])" :active="$currentType === 'sell'">Vendite</x-ui.chip>
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'bonus'])" :active="$currentType === 'bonus'">Bonus</x-ui.chip>
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'dividend'])" :active="$currentType === 'dividend'">Dividendi</x-ui.chip>
+                <x-ui.chip :href="route('admin.ledger', ['type' => 'listing_fee'])" :active="$currentType === 'listing_fee'">Listing Fee</x-ui.chip>
+            </nav>
+
+            {{-- Transactions Table --}}
+            @php
+                $columns = [
+                    [
+                        'label' => 'ID',
+                        'key' => 'id',
+                        'render' => fn($row) => '<span class="text-gray-400">#' . $row->id . '</span>'
+                    ],
+                    [
+                        'label' => 'Data',
+                        'key' => 'executed_at',
+                        'render' => fn($row) => $row->executed_at->format('d/m/Y H:i')
+                    ],
+                    [
+                        'label' => 'Utente',
+                        'key' => 'user.name',
+                        'render' => fn($row) => '<span class="text-white font-medium">' . $row->user->name . '</span>'
+                    ],
+                    [
+                        'label' => 'Tipo',
+                        'key' => 'type',
+                        'render' => function($row) {
+                            $badges = [
+                                'buy' => '<span class="px-2 py-1 bg-green-600/20 text-green-500 rounded-full text-xs font-semibold">ACQUISTO</span>',
+                                'sell' => '<span class="px-2 py-1 bg-red-600/20 text-red-500 rounded-full text-xs font-semibold">VENDITA</span>',
+                                'bonus' => '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">BONUS</span>',
+                                'dividend' => '<span class="px-2 py-1 bg-purple-600/20 text-purple-500 rounded-full text-xs font-semibold">DIVIDENDO</span>',
+                                'listing_fee' => '<span class="px-2 py-1 bg-yellow-600/20 text-yellow-500 rounded-full text-xs font-semibold">LISTING FEE</span>',
+                            ];
+                            return $badges[$row->type] ?? '';
+                        }
+                    ],
+                    [
+                        'label' => 'Meme',
+                        'key' => 'meme',
+                        'render' => fn($row) => $row->meme 
+                            ? '<span class="font-semibold">$' . $row->meme->ticker . '</span>' 
+                            : '<span class="text-gray-500">-</span>'
+                    ],
+                    [
+                        'label' => 'Quantità',
+                        'key' => 'quantity',
+                        'align' => 'right',
+                        'render' => fn($row) => $row->quantity 
+                            ? number_format($row->quantity) 
+                            : '<span class="text-gray-500">-</span>'
+                    ],
+                    [
+                        'label' => 'Prezzo',
+                        'key' => 'price_per_share',
+                        'align' => 'right',
+                        'render' => fn($row) => $row->price_per_share 
+                            ? '€' . number_format($row->price_per_share, 2) 
+                            : '<span class="text-gray-500">-</span>'
+                    ],
+                    [
+                        'label' => 'Fee',
+                        'key' => 'fee_amount',
+                        'align' => 'right',
+                        'render' => fn($row) => '<span class="text-gray-400">€' . number_format($row->fee_amount, 2) . '</span>'
+                    ],
+                    [
+                        'label' => 'Totale',
+                        'key' => 'total_amount',
+                        'align' => 'right',
+                        'render' => function($row) {
+                            $isNegative = $row->type === 'buy' || $row->type === 'listing_fee';
+                            $color = $isNegative ? 'text-red-500' : 'text-green-500';
+                            $sign = $isNegative ? '-' : '+';
+                            return '<span class="font-semibold ' . $color . '">' . $sign . '€' . number_format(abs($row->total_amount), 2) . '</span>';
+                        }
+                    ],
+                    [
+                        'label' => 'Saldo Dopo',
+                        'key' => 'cfu_balance_after',
+                        'align' => 'right',
+                        'render' => fn($row) => '<span class="text-white font-medium">€' . number_format($row->cfu_balance_after, 2) . '</span>'
+                    ],
+                ];
+            @endphp
+
+            <x-ui.table :columns="$columns" :rows="$transactions" :paginate="true" caption="Transazioni eseguite dagli utenti" emptyMessage="Nessuna transazione trovata" />
+
         </div>
     </div>
 </x-admin>
