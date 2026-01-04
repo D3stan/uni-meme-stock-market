@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
@@ -37,9 +38,9 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () { return view('pages.admin.admin'); })->name('admin');
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/events', function () { return view('pages.admin.events'); })->name('events');
-    Route::get('/ledger', function () { return view('pages.admin.ledger'); })->name('ledger');
+    Route::get('/ledger', [AdminController::class, 'ledger'])->name('ledger');
     Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
     Route::get('/notifications', function () { return view('pages.admin.notifications'); })->name('notifications');
 });
