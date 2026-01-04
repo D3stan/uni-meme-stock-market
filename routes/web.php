@@ -35,17 +35,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', fn() => redirect('/test-navbar'))->name('profile');
 });
 
+// Admin routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () { return view('pages.admin.admin'); })->name('admin');
+    Route::get('/events', function () { return view('pages.admin.events'); })->name('events');
+    Route::get('/ledger', function () { return view('pages.admin.ledger'); })->name('ledger');
+    Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
+    Route::get('/notifications', function () { return view('pages.admin.notifications'); })->name('notifications');
+});
+
 // Trade route (placeholder)
 Route::get('/trade/{id}', function ($id) {
     return view('pages.trade-station', ['memeId' => $id]);
 })->name('trade');
-
-// Admin routes
-Route::get('/admin', function () { return view('pages.admin.admin'); });
-Route::get('/admin/events', function () { return view('pages.admin.events'); });
-Route::get('/admin/ledger', function () { return view('pages.admin.ledger'); });
-Route::get('/admin/moderation', function () { return view('pages.admin.moderation'); });
-Route::get('/admin/notifications', function () { return view('pages.admin.notifications'); });
 
 // Test routes (can be removed in production)
 Route::get('/test-components', function () {
