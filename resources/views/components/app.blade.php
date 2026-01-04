@@ -4,8 +4,9 @@
 
     {{-- Top spacer: only mobile --}}
     <div class="lg:hidden h-10" aria-hidden="true"></div>
-
-    <main>
-        {{ $slot }}
-    </main>
+    <div class="min-h-screen pb-20 lg:pb-8 lg:pt-18">
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
 </x-base>
