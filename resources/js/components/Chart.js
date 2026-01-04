@@ -85,7 +85,15 @@ class Chart {
             const response = await TradingService.getPriceHistory(this.memeId, period);
             
             if (response.success && response.data.length > 0) {
-                this.series.setData(response.data);
+                let data = response.data;
+                
+                // For daily periods (1d, 30d), aggregate to one point per day
+                if (period === '1d' || period === '30d') {
+                    data = this.aggregateByDay(data);
+                }
+                
+                this.series.setData(data);
+                this.updateTimeScale(period);
                 this.chart.timeScale().fitContent();
             } else {
                 console.warn('No price history data available');
@@ -107,6 +115,43 @@ class Chart {
         ];
         this.series.setData(placeholderData);
         this.chart.timeScale().fitContent();
+    }
+
+    /**
+     * Aggregate data to one point per day (last price of each day)
+     */
+    aggregateByDay(data) {
+        const dayMap = new Map();
+        
+        data.forEach(point => {
+            const date = new Date(point.time * 1000);
+            const dayKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+            
+            // Keep the last (latest) price for each day
+            if (!dayMap.has(dayKey) || point.time > dayMap.get(dayKey).time) {
+                dayMap.set(dayKey, point);
+            }
+        });
+        
+        return Array.from(dayMap.values()).sort((a, b) => a.time - b.time);
+    }
+
+    /**
+     * Update time scale format based on period
+     */
+    updateTimeScale(period) {
+        if (!this.chart) return;
+        
+        // For hourly periods (1h, 4h), show time
+        // For daily periods (1d, 30d), show only date
+        const showTime = period === '1h' || period === '4h';
+        
+        this.chart.applyOptions({
+            timeScale: {
+                timeVisible: showTime,
+                secondsVisible: false,
+            }
+        });
     }
 
     /**
