@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     Route::get('/events', [AdminController::class, 'events'])->name('events');
+    Route::post('/events', [AdminController::class, 'createEvent'])->name('events.create');
+    Route::put('/events/{id}', [AdminController::class, 'updateEvent'])->name('events.update');
     Route::get('/ledger', [AdminController::class, 'ledger'])->name('ledger');
     Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
     Route::get('/notifications', [AdminController::class, 'notifications'])->name('notifications');

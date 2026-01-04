@@ -84,4 +84,8 @@
 
     <x-admin.eventModal/>
 
+    @push('page-scripts')
+    <script src="{{ asset('js/admin/events.js') }}"></script>
+    @endpush
+
 </x-admin>
