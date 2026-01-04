@@ -13,6 +13,7 @@
             <x-meme.card 
                 id="moderation-card"
                 image=""
+                alt=""
                 name=""
                 ticker=""
                 :price="0"

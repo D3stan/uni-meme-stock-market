@@ -48,7 +48,7 @@ function openModerationModal(button) {
             ? image 
             : `/storage/data/${creatorId}/${image}`;
         memeImg.src = imageSrc;
-        memeImg.alt = title;
+        memeImg.alt = textAlt;
     }
     
     // Update price
