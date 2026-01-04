@@ -147,4 +147,30 @@ class AdminService
             'permanent' => $totalPermanent,
         ];
     }
+
+    /**
+     * Update market communication.
+     * 
+     * @param int $id
+     * @param array $data
+     * @return MarketCommunication
+     */
+    public function updateMarketCommunication(int $id, array $data): MarketCommunication
+    {
+        $communication = MarketCommunication::findOrFail($id);
+        $communication->update($data);
+
+        return $communication;
+    }
+
+    /**
+     * Create new market communication.
+     * 
+     * @param array $data
+     * @return MarketCommunication
+     */
+    public function createMarketCommunication(array $data): MarketCommunication
+    {
+        return MarketCommunication::create($data);
+    }
 }
