@@ -128,12 +128,14 @@ class TradingController extends Controller
     /**
      * Get price history for chart rendering.
      */
-    public function getPriceHistory(Meme $meme, string $period = '1d'): JsonResponse
+    public function getPriceHistory(Meme $meme, string $period = '7d'): JsonResponse
     {
         $hours = match($period) {
             '1h' => 1,
             '4h' => 4,
             '1d' => 24,
+            '7d' => 168,
+            '30d' => 720,
             default => 24,
         };
 

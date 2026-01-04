@@ -33,8 +33,12 @@
             4H
         </button>
         <button data-period="1d" class="period-btn px-6 py-2 rounded-full text-sm font-medium
-            bg-green-500 text-gray-900 transition-colors">
+            bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors">
             1D
+        </button>
+        <button data-period="30d" class="period-btn px-6 py-2 rounded-full text-sm font-medium
+            bg-green-500 text-gray-900 transition-colors">
+            30D
         </button>
     </div>
 </div>

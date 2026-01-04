@@ -10,7 +10,7 @@ class Chart {
         this.container = document.getElementById(containerId);
         this.chart = null;
         this.series = null;
-        this.currentPeriod = '1d';
+        this.currentPeriod = '30d';
         this.memeId = null;
     }
 
