@@ -20,7 +20,7 @@ class AdminController extends Controller
      */
     public function index(): View
     {
-        return view('pages.admin.admin');
+        return view('pages.admin.index');
     }
 
     /**
