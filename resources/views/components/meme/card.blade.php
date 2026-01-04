@@ -1,5 +1,6 @@
 @props([
     'image' => null,
+    'alt',
     'name' => 'Meme Name',
     'ticker' => 'XXX',
     'price' => 0,
@@ -46,7 +47,7 @@
     <a href="{{ $tradeUrl }}" class="block">
         <img 
             src="{{ asset($image) }}" 
-            alt="{{ $name }}"
+            alt="{{ $alt }}"
             class="w-full h-auto hover:opacity-90 transition-opacity"
         >
     </a>

@@ -69,6 +69,7 @@
             @forelse($memes as $meme)
                 <x-meme.card 
                     :name="$meme['name']"
+                    :alt="$meme['text_alt']"
                     :image="$meme['image']" 
                     :ticker="$meme['ticker']"
                     :price="$meme['price']"

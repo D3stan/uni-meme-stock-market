@@ -115,4 +115,41 @@ class AdminController extends Controller
 
         return redirect()->route('admin.events')->with('success', 'Evento creato con successo');
     }
+
+    /**
+     * Show moderation page.
+     */
+    public function moderation(Request $request): View
+    {
+        $filter = $request->get('filter', 'all');
+        
+        $memes = $this->adminService->getMemes($filter);
+        $stats = $this->adminService->getMemeStats();
+
+        return view('pages.admin.moderation', [
+            'memes' => $memes,
+            'stats' => $stats,
+            'currentFilter' => $filter,
+        ]);
+    }
+
+    /**
+     * Approve a meme.
+     */
+    public function approveMeme(int $id): RedirectResponse
+    {
+        $this->adminService->approveMeme($id, auth()->id());
+
+        return redirect()->route('admin.moderation')->with('success', 'Meme approvato con successo');
+    }
+
+    /**
+     * Reject a meme.
+     */
+    public function rejectMeme(int $id): RedirectResponse
+    {
+        $this->adminService->rejectMeme($id);
+
+        return redirect()->route('admin.moderation')->with('success', 'Meme rifiutato con successo');
+    }
 }

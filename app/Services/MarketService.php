@@ -410,6 +410,7 @@ class MarketService
             return [
                 'id' => $meme->id,
                 'image' => $meme->image_path ? asset('storage/data/' . $meme->creator_id . '/' . $meme->image_path) : null,
+                'text_alt'=> $meme->text_alt,
                 'name' => $meme->title,
                 'ticker' => $meme->ticker,
                 'price' => round($meme->current_price, 2),
