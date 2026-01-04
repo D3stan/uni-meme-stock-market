@@ -74,6 +74,7 @@
                     data-ticker="' . htmlspecialchars($row->ticker) . '"
                     data-title="' . htmlspecialchars($row->title) . '"
                     data-image="' . htmlspecialchars($row->image_path) . '"
+                    data-text-alt="' . htmlspecialchars($row->text_alt ?? '') . '"
                     data-creator="' . htmlspecialchars($row->creator->name) . '"
                     data-creator-id="' . $row->creator_id . '"
                     data-creator-avatar="' . htmlspecialchars($row->creator->avatar ?? 'https://via.placeholder.com/40') . '"

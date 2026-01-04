@@ -8,6 +8,7 @@ function openModerationModal(button) {
     const ticker = button.dataset.ticker;
     const title = button.dataset.title;
     const image = button.dataset.image;
+    const textAlt = button.dataset.textAlt;
     const creator = button.dataset.creator;
     const creatorId = button.dataset.creatorId;
     const creatorAvatar = button.dataset.creatorAvatar;
@@ -53,6 +54,12 @@ function openModerationModal(button) {
     // Update price
     const priceEl = card.querySelector('.text-2xl.font-bold.font-mono');
     if (priceEl) priceEl.textContent = price.toFixed(2);
+
+    // Update text alternative
+    const textAltEl = document.getElementById('meme-alt-text');
+    if (textAltEl) {
+        textAltEl.textContent = textAlt || 'Nessuna alternativa testuale disponibile';
+    }
 
     // Set form actions
     document.getElementById('approveForm').action = `/admin/moderation/${id}/approve`;
