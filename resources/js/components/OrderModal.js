@@ -29,6 +29,10 @@ class OrderModal {
         this.btnSpinner = document.getElementById('btn-spinner');
         this.btnText = document.getElementById('btn-text');
         
+        // Debug: Check if critical elements exist
+        if (!this.modal) console.error('OrderModal: order-modal element not found');
+        if (!this.backdrop) console.error('OrderModal: order-modal-backdrop element not found');
+        
         // Display elements
         this.userBalance = document.getElementById('user-balance');
         this.holdingsInfo = document.getElementById('holdings-info');
@@ -116,11 +120,29 @@ class OrderModal {
         // Reset quantity
         this.quantityInput.value = 1;
         
-        // Show modal
+        // Show modal with proper visibility
+        if (!this.modal || !this.backdrop) {
+            console.error('OrderModal: Cannot open modal - elements not found');
+            return;
+        }
+        
+        // Ensure modal is visible in DOM (remove any hidden class if present)
+        this.modal.classList.remove('hidden');
         this.backdrop.classList.remove('hidden');
+        
+        // Remove Tailwind transform classes that might conflict with inline styles
+        this.modal.classList.remove('translate-y-full');
+        
+        // Force initial state
+        this.backdrop.style.opacity = '0';
+        this.modal.style.transform = 'translateY(100%)';
+        
+        // Animate in after a frame
         requestAnimationFrame(() => {
-            this.backdrop.style.opacity = '1';
-            this.modal.style.transform = 'translateY(0)';
+            requestAnimationFrame(() => {
+                this.backdrop.style.opacity = '1';
+                this.modal.style.transform = 'translateY(0)';
+            });
         });
         
         // Load preview
@@ -136,12 +158,17 @@ class OrderModal {
      * Close modal
      */
     close() {
+        if (!this.modal || !this.backdrop) return;
+        
         this.isOpen = false;
         this.backdrop.style.opacity = '0';
         this.modal.style.transform = 'translateY(100%)';
         
         setTimeout(() => {
             this.backdrop.classList.add('hidden');
+            this.modal.classList.add('hidden');
+            // Re-add Tailwind transform class for next open
+            this.modal.classList.add('translate-y-full');
         }, 300);
     }
 
