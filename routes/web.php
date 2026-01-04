@@ -40,10 +40,12 @@ Route::get('/trade/{id}', function ($id) {
     return view('pages.trade-station', ['memeId' => $id]);
 })->name('trade');
 
-// Test routes (can be removed in production)
-Route::get('/admin-panel', function () {
-    return view('pages.admin.admin-panel');
-});
+// Admin routes
+Route::get('/admin', function () { return view('pages.admin.admin'); });
+Route::get('/admin/events', function () { return view('pages.admin.events'); });
+Route::get('/admin/ledger', function () { return view('pages.admin.ledger'); });
+Route::get('/admin/moderation', function () { return view('pages.admin.moderation'); });
+Route::get('/admin/notifications', function () { return view('pages.admin.notifications'); });
 
 // Test routes (can be removed in production)
 Route::get('/test-components', function () {
