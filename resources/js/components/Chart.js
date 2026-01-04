@@ -89,20 +89,17 @@ class Chart {
                 this.chart.timeScale().fitContent();
             } else {
                 console.warn('No price history data available');
-                // Show empty state message
-                this.showEmptyState();
             }
         } catch (error) {
             console.error('Failed to load chart data:', error);
-            this.showEmptyState('Error loading chart data');
+            this.showEmptyState();
         }
     }
 
     /**
      * Show empty state when no data available
      */
-    showEmptyState(message = 'No price history yet. Make the first trade!') {
-        // Create a simple placeholder data point to show the current price
+    showEmptyState() {
         const now = Math.floor(Date.now() / 1000);
         const placeholderData = [
             { time: now - 86400, value: window.TRADING_DATA?.currentPrice || 1 },
@@ -110,9 +107,6 @@ class Chart {
         ];
         this.series.setData(placeholderData);
         this.chart.timeScale().fitContent();
-        
-        // Log the message
-        console.info(message);
     }
 
     /**
