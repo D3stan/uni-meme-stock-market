@@ -43,7 +43,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/events', [AdminController::class, 'createEvent'])->name('events.create');
     Route::put('/events/{id}', [AdminController::class, 'updateEvent'])->name('events.update');
     Route::get('/ledger', [AdminController::class, 'ledger'])->name('ledger');
-    Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
+    Route::get('/moderation', [AdminController::class, 'moderation'])->name('moderation');
+    Route::post('/moderation/{id}/approve', [AdminController::class, 'approveMeme'])->name('moderation.approve');
+    Route::post('/moderation/{id}/reject', [AdminController::class, 'rejectMeme'])->name('moderation.reject');
     Route::get('/notifications', [AdminController::class, 'notifications'])->name('notifications');
 });
 
