@@ -39,4 +39,21 @@ class AdminController extends Controller
             'currentType' => $type,
         ]);
     }
+
+    /**
+     * Show notifications list.
+     */
+    public function notifications(Request $request): View
+    {
+        $filter = $request->get('filter', 'all');
+        
+        $notifications = $this->adminService->getNotifications($filter);
+        $stats = $this->adminService->getNotificationStats();
+
+        return view('pages.admin.notifications', [
+            'notifications' => $notifications,
+            'stats' => $stats,
+            'currentFilter' => $filter,
+        ]);
+    }
 }
