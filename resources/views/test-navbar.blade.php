@@ -1,4 +1,4 @@
-<x-app :active="'market'" :balance="'1,250.00'">
+<x-app :active="'create'" :balance="'1,250.00'">
     <div class="pb-20 lg:pb-8 lg:pt-20">
         <div class="max-w-4xl mx-auto px-4 py-8 space-y-12">
             

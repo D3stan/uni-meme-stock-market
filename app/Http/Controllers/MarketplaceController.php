@@ -40,11 +40,53 @@ class MarketplaceController extends Controller
         // Get user balance (mock for now)
         $balance = '1,250.00';
 
-        return view('pages.marketplace', [
+        return view('pages.appshell.marketplace', [
             'memes' => $memes,
             'tickerMemes' => $tickerMemes,
             'filter' => $filter,
             'balance' => $balance,
+        ]);
+    }
+
+    public function profile(Request $request)
+    {
+        // Get ticker data for top movers
+        $tickerMemes = $this->marketService->getTickerMemes(15);
+
+        // Get user balance (mock for now)
+        $balance = '1,250.00';
+
+        return view('pages.appshell.profile', [
+            'balance' => $balance,
+            'tickerMemes' => $tickerMemes,
+        ]);
+    }
+
+    public function portfolio(Request $request)
+    {
+        // Get ticker data for top movers
+        $tickerMemes = $this->marketService->getTickerMemes(15);
+
+        // Get user balance (mock for now)
+        $balance = '1,250.00';
+
+        return view('pages.appshell.portfolio', [
+            'balance' => $balance,
+            'tickerMemes' => $tickerMemes,
+        ]);
+    }
+
+    public function leaderboard(Request $request)
+    {
+        // Get ticker data for top movers
+        $tickerMemes = $this->marketService->getTickerMemes(15);
+
+        // Get user balance (mock for now)
+        $balance = '1,250.00';
+
+        return view('pages.appshell.leaderboard', [
+            'balance' => $balance,
+            'tickerMemes' => $tickerMemes,
         ]);
     }
 }

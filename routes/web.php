@@ -29,10 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
-    Route::get('/portfolio', fn() => redirect('/test-navbar'))->name('portfolio');
+    Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
     Route::get('/create', fn() => redirect('/test-navbar'))->name('create');
-    Route::get('/leaderboard', fn() => redirect('/test-navbar'))->name('leaderboard');
-    Route::get('/profile', fn() => redirect('/test-navbar'))->name('profile');
+    Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
+    Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 });
 
 // Admin routes

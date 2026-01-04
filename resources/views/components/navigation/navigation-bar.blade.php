@@ -25,8 +25,8 @@
         </a>
 
         {{-- Leaderboard --}}
-        <a href="{{ route('leaderboard') }}" aria-label="Classifica" class="flex items-center justify-center {{ $active === 'trending' ? 'bg-green-600 px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
-            <span aria-hidden="true" class="material-icons {{ $active === 'trending' ? 'text-[#0f2216] text-2xl' : 'text-gray-400 text-2xl' }} group-hover:text-green-500 transition-colors">
+        <a href="{{ route('leaderboard') }}" aria-label="Classifica" class="flex items-center justify-center {{ $active === 'leaderboard' ? 'bg-green-600 px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+            <span aria-hidden="true" class="material-icons {{ $active === 'leaderboard' ? 'text-[#0f2216] text-2xl' : 'text-gray-400 text-2xl' }} group-hover:text-green-500 transition-colors">
                 emoji_events
             </span>
         </a>
@@ -39,8 +39,8 @@
         </a>
 
         {{-- Portfolio --}}
-        <a href="{{ route('portfolio') }}" aria-label="Porfolio" class="flex items-center justify-center {{ $active === 'leaderboard' ? 'bg-green-600 px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
-            <span aria-hidden="true" class="material-icons {{ $active === 'leaderboard' ? 'text-[#0f2216] text-2xl' : 'text-gray-400 text-2xl' }} group-hover:text-green-500 transition-colors">
+        <a href="{{ route('portfolio') }}" aria-label="Porfolio" class="flex items-center justify-center {{ $active === 'portfolio' ? 'bg-green-600 px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+            <span aria-hidden="true" class="material-icons {{ $active === 'portfolio' ? 'text-[#0f2216] text-2xl' : 'text-gray-400 text-2xl' }} group-hover:text-green-500 transition-colors">
                 account_balance_wallet
             </span>
         </a>
@@ -80,7 +80,7 @@
                 <span class="font-medium">Crea Meme</span>
             </a>
 
-            <a href="{{ route('portfolio') }}" class="flex items-center gap-2 px-4 py-2 rounded-lg {{ $active === 'leaderboard' ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-800' }} transition-colors">
+            <a href="{{ route('portfolio') }}" class="flex items-center gap-2 px-4 py-2 rounded-lg {{ $active === 'portfolio' ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-800' }} transition-colors">
                 <span aria-hidden="true" class="material-icons text-xl">account_balance_wallet</span>
                 <span class="font-medium">Portafoglio</span>
             </a>
