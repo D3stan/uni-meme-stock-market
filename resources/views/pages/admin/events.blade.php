@@ -37,7 +37,7 @@
                 'label' => 'Messaggio',
                 'key' => 'message',
                 'wrap' => true,
-                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)) . '</span>'
+                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
             ],
             [
                 'label' => 'Scadenza',
@@ -63,13 +63,25 @@
                 'label' => 'Azioni',
                 'key' => 'actions',
                 'align' => 'center',
-                'render' => fn($row) => '<button class="p-2 hover:bg-gray-800 rounded-lg transition-colors" title="Modifica evento">
+                'render' => fn($row) => '<button 
+                    onclick="openEditModal(' . $row->id . ', \'' . addslashes($row->message) . '\', \'' . ($row->expires_at ? $row->expires_at->format('Y-m-d\TH:i') : '') . '\', ' . ($row->is_active ? 'true' : 'false') . ')" 
+                    class="p-2 hover:bg-gray-800 rounded-lg transition-colors" 
+                    title="Modifica evento">
                     <span class="material-icons text-gray-400 hover:text-white text-xl">edit</span>
                 </button>'
             ],
         ];
     @endphp
 
-    <x-ui.table :columns="$columns" :rows="$communications" :paginate="true" caption="Comunicazioni di mercato inviate agli utenti" emptyMessage="Nessuna comunicazione trovata" />
+    <x-ui.table :columns="$columns" :rows="$communications" :paginate="true" caption="Comunicazioni di mercato inviate agli utenti" emptyMessage="Nessuna comunicazione trovata">
+        <x-slot:actions>
+            <x-forms.button onclick="openCreateModal()" variant="primary" size="lg">
+                <span class="material-icons text-lg">add</span>
+                Crea
+            </x-forms.button>
+        </x-slot:actions>
+    </x-ui.table>
+
+    <x-admin.eventModal/>
 
 </x-admin>
