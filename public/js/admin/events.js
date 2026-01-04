@@ -20,7 +20,13 @@ function openCreateModal() {
     showModal('editEventModal');
 }
 
-function openEditModal(id, message, expiresAt, isActive) {
+function openEditModal(button) {
+    // Get data from button attributes
+    const id = button.dataset.id;
+    const message = button.dataset.message;
+    const expiresAt = button.dataset.expiresAt;
+    const isActive = button.dataset.isActive === '1';
+
     // Set form for update
     const form = document.getElementById('editEventForm');
     form.action = `/admin/events/${id}`;
@@ -37,3 +43,13 @@ function openEditModal(id, message, expiresAt, isActive) {
     // Show modal
     showModal('editEventModal');
 }
+
+// Event delegation for edit buttons
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function(e) {
+        const button = e.target.closest('.edit-event-btn');
+        if (button) {
+            openEditModal(button);
+        }
+    });
+});

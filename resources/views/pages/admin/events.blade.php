@@ -63,11 +63,16 @@
                 'label' => 'Azioni',
                 'key' => 'actions',
                 'align' => 'center',
-                'render' => fn($row) => '<button 
-                    onclick="openEditModal(' . $row->id . ', \'' . addslashes($row->message) . '\', \'' . ($row->expires_at ? $row->expires_at->format('Y-m-d\TH:i') : '') . '\', ' . ($row->is_active ? 'true' : 'false') . ')" 
-                    class="p-2 hover:bg-gray-800 rounded-lg transition-colors" 
-                    title="Modifica evento">
-                    <span class="material-icons text-gray-400 hover:text-white text-xl">edit</span>
+                'render' => fn($row) => '
+                <button 
+                    class="edit-event-btn p-2 hover:bg-gray-800 rounded-lg transition-colors" 
+                    data-id="' . $row->id . '"
+                    data-message="' . htmlspecialchars($row->message) . '"
+                    data-expires-at="' . ($row->expires_at ? $row->expires_at->format('Y-m-d\TH:i') : '') . '"
+                    data-is-active="' . ($row->is_active ? '1' : '0') . '"
+                    title="Modifica evento"
+                    aria-label="Modifica #{{ $row->id }}" >
+                    <span aria-hidden="true" class="material-icons text-gray-400 hover:text-white text-xl">edit</span>
                 </button>'
             ],
         ];
