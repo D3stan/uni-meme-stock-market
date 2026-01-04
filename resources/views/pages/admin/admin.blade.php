@@ -3,8 +3,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header --}}
-            <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center justify-between mb-8">
                 <h1 class="text-3xl font-bold text-white">Rettorato Admin</h1>
+                <a href="{{ route('market') }}" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+                    <span class="material-icons text-white text-3xl">home</span>
+                </a>
             </div>
 
             {{-- Resoconto Generale --}}
@@ -29,16 +32,16 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Approva Meme --}}
-                    <x-ui.options-card href="#" icon="check_circle" title="Approva Meme" description="Revisione coda"/>
+                    <x-ui.options-card href="{{ route('admin.moderation') }}" icon="check_circle" title="Approva Meme" description="Revisione coda"/>
 
                     {{-- Gestione Notifiche --}}
-                    <x-ui.options-card href="#" icon="campaign" title="Gestione Notifiche" description="Comunicazioni"/>
+                    <x-ui.options-card href="{{ route('admin.notifications') }}" icon="campaign" title="Gestione Notifiche" description="Comunicazioni"/>
 
                     {{-- Gestisci Eventi --}}
-                    <x-ui.options-card href="#" icon="event" title="Gestisci Eventi" description="Calendario & IPO"/>
+                    <x-ui.options-card href="{{ route('admin.events') }}" icon="event" title="Gestisci Eventi" description="Calendario & IPO"/>
 
                     {{-- Visione Transazioni --}}
-                    <x-ui.options-card href="#" icon="receipt_long" title="Visione Transazioni" description="Ledger di mercato"/>
+                    <x-ui.options-card href="{{ route('admin.ledger') }}" icon="receipt_long" title="Visione Transazioni" description="Ledger di mercato"/>
                 </div>
             </div>
         </div>
