@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TradingController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
@@ -34,6 +35,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/create', fn() => redirect('/test-navbar'))->name('create');
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
+
+    // Trading routes
+    Route::get('/trade/{meme}', [TradingController::class, 'show'])->name('trade');
+    
+    // Trading API routes
+    Route::prefix('api/trade')->name('api.trade.')->group(function () {
+        Route::post('/preview', [TradingController::class, 'preview'])->name('preview');
+        Route::post('/execute', [TradingController::class, 'execute'])->name('execute');
+        Route::get('/{meme}/price-history/{period?}', [TradingController::class, 'getPriceHistory'])->name('price-history');
+        Route::get('/{meme}/holdings', [TradingController::class, 'getCurrentHoldings'])->name('holdings');
+        Route::get('/{meme}/market-data', [TradingController::class, 'getMarketData'])->name('market-data');
+    });
 });
 
 // Admin routes
@@ -44,11 +57,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
     Route::get('/notifications', function () { return view('pages.admin.notifications'); })->name('notifications');
 });
-
-// Trade route (placeholder)
-Route::get('/trade/{id}', function ($id) {
-    return view('pages.trade-station', ['memeId' => $id]);
-})->name('trade');
 
 // Test routes (can be removed in production)
 Route::get('/test-components', function () {

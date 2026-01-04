@@ -110,11 +110,12 @@ class TradingService
 
         // Check if trading is enabled (delay from approval)
         $tradingDelayHours = (int) GlobalSetting::get('trading_delay_hours', self::TRADING_DELAY_HOURS);
-        if ($meme->approved_at && now()->diffInHours($meme->approved_at) < $tradingDelayHours) {
+        $tradingEnabledAt = $meme->approved_at?->copy()->addHours($tradingDelayHours);
+        
+        if ($tradingEnabledAt && now()->isBefore($tradingEnabledAt)) {
             throw new MarketSuspendedException(
                 $meme->ticker,
-                "Trading for {$meme->ticker} will be available ".
-                $meme->approved_at->copy()->addHours($tradingDelayHours)->diffForHumans().'.'
+                "Trading for {$meme->ticker} will be available {$tradingEnabledAt->diffForHumans()}."
             );
         }
 

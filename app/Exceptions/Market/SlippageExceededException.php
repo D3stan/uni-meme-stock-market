@@ -6,11 +6,15 @@ use Exception;
 
 class SlippageExceededException extends Exception
 {
+    protected float $actualTotal;
+
     public function __construct(
         float $expectedPrice,
         float $actualPrice,
         ?string $message = null
     ) {
+        $this->actualTotal = $actualPrice;
+
         $defaultMessage = sprintf(
             'Price has changed: expected %.4f CFU, actual %.4f CFU. Please review and confirm.',
             $expectedPrice,
@@ -28,6 +32,13 @@ class SlippageExceededException extends Exception
             $actualTotal
         );
 
-        return new self($expectedTotal, $actualTotal, $message);
+        $exception = new self($expectedTotal, $actualTotal, $message);
+        $exception->actualTotal = $actualTotal;
+        return $exception;
+    }
+
+    public function getActualTotal(): float
+    {
+        return $this->actualTotal;
     }
 }
