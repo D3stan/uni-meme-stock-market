@@ -32,8 +32,6 @@ class TradingPage {
         this.initPeriodSelector();
         this.initPriceUpdates();
         this.attachEventListeners();
-        
-        console.log('Trading Page initialized');
     }
 
     /**

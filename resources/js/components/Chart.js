@@ -70,8 +70,6 @@ class Chart {
 
             // Load initial data
             this.loadData(this.currentPeriod);
-            
-            console.log('Chart initialized successfully');
         } catch (error) {
             console.error('Chart initialization failed:', error);
             // Show fallback message
