@@ -52,10 +52,12 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
-    Route::get('/events', function () { return view('pages.admin.events'); })->name('events');
+    Route::get('/events', [AdminController::class, 'events'])->name('events');
+    Route::post('/events', [AdminController::class, 'createEvent'])->name('events.create');
+    Route::put('/events/{id}', [AdminController::class, 'updateEvent'])->name('events.update');
     Route::get('/ledger', [AdminController::class, 'ledger'])->name('ledger');
     Route::get('/moderation', function () { return view('pages.admin.moderation'); })->name('moderation');
-    Route::get('/notifications', function () { return view('pages.admin.notifications'); })->name('notifications');
+    Route::get('/notifications', [AdminController::class, 'notifications'])->name('notifications');
 });
 
 // Test routes (can be removed in production)
