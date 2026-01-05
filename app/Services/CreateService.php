@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Market\Category;
 use App\Models\Market\Meme;
+use App\Models\Financial\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
@@ -82,6 +83,19 @@ class CreateService
 
             // Deduct listing fee
             $user->decrement('cfu_balance', 20.00);
+
+            // Create transaction record
+            Transaction::create([
+                'user_id' => $user->id,
+                'meme_id' => $meme->id,
+                'type' => 'listing_fee',
+                'quantity' => null,
+                'price_per_share' => null,
+                'fee_amount' => 20.00,
+                'total_amount' => -20.00,
+                'cfu_balance_after' => $user->fresh()->cfu_balance,
+                'executed_at' => now(),
+            ]);
 
             return $meme;
         });
