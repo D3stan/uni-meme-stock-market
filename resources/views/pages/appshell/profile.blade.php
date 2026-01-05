@@ -1,3 +1,29 @@
 <x-app :active="'profile'" :balance="$balance">
-    <h1 class="text-4xl font-black text-center text-green-500">Pagina Profilo</h1>
+    <div class="max-w-2xl mx-auto pb-6">
+        
+        {{-- Profile Header (Avatar + Name + Email) --}}
+        <x-profile.header :user="$user" />
+        
+        {{-- Badge Showcase --}}
+        @if($badges->isNotEmpty())
+            <x-profile.badge-showcase :badges="$badges" />
+        @endif
+        
+        {{-- Quick Stats Grid --}}
+        <x-profile.stats-grid 
+            :registrationDate="$registrationDate"
+            :totalTrades="$totalTrades"
+            :bestTrade="$bestTrade"
+            :globalRank="$globalRank"
+        />
+        
+        {{-- Menu Options --}}
+        <x-profile.menu-options :unreadNotifications="$unreadNotifications" />
+        
+        {{-- Version Footer 
+        <div class="text-center mt-8 mb-4">
+            <p class="text-gray-600 text-sm">v1.1.0 (Build 405)</p>
+        </div>--}}
+        
+    </div>
 </x-app>

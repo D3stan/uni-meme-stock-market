@@ -52,15 +52,113 @@ class MarketplaceController extends Controller
 
     public function profile(Request $request)
     {
-        // Get ticker data for top movers
-        $tickerMemes = $this->marketService->getTickerMemes(15);
-
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        $user = Auth::user();
+        
+        // Load user's badges with pivot data
+        $badges = $user->badges()
+            ->orderBy('user_badges.awarded_at', 'desc')
+            ->get()
+            ->map(function ($badge) {
+                // Map badge names to Material Icons and styles
+                $iconMap = [
+                    'First Trade' => ['icon' => 'military_tech', 'style' => 'bg-blue-600'],
+                    'Diamond Hands 💎' => ['icon' => 'diamond', 'style' => 'bg-cyan-600'],
+                    'Paper Hands 📄' => ['icon' => 'crisis_alert', 'style' => 'bg-orange-700'],
+                    'Whale 🐋' => ['icon' => 'account_balance', 'style' => 'bg-purple-700'],
+                    'Day Trader' => ['icon' => 'trending_up', 'style' => 'bg-green-600'],
+                    'Meme Creator' => ['icon' => 'brush', 'style' => 'bg-pink-600'],
+                    'Diversified Portfolio' => ['icon' => 'dashboard', 'style' => 'bg-indigo-600'],
+                    'Stonks Master 📈' => ['icon' => 'rocket_launch', 'style' => 'bg-yellow-600'],
+                    'Early Adopter' => ['icon' => 'timer', 'style' => 'bg-teal-600'],
+                    'Lucky Trader 🍀' => ['icon' => 'casino', 'style' => 'bg-lime-600'],
+                ];
+                
+                $badgeConfig = $iconMap[$badge->name] ?? ['icon' => 'star', 'style' => 'bg-gray-700'];
+                $badge->icon = $badgeConfig['icon'];
+                $badge->style = $badgeConfig['style'];
+                
+                return $badge;
+            });
+        
+        // Registration date formatted
+        $registrationDate = $user->created_at->format('M Y');
+        
+        // Total trades count (buy + sell transactions)
+        $totalTrades = $user->transactions()
+            ->whereIn('type', ['buy', 'sell'])
+            ->count();
+        
+        // Best trade calculation (highest % gain from a sell transaction)
+        $bestTrade = null;
+        $sellTransactions = $user->transactions()
+            ->where('type', 'sell')
+            ->with('meme')
+            ->get();
+        
+        if ($sellTransactions->isNotEmpty()) {
+            $bestProfitPct = 0;
+            $bestMeme = null;
+            
+            foreach ($sellTransactions as $sell) {
+                if (!$sell->meme) continue;
+                
+                // Find corresponding buy transactions for this meme
+                $buyTransactions = $user->transactions()
+                    ->where('type', 'buy')
+                    ->where('meme_id', $sell->meme_id)
+                    ->where('executed_at', '<', $sell->executed_at)
+                    ->get();
+                
+                if ($buyTransactions->isNotEmpty()) {
+                    // Calculate average buy price
+                    $totalCost = $buyTransactions->sum(fn($t) => $t->price_per_share * $t->quantity);
+                    $totalQuantity = $buyTransactions->sum('quantity');
+                    $avgBuyPrice = $totalQuantity > 0 ? $totalCost / $totalQuantity : 0;
+                    
+                    if ($avgBuyPrice > 0) {
+                        $profitPct = (($sell->price_per_share - $avgBuyPrice) / $avgBuyPrice) * 100;
+                        
+                        if ($profitPct > $bestProfitPct) {
+                            $bestProfitPct = $profitPct;
+                            $bestMeme = $sell->meme;
+                        }
+                    }
+                }
+            }
+            
+            if ($bestMeme) {
+                $bestTrade = [
+                    'percentage' => ($bestProfitPct > 0 ? '+' : '') . number_format($bestProfitPct, 0) . '%',
+                    'ticker' => $bestMeme->ticker,
+                ];
+            }
+        }
+        
+        // Global rank (position in leaderboard by cached_net_worth)
+        $globalRank = \App\Models\User::where('cached_net_worth', '>', $user->cached_net_worth)
+            ->where('role', 'trader')
+            ->count() + 1;
+        
+        // Unread notifications count (only user-specific notifications)
+        $unreadNotifications = $user->notifications()
+            ->where(function($query) {
+                $query->where('is_read', false)
+                      ->orWhereNull('is_read');
+            })
+            ->count();
+        
+        // Format balance for top bar
+        $balance = number_format($user->cfu_balance, 2);
 
         return view('pages.appshell.profile', [
             'balance' => $balance,
-            'tickerMemes' => $tickerMemes,
+            'user' => $user,
+            'badges' => $badges,
+            'registrationDate' => $registrationDate,
+            'totalTrades' => $totalTrades,
+            'bestTrade' => $bestTrade,
+            'globalRank' => $globalRank,
+            'unreadNotifications' => $unreadNotifications,
         ]);
     }
 
