@@ -127,26 +127,48 @@ class TradingController extends Controller
 
     /**
      * Get price history for chart rendering.
+     * Returns last 50 data points at specified intervals.
      */
-    public function getPriceHistory(Meme $meme, string $period = '7d'): JsonResponse
+    public function getPriceHistory(Meme $meme, string $period = '1d'): JsonResponse
     {
-        $hours = match($period) {
-            '1h' => 1,
-            '4h' => 4,
-            '1d' => 24,
-            '7d' => 168,
-            '30d' => 720,
-            default => 24,
+        // Define interval in hours and max data points
+        $config = match($period) {
+            '1h' => ['interval' => 1, 'limit' => 50],   // Last 50 hours
+            '4h' => ['interval' => 4, 'limit' => 50],   // Last ~8 days
+            '1d' => ['interval' => 24, 'limit' => 50],  // Last ~50 days
+            default => ['interval' => 24, 'limit' => 50],
         };
 
-        $priceHistory = $meme->priceHistories()
-            ->where('recorded_at', '>=', now()->subHours($hours))
+        $interval = $config['interval'];
+        $limit = $config['limit'];
+        $totalHours = $interval * $limit;
+
+        // Get all price histories within the timeframe
+        $allRecords = $meme->priceHistories()
+            ->where('recorded_at', '>=', now()->subHours($totalHours))
             ->orderBy('recorded_at', 'asc')
-            ->get(['price', 'recorded_at'])
-            ->map(fn($point) => [
-                'time' => $point->recorded_at->timestamp,
-                'value' => (float) $point->price,
-            ]);
+            ->get(['price', 'recorded_at']);
+
+        // Group by interval and take the last (close) price for each bucket
+        $groupedData = [];
+        $currentBucket = null;
+
+        foreach ($allRecords as $record) {
+            $bucketKey = floor($record->recorded_at->timestamp / ($interval * 3600));
+            
+            if ($currentBucket !== $bucketKey) {
+                $currentBucket = $bucketKey;
+            }
+            
+            // Overwrite with latest price in this bucket (close price)
+            $groupedData[$bucketKey] = [
+                'time' => $record->recorded_at->timestamp,
+                'value' => (float) $record->price,
+            ];
+        }
+
+        // Get last N points and ensure chronological order
+        $priceHistory = array_values(array_slice($groupedData, -$limit));
 
         return response()->json([
             'success' => true,

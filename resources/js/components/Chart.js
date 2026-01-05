@@ -10,7 +10,7 @@ class Chart {
         this.container = document.getElementById(containerId);
         this.chart = null;
         this.series = null;
-        this.currentPeriod = '30d';
+        this.currentPeriod = '1d';
         this.memeId = null;
     }
 
@@ -85,14 +85,7 @@ class Chart {
             const response = await TradingService.getPriceHistory(this.memeId, period);
             
             if (response.success && response.data.length > 0) {
-                let data = response.data;
-                
-                // For daily periods (1d, 30d), aggregate to one point per day
-                if (period === '1d' || period === '30d') {
-                    data = this.aggregateByDay(data);
-                }
-                
-                this.series.setData(data);
+                this.series.setData(response.data);
                 this.updateTimeScale(period);
                 this.chart.timeScale().fitContent();
             } else {
@@ -118,32 +111,13 @@ class Chart {
     }
 
     /**
-     * Aggregate data to one point per day (last price of each day)
-     */
-    aggregateByDay(data) {
-        const dayMap = new Map();
-        
-        data.forEach(point => {
-            const date = new Date(point.time * 1000);
-            const dayKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
-            
-            // Keep the last (latest) price for each day
-            if (!dayMap.has(dayKey) || point.time > dayMap.get(dayKey).time) {
-                dayMap.set(dayKey, point);
-            }
-        });
-        
-        return Array.from(dayMap.values()).sort((a, b) => a.time - b.time);
-    }
-
-    /**
      * Update time scale format based on period
      */
     updateTimeScale(period) {
         if (!this.chart) return;
         
         // For hourly periods (1h, 4h), show time
-        // For daily periods (1d, 30d), show only date
+        // For daily periods (1d), show only date
         const showTime = period === '1h' || period === '4h';
         
         this.chart.applyOptions({
