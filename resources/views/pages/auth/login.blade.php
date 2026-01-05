@@ -1,4 +1,4 @@
-<x-guest title="Accedi - AlmaStreet">
+<x-guest title="Accedi">
     <div class="flex-1 flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-md">
             <!-- Logo -->
