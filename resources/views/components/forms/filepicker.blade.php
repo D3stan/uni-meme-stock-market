@@ -4,7 +4,7 @@
     'accept' => 'image/*',
     'maxSize' => '5MB',
     'emptyText' => 'Tocca per caricare',
-    'formats' => '.JPG, .PNG supportati',
+    'formats' => '',
 ])
 
 @php

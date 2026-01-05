@@ -10,7 +10,7 @@
                 name="image"
                 accept="image/*"
                 emptyText="Tocca per caricare un meme"
-                formats=".JPG, .PNG .WEBP supportati"
+                formats=".JPG, .PNG .WEBP .GIF .HEIC supportati"
                 maxSize="5MB"
             />
 
