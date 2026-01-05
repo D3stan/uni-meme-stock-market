@@ -202,15 +202,66 @@ class MarketplaceController extends Controller
 
     public function leaderboard(Request $request)
     {
-        // Get ticker data for top movers
-        $tickerMemes = $this->marketService->getTickerMemes(15);
-
+        $currentUser = auth()->user();
+        
+        // Get all traders (non-admin users) with their portfolio values
+        $allUsers = \App\Models\User::where('role', '!=', 'admin')
+            ->with('portfolios.meme:id,current_price')
+            ->get()
+            ->map(function ($user) {
+                // Calculate net worth on-the-fly if cached value is null or 0
+                $liquidBalance = (float) $user->cfu_balance;
+                $investedValue = $user->portfolios->sum(function ($portfolio) {
+                    return $portfolio->quantity * ($portfolio->meme->current_price ?? 0);
+                });
+                $user->calculated_net_worth = $liquidBalance + $investedValue;
+                return $user;
+            })
+            ->sortByDesc('calculated_net_worth')
+            ->values();
+        
+        // Calculate total users for percentile
+        $totalUsers = $allUsers->count();
+        
+        // Build rankings array with user data
+        $rankings = $allUsers->map(function ($user, $index) use ($currentUser) {
+            return [
+                'rank' => $index + 1,
+                'user_id' => $user->id,
+                'username' => '@' . explode('@', $user->email)[0],
+                'avatar' => $user->avatar,
+                'badge' => null, // TODO: Get user's primary badge
+                'net_worth' => $user->calculated_net_worth,
+                'is_current_user' => $user->id === $currentUser->id,
+            ];
+        })->toArray();
+        
+        // Split top 3 for podium
+        $topThree = array_slice($rankings, 0, 3);
+        
+        // Find current user's position
+        $currentUserPosition = null;
+        foreach ($rankings as $ranking) {
+            if ($ranking['is_current_user']) {
+                $currentUserPosition = $ranking;
+                // Calculate percentile
+                if ($totalUsers > 0) {
+                    $percentile = ceil(($ranking['rank'] / $totalUsers) * 100);
+                    $currentUserPosition['percentile'] = $percentile;
+                }
+                $currentUserPosition['has_badge'] = false; // TODO: Check if user has any badges
+                break;
+            }
+        }
+        
         // Get user balance
-        $balance = auth()->user()->cfu_balance;
+        $balance = $currentUser->cfu_balance;
 
         return view('pages.appshell.leaderboard', [
             'balance' => $balance,
-            'tickerMemes' => $tickerMemes,
+            'topThree' => $topThree,
+            'rankings' => $rankings,
+            'currentUserPosition' => $currentUserPosition,
         ]);
     }
 }
