@@ -32,12 +32,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
     Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
-    Route::get('/create', fn() => redirect('/test-navbar'))->name('create');
+    Route::get('/create', function () { return view('pages.meme.create'); })->name('create');
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 
     // Upload // Debug (to be removed)
-    Route::get('/upload', function () { return view('pages.meme.upload'); });
 
     // Trading routes
     Route::get('/trade/{meme}', [TradingController::class, 'show'])->name('trade');

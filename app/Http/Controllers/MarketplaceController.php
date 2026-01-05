@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Services\MarketService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class MarketplaceController extends Controller
 {
     protected MarketService $marketService;
+    protected UserService $userService;
 
-    public function __construct(MarketService $marketService)
+    public function __construct(MarketService $marketService, UserService $userService)
     {
         $this->marketService = $marketService;
+        $this->userService = $userService;
     }
 
     /**
@@ -37,8 +40,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = $this->userService->calculateNetWorth(auth()->user());
 
         return view('pages.appshell.marketplace', [
             'memes' => $memes,
