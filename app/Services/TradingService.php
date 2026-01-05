@@ -30,6 +30,30 @@ class TradingService
     private const SLIPPAGE_TOLERANCE_CFU = 0.01;
 
     /**
+     * Check if trading is allowed for a meme (status and delay checks).
+     * 
+     * @throws MarketSuspendedException
+     */
+    private function validateTradingAllowed(Meme $meme): void
+    {
+        // Check if market is suspended
+        if ($meme->status === 'suspended') {
+            throw new MarketSuspendedException($meme->ticker);
+        }
+
+        // Check if trading is enabled (delay from approval)
+        $tradingDelayHours = (int) GlobalSetting::get('trading_delay_hours', self::TRADING_DELAY_HOURS);
+        $tradingEnabledAt = $meme->approved_at?->copy()->addHours($tradingDelayHours);
+        
+        if ($tradingEnabledAt && now()->isBefore($tradingEnabledAt)) {
+            throw new MarketSuspendedException(
+                $meme->ticker,
+                "Trading for {$meme->ticker} will be available {$tradingEnabledAt->diffForHumans()}."
+            );
+        }
+    }
+
+    /**
      * Calculate the total cost for buying k shares using the integral formula.
      * Formula: CostTotal = P_base * k + (M/2) * ((S+k)² - S²)
      *
@@ -103,21 +127,7 @@ class TradingService
      */
     public function previewOrder(Meme $meme, string $type, int $quantity): array
     {
-        // Check if market is suspended
-        if ($meme->status === 'suspended') {
-            throw new MarketSuspendedException($meme->ticker);
-        }
-
-        // Check if trading is enabled (delay from approval)
-        $tradingDelayHours = (int) GlobalSetting::get('trading_delay_hours', self::TRADING_DELAY_HOURS);
-        $tradingEnabledAt = $meme->approved_at?->copy()->addHours($tradingDelayHours);
-        
-        if ($tradingEnabledAt && now()->isBefore($tradingEnabledAt)) {
-            throw new MarketSuspendedException(
-                $meme->ticker,
-                "Trading for {$meme->ticker} will be available {$tradingEnabledAt->diffForHumans()}."
-            );
-        }
+        $this->validateTradingAllowed($meme);
 
         if ($type === 'buy') {
             return $this->calculateBuyCost($meme, $quantity);
@@ -144,16 +154,8 @@ class TradingService
             // Lock the user row
             $user = User::where('id', $user->id)->lockForUpdate()->first();
 
-            // Check market status
-            if ($meme->status === 'suspended') {
-                throw new MarketSuspendedException($meme->ticker);
-            }
-
-            // Check trading delay
-            $tradingDelayHours = (int) GlobalSetting::get('trading_delay_hours', self::TRADING_DELAY_HOURS);
-            if ($meme->approved_at && now()->diffInHours($meme->approved_at) < $tradingDelayHours) {
-                throw new MarketSuspendedException($meme->ticker);
-            }
+            // Validate trading is allowed (TOCTOU protection - checks again after lock)
+            $this->validateTradingAllowed($meme);
 
             // Calculate actual cost with current supply
             $calculation = $this->calculateBuyCost($meme, $quantity);
