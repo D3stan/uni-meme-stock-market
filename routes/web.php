@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
     Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
     Route::get('/create', [CreateController::class, 'create'])->name('create');
+    Route::post('/meme/check-ticker', [CreateController::class, 'checkTicker'])->name('meme.check-ticker');
+    Route::post('/meme/store', [CreateController::class, 'store'])->name('meme.store');
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 
