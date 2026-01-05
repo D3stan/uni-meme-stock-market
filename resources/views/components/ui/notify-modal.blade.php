@@ -62,11 +62,11 @@
             actionBtn.className = 'flex-1 px-4 py-3 rounded-lg font-medium transition-colors bg-yellow-600 hover:bg-yellow-700 text-white';
         }
 
-        // Show modal using global helper
-        showModal('{{ $id }}');
+        // Show modal directly
+        modal.classList.remove('hidden');
 
         // Close handlers
-        const closeModal = () => hideModal('{{ $id }}');
+        const closeModal = () => modal.classList.add('hidden');
         actionBtn.onclick = closeModal;
         closeBtn.onclick = closeModal;
     }
