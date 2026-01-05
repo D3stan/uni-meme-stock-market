@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\CreateController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TradingController;
@@ -32,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
     Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
-    Route::get('/create', function () { return view('pages.meme.create'); })->name('create');
+    Route::get('/create', [CreateController::class, 'create'])->name('create');
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 
