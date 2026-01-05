@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="flex items-center gap-2">
                     <img src="{{ asset('icon.png') }}" alt="AlmaStreet" class="h-8 w-8">
-                    <span class="text-xl font-bold text-white">AlmaStreet</span>
+                    <span class="text-xl font-bold text-text-main">AlmaStreet</span>
                 </div>
                 
                 <!-- Login Button -->
@@ -20,7 +20,7 @@
     <!-- Hero Section -->
     <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-text-main mb-4 leading-tight">
                 Il mercato dei meme<br>
                 <span class="text-brand">universitari</span>
             </h1>
@@ -32,7 +32,7 @@
             <!-- CTA Button -->
             <div class="mb-12">
                 <a href="{{ route('auth.register') }}" class="inline-block w-full sm:w-auto">
-                    <x-forms.button variant="success" size="lg" class="w-full sm:w-auto px-12 py-4 text-base font-bold rounded-xl">
+                    <x-forms.button variant="primary" size="lg" class="w-full sm:w-auto px-12 py-4 text-base font-bold rounded-xl">
                         Inizia a fare Trading
                     </x-forms.button>
                 </a>
@@ -46,7 +46,7 @@
     <!-- Market Teaser Section (Paywall Effect) -->
     <div class="px-4 sm:px-6 lg:px-8 pb-16">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-xl font-semibold text-white mb-4">Top Gainers 🚀</h2>
+            <h2 class="text-xl font-semibold text-text-main mb-4">Top Gainers 🚀</h2>
             
             <div class="space-y-4 relative">
                 <!-- Meme Preview Cards (3 visible) -->
@@ -74,8 +74,8 @@
                     
                     <!-- Conversion Overlay -->
                     <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center bg-background/95 backdrop-blur-sm px-8 py-6 rounded-xl border border-gray-700">
-                            <p class="text-white font-medium mb-3">Sblocca il mercato completo</p>
+                        <div class="text-center bg-surface-50/95 backdrop-blur-sm px-8 py-6 rounded-xl border border-surface-200">
+                            <p class="text-text-main font-medium mb-3">Sblocca il mercato completo</p>
                             <a href="{{ route('auth.register') }}">
                                 <x-forms.button variant="outline" size="sm">
                                     Registrati ora
@@ -89,9 +89,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="mt-auto border-t border-gray-800 py-6">
+    <footer class="mt-auto border-t border-surface-200 py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500">
+            <p class="text-center text-sm text-text-muted">
                 © 2026 AlmaStreet • Il trading è virtuale e a scopo ludico
             </p>
         </div>

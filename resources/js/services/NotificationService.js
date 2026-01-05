@@ -102,8 +102,8 @@ class NotificationService {
             },
             warning: {
                 icon: 'warning',
-                iconClass: 'text-yellow-400',
-                bgClass: 'bg-yellow-500/20'
+                iconClass: 'text-brand-accent',
+                bgClass: 'bg-brand-accent/20'
             },
             info: {
                 icon: 'info',

@@ -12,9 +12,9 @@
     $formattedLiquid = number_format($liquid, 2);
 @endphp
 
-<div class="bg-gray-800 rounded-3xl p-6 border border-gray-700">
+<div class="bg-surface-100 rounded-3xl p-6 border border-surface-200">
     {{-- Title --}}
-    <h2 class="text-lg font-semibold text-white mb-6">Allocazione Patrimonio</h2>
+    <h2 class="text-lg font-semibold text-text-main mb-6">Allocazione Patrimonio</h2>
     
     <div class="flex flex-col items-center gap-6">
         {{-- Donut Chart Container --}}
@@ -22,8 +22,8 @@
             <canvas id="allocation-chart" data-invested="{{ $invested }}" data-liquid="{{ $liquid }}"></canvas>
             {{-- Center Text --}}
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <p class="text-xs text-gray-400 uppercase">Investito</p>
-                <p class="text-3xl font-black text-white">{{ $investedPct }}%</p>
+                <p class="text-xs text-text-muted uppercase">Investito</p>
+                <p class="text-3xl font-black text-text-main">{{ $investedPct }}%</p>
             </div>
         </div>
         
@@ -32,24 +32,24 @@
             {{-- Invested --}}
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span class="text-sm text-gray-300">Investito</span>
+                    <div class="w-3 h-3 rounded-full bg-brand"></div>
+                    <span class="text-sm text-text-muted">Investito</span>
                 </div>
                 <div class="text-right">
-                    <span class="text-sm font-bold text-white font-mono">{{ $formattedInvested }} CFU</span>
-                    <span class="text-xs text-gray-400 ml-2">({{ $investedPct }}%)</span>
+                    <span class="text-sm font-bold text-text-main font-mono">{{ $formattedInvested }} CFU</span>
+                    <span class="text-xs text-text-muted ml-2">({{ $investedPct }}%)</span>
                 </div>
             </div>
             
             {{-- Liquid --}}
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-gray-600"></div>
-                    <span class="text-sm text-gray-300">Liquidità</span>
+                    <div class="w-3 h-3 rounded-full bg-surface-200"></div>
+                    <span class="text-sm text-text-muted">Liquidità</span>
                 </div>
                 <div class="text-right">
-                    <span class="text-sm font-bold text-white font-mono">{{ $formattedLiquid }} CFU</span>
-                    <span class="text-xs text-gray-400 ml-2">({{ $liquidPct }}%)</span>
+                    <span class="text-sm font-bold text-text-main font-mono">{{ $formattedLiquid }} CFU</span>
+                    <span class="text-xs text-text-muted ml-2">({{ $liquidPct }}%)</span>
                 </div>
             </div>
         </div>

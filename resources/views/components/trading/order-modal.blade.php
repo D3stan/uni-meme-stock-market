@@ -81,36 +81,33 @@
                 </span>
             </button>
             
-            <div id="cost-accordion-content" class="hidden bg-gray-800/30 rounded-lg p-4 space-y-2">
+            <div id="cost-accordion-content" class="hidden bg-surface-50/30 rounded-lg p-4 space-y-2">
                 <div class="flex justify-between text-sm">
-                    <span class="text-gray-400">Subtotale</span>
-                    <span id="cost-subtotal" class="font-mono">0.00 CFU</span>
+                    <span class="text-text-muted">Subtotale</span>
+                    <span id="cost-subtotal" class="font-mono text-text-main">0.00 CFU</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                    <span class="text-gray-400">Fee (2%)</span>
-                    <span id="cost-fee" class="font-mono">0.00 CFU</span>
+                    <span class="text-text-muted">Fee (2%)</span>
+                    <span id="cost-fee" class="font-mono text-text-main">0.00 CFU</span>
                 </div>
-                <div class="h-px bg-gray-700 my-2"></div>
-                <div class="flex justify-between font-bold">
+                <div class="h-px bg-surface-200 my-2"></div>
+                <div class="flex justify-between font-bold text-text-main">
                     <span>Totale</span>
-                    <span id="cost-total" class="font-mono text-lg">0.00 CFU</span>
+                    <span id="cost-total" class="font-mono text-lg text-text-main">0.00 CFU</span>
                 </div>
             </div>
         </div>
 
         {{-- Loading State --}}
         <div id="modal-loading" class="hidden text-center py-4">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
-            <p class="text-sm text-gray-400 mt-2">Caricamento...</p>
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-brand"></div>
+            <p class="text-sm text-text-muted mt-2">Caricamento...</p>
         </div>
 
         {{-- CTA Button --}}
         <button 
             id="btn-confirm-order" 
-            class="w-full py-4 rounded-xl font-bold text-lg transition-all
-                   bg-green-500 text-gray-900 hover:bg-green-400
-                   disabled:opacity-50 disabled:cursor-not-allowed
-                   flex items-center justify-center gap-2">
+            class="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
             <span id="btn-spinner" class="hidden">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>

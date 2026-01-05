@@ -4,18 +4,18 @@
             <!-- Logo -->
             <div class="text-center mb-8">
                 <img src="{{ asset('icon.png') }}" alt="AlmaStreet" class="h-12 w-12 mx-auto mb-3">
-                <h1 class="text-2xl font-bold text-white mb-2">Crea il tuo account</h1>
-                <p class="text-sm text-gray-400">Usa la tua email istituzionale</p>
+                <h1 class="text-2xl font-bold text-text-main mb-2">Crea il tuo account</h1>
+                <p class="text-sm text-text-muted">Usa la tua email istituzionale</p>
             </div>
 
             <!-- Form Card -->
-            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-gray-800 shadow-xl">
+            <div class="bg-surface-100/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-surface-200 shadow-xl">
                 <form method="POST" action="{{ route('auth.register.post') }}" class="space-y-4">
                     @csrf
 
                     <!-- Email Field -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                        <label for="email" class="block text-sm font-medium text-text-muted mb-2">
                             Email Istituzionale
                         </label>
                         <x-forms.input
@@ -32,7 +32,7 @@
 
                     <!-- Name Field -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">
+                        <label for="name" class="block text-sm font-medium text-text-muted mb-2">
                             Nome Completo
                         </label>
                         <x-forms.input
@@ -49,7 +49,7 @@
 
                     <!-- Password Field -->
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                        <label for="password" class="block text-sm font-medium text-text-muted mb-2">
                             Password
                         </label>
                         <x-forms.input
@@ -65,7 +65,7 @@
 
                     <!-- Password Confirmation Field -->
                     <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-300 mb-2">
+                        <label for="password_confirmation" class="block text-sm font-medium text-text-muted mb-2">
                             Conferma Password
                         </label>
                         <x-forms.input
@@ -82,7 +82,7 @@
                     <!-- Submit Button -->
                     <x-forms.button 
                         type="submit" 
-                        variant="success"
+                        variant="primary"
                         class="w-full py-3 text-base font-bold rounded-xl mt-6"
                     >
                         Crea Account
@@ -92,9 +92,9 @@
 
             <!-- Footer Link -->
             <div class="text-center mt-6">
-                <p class="text-sm text-gray-400">
+                <p class="text-sm text-text-muted">
                     Hai già un account? 
-                    <a href="{{ route('auth.login') }}" class="text-green-500 hover:text-green-400 font-medium transition-colors">
+                    <a href="{{ route('auth.login') }}" class="text-brand hover:text-brand-light font-medium transition-colors">
                         Accedi
                     </a>
                 </p>

@@ -57,7 +57,7 @@
                             @endphp
                             
                             @if($isFirstColumn)
-                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}>
+                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
@@ -67,7 +67,7 @@
                                     @endif
                                 </th>
                             @else
-                                <td class="px-6 py-4 {{ $wrapClass }} text-sm text-gray-300 {{ $alignClass }}">
+                                <td class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
@@ -81,7 +81,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ count($columns) }}" class="px-6 py-12 text-center text-gray-400">
+                        <td colspan="{{ count($columns) }}" class="px-6 py-12 text-center text-text-muted">
                             {{ $emptyMessage }}
                         </td>
                     </tr>
@@ -91,7 +91,7 @@
     </div>
 
     @if($paginate && method_exists($rows, 'hasPages') && $rows->hasPages())
-        <div class="px-6 py-4 border-t border-gray-800">
+        <div class="px-6 py-4 border-t border-surface-200">
             {{ $rows->links() }}
         </div>
     @endif

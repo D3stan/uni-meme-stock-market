@@ -2,11 +2,11 @@
 
     {{-- Statistics --}}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-        <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="white" />
-        <x-ui.stat-card title="Lette" :value="number_format($stats['read'])" color="green-500" />
-        <x-ui.stat-card title="Non Lette" :value="number_format($stats['unread'])" color="yellow-500" />
+        <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="text-main" />
+        <x-ui.stat-card title="Lette" :value="number_format($stats['read'])" color="brand" />
+        <x-ui.stat-card title="Non Lette" :value="number_format($stats['unread'])" color="brand-accent" />
         <x-ui.stat-card title="Globali" :value="number_format($stats['global'])" color="brand-accent" />
-        <x-ui.stat-card title="Personali" :value="number_format($stats['personal'])" color="purple-500" />
+        <x-ui.stat-card title="Personali" :value="number_format($stats['personal'])" color="brand-accent" />
     </div>
 
     {{-- Filters --}}
@@ -23,7 +23,7 @@
             [
                 'label' => 'ID',
                 'key' => 'id',
-                'render' => fn($row) => '<span class="text-gray-400">#' . $row->id . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">#' . $row->id . '</span>'
             ],
             [
                 'label' => 'Data',
@@ -34,18 +34,18 @@
                 'label' => 'Utente',
                 'key' => 'user',
                 'render' => fn($row) => $row->user 
-                    ? '<span class="text-white font-medium">' . $row->user->name . '</span>' 
-                    : '<span class="px-2 py-1 bg-brand-accent/20 text-brand-accent rounded-full text-xs font-semibold">GLOBALE</span>'
+                    ? '<span class="text-text-main font-medium">' . $row->user->name . '</span>' 
+                    : '<span class="badge-info">GLOBALE</span>'
             ],
             [
                 'label' => 'Titolo',
                 'key' => 'title',
-                'render' => fn($row) => '<span class="text-white font-semibold">' . htmlspecialchars($row->title) . '</span>'
+                'render' => fn($row) => '<span class="text-text-main font-semibold">' . htmlspecialchars($row->title) . '</span>'
             ],
             [
                 'label' => 'Messaggio',
                 'key' => 'message',
-                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
             ],
             [
                 'label' => 'Stato',
@@ -53,9 +53,9 @@
                 'align' => 'center',
                 'render' => function($row) {
                     if ($row->is_read) {
-                        return '<span class="px-2 py-1 bg-green-600/20 text-green-500 rounded-full text-xs font-semibold">LETTA</span>';
+                        return '<span class="badge-positive">LETTA</span>';
                     } else {
-                        return '<span class="px-2 py-1 bg-yellow-600/20 text-yellow-500 rounded-full text-xs font-semibold">NON LETTA</span>';
+                        return '<span class="badge-info">NON LETTA</span>';
                     }
                 }
             ],

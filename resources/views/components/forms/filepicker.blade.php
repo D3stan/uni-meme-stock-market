@@ -17,19 +17,19 @@
 @endphp
 
 <div class="p-6">
-    <div id="{{ $uploadBoxId }}" class="relative h-60 border-2 border-dashed border-gray-600 rounded-xl bg-gray-850 flex flex-col items-center justify-center cursor-pointer hover:border-gray-500 transition-colors">
+    <div id="{{ $uploadBoxId }}" class="relative h-60 border-2 border-dashed border-surface-200 rounded-xl bg-surface-50 flex flex-col items-center justify-center cursor-pointer hover:border-brand transition-colors">
         
         {{-- Empty State --}}
         <div id="{{ $emptyStateId }}" class="text-center">
-            <span aria-hidden="true" class="material-icons text-gray-400 text-5xl mb-3">upload</span>
-            <p class="text-sm text-gray-400">{{ $emptyText }}</p>
-            <p class="text-xs text-gray-500 mt-1">{{ $formats }} (Max {{ $maxSize }})</p>
+            <span aria-hidden="true" class="material-icons text-text-muted text-5xl mb-3">upload</span>
+            <p class="text-sm text-text-muted">{{ $emptyText }}</p>
+            <p class="text-xs text-text-muted mt-1">{{ $formats }} (Max {{ $maxSize }})</p>
         </div>
 
         {{-- Image Preview (hidden by default) --}}
         <div id="{{ $previewId }}" class="hidden w-full h-full">
             <img id="{{ $previewImgId }}" src="" alt="Preview" class="w-full h-full object-contain rounded-xl">
-            <button type="button" id="{{ $changeBtnId }}" class="absolute top-3 right-3 px-3 py-1.5 bg-gray-800/90 hover:bg-gray-700 border border-gray-600 text-white text-xs font-medium rounded-lg transition-colors">
+            <button type="button" id="{{ $changeBtnId }}" class="absolute top-3 right-3 px-3 py-1.5 bg-surface-200/90 hover:bg-surface-200 border border-surface-200 text-text-main text-xs font-medium rounded-lg transition-colors">
                 Cambia
             </button>
         </div>

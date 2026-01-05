@@ -58,7 +58,7 @@
             <div>
                 <span class="{{ $labelColorClass }}">{{ $label }}</span>
                 @if($sublabel)
-                    <p class="text-gray-600 text-sm mt-0.5">{{ $sublabel }}</p>
+                    <p class="text-text-muted text-sm mt-0.5">{{ $sublabel }}</p>
                 @endif
             </div>
         </div>
@@ -78,7 +78,7 @@
             <div>
                 <span class="{{ $labelColorClass }}">{{ $label }}</span>
                 @if($sublabel)
-                    <p class="{{ $disabled ? 'text-gray-700' : 'text-gray-600' }} text-sm mt-0.5">{{ $sublabel }}</p>
+                    <p class="text-text-muted text-sm mt-0.5">{{ $sublabel }}</p>
                 @endif
             </div>
         </div>

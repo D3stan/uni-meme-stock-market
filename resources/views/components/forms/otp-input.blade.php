@@ -1,6 +1,6 @@
 @props([
     'length' => 6,
-    'inputClass' => 'w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-input-background border-2 border-gray-700 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all',
+    'inputClass' => 'w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-surface-50 border-2 border-surface-200 rounded-lg focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all',
 ])
 
 {{-- OTP Input Container --}}

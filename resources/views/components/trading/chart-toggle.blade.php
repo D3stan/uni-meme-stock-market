@@ -46,9 +46,9 @@
             <img src="{{ asset('storage/data/' . $meme->creator_id . '/' . basename($meme->image_path)) }}" 
                  alt="{{ $meme->title }}" 
                  class="w-full h-auto"
-                 onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-gray-500\'><span class=\'material-icons text-6xl\'>image_not_supported</span></div>'">
+                 onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\'>image_not_supported</span></div>'">
         @else
-            <div class="flex items-center justify-center h-72 text-gray-500">
+            <div class="flex items-center justify-center h-72 text-text-muted">
                 <span class="material-icons text-6xl">image_not_supported</span>
             </div>
         @endif

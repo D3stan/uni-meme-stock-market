@@ -17,7 +17,7 @@
     $isPortfolioMode = $mode === 'portfolio';
 @endphp
 
-<div {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-gray-800 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-gray-700']) }}>
+<div {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-surface-200']) }}>
     {{-- Immagine Meme --}}
     <img 
         src="{{  asset($image) }}" 
@@ -27,15 +27,15 @@
     
     {{-- Contenuto Centrale --}}
     <div class="flex-1 min-w-0">
-        <h3 class="text-sm font-medium text-white truncate">{{ $name }}</h3>
-        <p class="text-xs text-gray-400">${{ $ticker }}</p>
+        <h3 class="text-sm font-medium text-text-main truncate">{{ $name }}</h3>
+        <p class="text-xs text-text-muted">${{ $ticker }}</p>
     </div>
     
     @if($isPortfolioMode)
         {{-- Portfolio Mode: Quantity & Value --}}
         <div class="flex-shrink-0 text-center">
-            <p class="text-sm font-bold text-white">{{ number_format($quantity) }} pz</p>
-            <p class="text-xs text-gray-400 font-mono">≈{{ number_format($currentValue, 0) }} CFU</p>
+            <p class="text-sm font-bold text-text-main">{{ number_format($quantity) }} pz</p>
+            <p class="text-xs text-text-muted font-mono">≈{{ number_format($currentValue, 0) }} CFU</p>
         </div>
     @else
         {{-- Market Mode: Sparkline Chart --}}
@@ -55,7 +55,7 @@
     
     {{-- Prezzo/Valore e Variazione --}}
     <div class="text-right flex-shrink-0">
-        <p class="text-sm font-bold font-mono text-white">
+        <p class="text-sm font-bold font-mono text-text-main">
             {{ $isPortfolioMode ? number_format($currentValue, 2) : number_format($price, 2) }} CFU
         </p>
         <x-ui.badge-change :value="$change" size="sm" class="mt-1" />

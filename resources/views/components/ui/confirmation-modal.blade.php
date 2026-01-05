@@ -4,7 +4,7 @@
     'message' => 'Sei sicuro di voler procedere?',
     'confirmText' => 'Conferma',
     'cancelText' => 'Annulla',
-    'confirmClass' => 'bg-red-600 hover:bg-red-700',
+    'confirmClass' => 'bg-brand-danger hover:bg-brand-danger-dark',
     'action' => '#',
     'method' => 'POST',
 ])

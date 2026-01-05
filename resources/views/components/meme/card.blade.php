@@ -12,7 +12,7 @@
 ])
 
 
-<div {{ $attributes->merge(['class' => 'bg-gray-800 rounded-4xl overflow-hidden shadow-lg border border-gray-700']) }}>
+<div {{ $attributes->merge(['class' => 'card-base']) }}>
     {{-- Header Card --}}
     <div class="flex items-center justify-between p-4">
         <div class="flex items-center gap-3">
@@ -23,8 +23,8 @@
                 class="w-8 h-8 rounded-full object-cover"
             >
             <div>
-                <h3 class="text-sm font-medium text-white">{{ $name }}</h3>
-                <p class="text-xs text-gray-400">${{ $ticker }}</p>
+                <h3 class="text-sm font-medium text-text-main">{{ $name }}</h3>
+                <p class="text-xs text-text-muted">${{ $ticker }}</p>
             </div>
         </div>
         
@@ -32,12 +32,12 @@
         @if($status)
             @php
                 $statusClasses = match($status) {
-                    'new' => 'bg-green-500/20 text-green-400 border-green-500/30',
-                    'pending' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-                    default => 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+                    'new' => 'badge-positive',
+                    'pending' => 'badge-info',
+                    default => 'badge-neutral',
                 };
             @endphp
-            <span class="px-2 py-1 text-xs font-semibold rounded-md border {{ $statusClasses }}">
+            <span class="{{ $statusClasses }}">
                 {{ ucfirst($status) }}
             </span>
         @endif
@@ -57,8 +57,8 @@
         <div class="flex items-end justify-between mb-4">
             {{-- Prezzo --}}
             <div>
-                <p class="text-2xl font-bold font-mono text-white">{{ number_format($price, 2) }}</p>
-                <p class="text-xs text-gray-400">Prezzo</p>
+                <p class="text-2xl font-bold font-mono text-text-main">{{ number_format($price, 2) }}</p>
+                <p class="text-xs text-text-muted">Prezzo</p>
             </div>
             
             {{-- Badge Variazione --}}
@@ -67,7 +67,7 @@
         
         {{-- Bottone Trade --}}
         <a href="{{ $tradeUrl }}" class="block">
-            <x-forms.button variant="success" class="w-full">
+            <x-forms.button variant="primary" class="w-full">
                 Trade
             </x-forms.button>
         </a>

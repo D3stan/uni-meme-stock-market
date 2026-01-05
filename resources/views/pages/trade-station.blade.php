@@ -1,11 +1,11 @@
 {{-- Trade Station Page - Custom layout extending base (no nav bars) --}}
 <x-base :title="$meme->ticker">
-    <div class="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-24">
+    <div class="min-h-screen bg-surface-50 pb-24">
         {{-- Top Navigation Bar --}}
-        <div class="sticky top-0 z-40 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
+        <div class="sticky top-0 z-40 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
             <div class="flex items-center justify-between px-4 py-3">
                 {{-- Back Button --}}
-                <a href="{{ route('market') }}" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+                <a href="{{ route('market') }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
                     <span class="material-icons text-2xl">arrow_back</span>
                 </a>
 
@@ -13,7 +13,7 @@
                 <h1 class="text-xl font-bold">{{ $meme->ticker }}</h1>
 
                 {{-- Watchlist/Favorite Button --}}
-                <button class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+                <button class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
                     <span class="material-icons text-2xl">star_outline</span>
                 </button>
             </div>

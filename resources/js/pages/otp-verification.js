@@ -60,7 +60,7 @@ export function initOtpVerification() {
             hiddenInput.value = otp;
 
             inputs.forEach(input => {
-                input.classList.remove('border-gray-700');
+                input.classList.remove('border-surface-200');
                 input.classList.add('border-brand', 'bg-brand/20');
             });
 
