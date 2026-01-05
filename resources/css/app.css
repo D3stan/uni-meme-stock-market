@@ -13,16 +13,33 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     
-    /* Colors */
-    --color-success-light: #10b981;
-    --color-danger-light: #ef4444;
-    --color-background: #0f2216;
-    --color-input-background: #1a2e23;
+    /* ============================================
+       Semantic Color System - AlmaStreet
+       ============================================ */
+    
+    /* Brand Identity */
+    --color-brand: #10b981;           /* Emerald 500 - Primary CTA, Success, Profit, Buy */
+    --color-brand-dark: #064e3b;      /* Emerald 900 - Darker variant for hover/active */
+    --color-brand-light: #34d399;     /* Emerald 400 - Lighter variant for hover */
+    
+    --color-brand-danger: #ef4444;    /* Red 500 - Sell, Loss, Error, Destructive actions */
+    --color-brand-danger-dark: #991b1b; /* Red 800 - Darker variant for hover */
+    
+    --color-brand-accent: #3b82f6;    /* Blue 500 - Info, Links, Secondary actions */
+    
+    /* Dark Mode Surface System (Layered Depth) */
+    --color-surface-50: #0f172a;      /* Slate 900 - Deepest layer, main background */
+    --color-surface-100: #1e293b;     /* Slate 800 - Cards, modals, elevated sections */
+    --color-surface-200: #334155;     /* Slate 700 - Borders, inputs, hover states */
+    
+    /* Text Hierarchy */
+    --color-text-main: #f8fafc;       /* Slate 50 - Primary text */
+    --color-text-muted: #94a3b8;      /* Slate 400 - Secondary/muted text */
 }
 
 @layer base {
     body {
-        @apply bg-background text-white min-h-screen;
+        @apply bg-surface-50 text-text-main min-h-screen;
     }
 
     .hide-scrollbar {
@@ -34,7 +51,56 @@
     }
 }
 
-/* Custom modification */
 @layer components {
+    /* ============================================
+       Financial Text Utilities
+       ============================================ */
+    .price-positive {
+        @apply text-brand font-bold font-mono;
+    }
     
+    .price-negative {
+        @apply text-brand-danger font-bold font-mono;
+    }
+    
+    /* ============================================
+       Semantic Badges
+       ============================================ */
+    .badge-positive {
+        @apply bg-brand/10 text-brand border border-brand/20 px-2 py-0.5 rounded text-xs font-bold uppercase;
+    }
+    
+    .badge-negative {
+        @apply bg-brand-danger/10 text-brand-danger border border-brand-danger/20 px-2 py-0.5 rounded text-xs font-bold uppercase;
+    }
+    
+    .badge-neutral {
+        @apply bg-surface-200/30 text-text-muted border border-surface-200 px-2 py-0.5 rounded text-xs font-bold uppercase;
+    }
+    
+    /* ============================================
+       Structural Components
+       ============================================ */
+    .card-base {
+        @apply bg-surface-100 border border-surface-200 rounded-2xl shadow-lg overflow-hidden;
+    }
+    
+    .input-base {
+        @apply bg-surface-50 border border-surface-200 text-text-main placeholder:text-text-muted focus:ring-brand focus:border-brand rounded-xl block w-full p-3 transition-colors;
+    }
+    
+    /* ============================================
+       Button Variants
+       ============================================ */
+    .btn-primary {
+        @apply bg-brand hover:bg-brand-light text-surface-50 font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand/20;
+    }
+    
+    .btn-danger {
+        @apply bg-brand-danger hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand-danger/20;
+    }
+    
+    .btn-secondary {
+        @apply bg-surface-200 hover:bg-surface-200/80 text-text-main font-bold py-3 px-6 rounded-xl transition-colors;
+    }
 }
