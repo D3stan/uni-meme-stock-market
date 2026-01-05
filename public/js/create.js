@@ -89,11 +89,11 @@ document.addEventListener('DOMContentLoaded', function() {
             errors.push('Devi caricare un\'immagine');
         } else {
             const file = actualImageInput.files[0];
-            const maxSize = 5 * 1024 * 1024; // 5MB
+            const maxSize = 10 * 1024 * 1024;
             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/heic'];
             
             if (file.size > maxSize) {
-                errors.push('L\'immagine non può superare 5MB');
+                errors.push('L\'immagine non può superare 10MB');
             }
             
             if (!allowedTypes.includes(file.type)) {

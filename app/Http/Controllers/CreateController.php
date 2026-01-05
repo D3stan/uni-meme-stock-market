@@ -57,7 +57,7 @@ class CreateController extends Controller
             'title' => 'required|string|min:3|max:50',
             'ticker' => 'required|string|min:3|max:6|unique:memes,ticker',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120', // 5MB max
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
             'text_alt' => 'nullable|string|max:500',
         ]);
 

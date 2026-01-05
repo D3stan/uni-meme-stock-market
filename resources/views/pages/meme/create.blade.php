@@ -11,7 +11,7 @@
                 accept="image/*"
                 emptyText="Tocca per caricare un meme"
                 formats=".JPG, .PNG .WEBP .GIF .HEIC supportati"
-                maxSize="5MB"
+                maxSize="10MB"
             />
 
             {{-- Form Data --}}

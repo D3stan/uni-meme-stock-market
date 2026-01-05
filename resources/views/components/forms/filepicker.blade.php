@@ -2,7 +2,7 @@
     'name' => 'image',
     'id' => null,
     'accept' => 'image/*',
-    'maxSize' => '5MB',
+    'maxSize' => '10MB',
     'emptyText' => 'Tocca per caricare',
     'formats' => '',
 ])

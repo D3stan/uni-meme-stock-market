@@ -725,7 +725,7 @@ graph TD
     *   "La fee non è rimborsabile. Il meme sarà controllato dall'admin."
 
 **Validazioni:**
-*   Immagine: max 5MB, formati JPG/PNG/GIF.
+*   Immagine: max 10MB, formati JPG/PNG/GIF.
 *   Titolo: min 3 caratteri, max 50.
 *   Ticker: min 3, max 6, univoco (verifica backend).
 
