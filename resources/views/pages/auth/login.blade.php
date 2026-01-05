@@ -46,9 +46,6 @@
                         <x-forms.validation-error field="password" />
                     </div>
 
-                    <!-- General Errors -->
-                    <x-forms.validation-error />
-
                     <!-- Submit Button -->
                     <x-forms.button 
                         type="submit" 

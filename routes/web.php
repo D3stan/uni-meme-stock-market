@@ -6,6 +6,7 @@ use App\Http\Controllers\CreateController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TradingController;
+use App\Http\Controllers\ProfileController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
@@ -27,6 +28,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
 });
 
+// Public avatar route (no auth required to view avatars)
+Route::get('/storage/data/{userId}/{filename}', [ProfileController::class, 'serveAvatar'])
+    ->where('userId', '[0-9]+')
+    ->where('filename', 'avatar\.(jpg|jpeg|png|gif)')
+    ->name('avatar.serve');
+
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -39,7 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 
-    // Upload // Debug (to be removed)
+    // Profile settings routes
+    Route::get('/profile/settings', [ProfileController::class, 'showSettings'])->name('profile.settings');
+    Route::put('/profile/settings', [ProfileController::class, 'updateSettings'])->name('profile.settings.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::post('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
+    Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 
     // Trading routes
     Route::get('/trade/{meme}', [TradingController::class, 'show'])->name('trade');

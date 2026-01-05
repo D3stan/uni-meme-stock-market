@@ -38,7 +38,6 @@
                     {{-- Error Display --}}
                     <x-forms.validation-error field="code" />
                     <x-forms.validation-error field="email" />
-                    <x-forms.validation-error />
 
                     {{-- Loading State --}}
                     <div id="loading-state" class="hidden text-center mb-4">
