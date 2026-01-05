@@ -10,9 +10,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Header --}}
             <header class="flex items-center justify-between mb-8">
-                <h1 class="text-3xl font-bold text-white">{{ $title }}</h1>
-                <a href="{{ $href }}" aria-label="{{ $label }}" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                    <span class="material-icons text-white text-3xl" aria-hidden="true">{{ $icon }}</span>
+                <h1 class="text-3xl font-bold text-text-main">{{ $title }}</h1>
+                <a href="{{ $href }}" aria-label="{{ $label }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
+                    <span class="material-icons text-text-main text-3xl" aria-hidden="true">{{ $icon }}</span>
                 </a>
             </header>
             <main>

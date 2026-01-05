@@ -3,12 +3,12 @@
         
         {{-- Test Input Component --}}
         <section>
-            <h1 class="text-2xl font-bold text-white mb-6">Test Input Component</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Input Component</h1>
             
             <div class="space-y-6">
                 {{-- Input base --}}
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-white">Email</label>
+                    <label class="block mb-2 text-sm font-medium text-text-main">Email</label>
                     <x-forms.input 
                         name="email" 
                         type="email" 
@@ -19,7 +19,7 @@
                 
                 {{-- Input con valore --}}
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-white">Password</label>
+                    <label class="block mb-2 text-sm font-medium text-text-main">Password</label>
                     <x-forms.input 
                         name="username" 
                         icon="lock" 
@@ -30,7 +30,7 @@
                 
                 {{-- Input disabled--}}
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-white">CFU (Disabled)</label>
+                    <label class="block mb-2 text-sm font-medium text-text-main">CFU (Disabled)</label>
                     <x-forms.input 
                         name="cfu" 
                         value="1000" 
@@ -42,12 +42,12 @@
 
         {{-- Test Button Component --}}
         <section>
-            <h1 class="text-2xl font-bold text-white mb-6">Test Button Component</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Button Component</h1>
             
             <div class="space-y-6">
                 {{-- Variants --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Variants</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Variants</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-forms.button variant="primary">Primary</x-forms.button>
                         <x-forms.button variant="secondary">Secondary</x-forms.button>
@@ -59,7 +59,7 @@
 
                 {{-- Size --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Size</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Size</h3>
                     <div class="flex flex-wrap items-center gap-3">
                         <x-forms.button size="sm">Small</x-forms.button>
                         <x-forms.button size="md">Medium</x-forms.button>
@@ -69,7 +69,7 @@
 
                 {{-- Status --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Status</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Status</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-forms.button>Attivo</x-forms.button>
                         <x-forms.button disabled>Disabilitato</x-forms.button>
@@ -78,7 +78,7 @@
 
                 {{-- Example: Trading --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Trading</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Trading</h3>
                     <div class="flex gap-3">
                         <x-forms.button variant="success" class="flex-1">
                             Compra $DOGE
@@ -93,12 +93,12 @@
 
         {{-- Test Badge Change Component --}}
         <section>
-            <h1 class="text-2xl font-bold text-white mb-6">Test Badge Price Variation</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Badge Price Variation</h1>
             
             <div class="space-y-6">
                 {{-- Variations positive/negative/neutral --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Variations</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Variations</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-ui.badge-change :value="5.43" />
                         <x-ui.badge-change :value="0.00" />
@@ -108,7 +108,7 @@
 
                 {{-- Size --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Size</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Size</h3>
                     <div class="flex flex-wrap items-center gap-3">
                         <x-ui.badge-change :value="3.5" size="sm" />
                         <x-ui.badge-change :value="3.5" size="md" />
@@ -118,7 +118,7 @@
 
                 {{-- With/without icon --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">With/without Icon</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">With/without Icon</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-ui.badge-change :value="5.43" :showIcon="true" />
                         <x-ui.badge-change :value="-2.18" :showIcon="false" />
@@ -129,12 +129,12 @@
 
         {{-- Test Meme Card Components --}}
         <section>
-            <h1 class="text-2xl font-bold text-white mb-6">Test Meme Card Components</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Meme Card Components</h1>
             
             <div class="space-y-8">
                 {{-- Compact Card (per Landing/Profilo) --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Compact Card(Landing/Profile)</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Compact Card(Landing/Profile)</h3>
                     <div class="space-y-3">
                         <x-meme.card-compact 
                             name="Meme Everywhere"
@@ -156,7 +156,7 @@
 
                 {{-- Extended Card (Marketplace) --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Extended Card (Marketplace)</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Extended Card (Marketplace)</h3>
                     <div class="space-y-4">
                         <x-meme.card 
                             name="Un segreto è un segreto"
@@ -186,12 +186,12 @@
 
         {{-- Test Chip Component --}}
         <section>
-            <h1 class="text-2xl font-bold text-white mb-6">Test Chip Component</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Chip Component</h1>
             
             <div class="space-y-6">
                 {{-- Base Variants --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Variants</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Variants</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-ui.chip variant="white">Tutti</x-ui.chip>
                         <x-ui.chip variant="outline">Outline</x-ui.chip>
@@ -201,7 +201,7 @@
 
                 {{-- With/Without emoji --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">With/Without Emoji</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">With/Without Emoji</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-ui.chip variant="outline" icon="🚀">Top Gainer</x-ui.chip>
                         <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
@@ -210,7 +210,7 @@
 
                 {{-- Active state --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Active state</h3>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Active state</h3>
                     <div class="flex flex-wrap gap-3">
                         <x-ui.chip active>Tutti</x-ui.chip>
                         <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
@@ -219,8 +219,8 @@
 
                 {{-- Marketplace Filters --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-400 mb-3">Marketplace Filters</h3>
-                    <div class="bg-input-background rounded-lg p-4 border border-gray-700">
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Marketplace Filters</h3>
+                    <div class="bg-surface-50 rounded-lg p-4 border border-surface-200">
                         <div class="flex gap-2 overflow-x-auto">
                             <x-ui.chip variant="white">Tutti</x-ui.chip>
                             <x-ui.chip variant="outline" icon="🔥">Top Gainer</x-ui.chip>

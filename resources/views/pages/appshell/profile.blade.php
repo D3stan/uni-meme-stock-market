@@ -22,7 +22,7 @@
         
         {{-- Version Footer 
         <div class="text-center mt-8 mb-4">
-            <p class="text-gray-600 text-sm">v1.1.0 (Build 405)</p>
+            <p class="text-text-muted text-sm">v1.1.0 (Build 405)</p>
         </div>--}}
         
     </div>
