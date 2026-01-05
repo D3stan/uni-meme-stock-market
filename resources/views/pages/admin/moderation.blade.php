@@ -77,7 +77,7 @@
                     data-text-alt="' . htmlspecialchars($row->text_alt ?? '') . '"
                     data-creator="' . htmlspecialchars($row->creator->name) . '"
                     data-creator-id="' . $row->creator_id . '"
-                    data-creator-avatar="' . htmlspecialchars($row->creator->avatar ?? 'https://via.placeholder.com/40') . '"
+                    data-creator-avatar="' . htmlspecialchars($row->creator->avatarUrl()) . '"
                     data-price="' . $row->current_price . '"
                     data-status="' . $row->status . '"
                     title="Visualizza meme"

@@ -25,11 +25,10 @@
             />
         </div>
 
-        {{-- Text Alternative (for future implementation) --}}
+        {{-- Text Alternative --}}
         <div class="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
             <h3 class="text-sm font-semibold text-gray-400 mb-2">Alternativa Testuale</h3>
             <p id="meme-alt-text" class="text-gray-300 text-sm">
-                [Campo da implementare nel database]
             </p>
         </div>
 
