@@ -69,19 +69,12 @@
                         SICUREZZA
                     </h2>
                     
-                    <button 
+                    <x-profile.settings-button 
+                        icon="lock"
+                        label="Cambia Password"
                         type="button"
                         onclick="openModal('password-modal')"
-                        class="w-full bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition-colors flex items-center justify-between group"
-                    >
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-gray-700 transition-colors">
-                                <span class="material-icons text-white text-xl">lock</span>
-                            </div>
-                            <span class="text-white font-medium">Cambia Password</span>
-                        </div>
-                        <span class="material-icons text-gray-600 group-hover:text-gray-400 transition-colors">chevron_right</span>
-                    </button>
+                    />
                 </section>
 
                 {{-- NOTIFICHE Section --}}
@@ -111,12 +104,12 @@
                         </div>
 
                         {{-- Comunicazioni Rettorato Toggle (Mandatory) --}}
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between opacity-60">
                             <div>
-                                <h3 class="text-white font-medium mb-1">Comunicazioni Rettorato</h3>
-                                <p class="text-gray-500 text-sm">Obbligatorio per tutti gli studenti</p>
+                                <h3 class="text-gray-600 font-medium mb-1">Comunicazioni Rettorato</h3>
+                                <p class="text-gray-700 text-sm">Obbligatorio per tutti gli studenti</p>
                             </div>
-                            <label class="relative inline-flex items-center cursor-not-allowed opacity-75">
+                            <label class="relative inline-flex items-center cursor-not-allowed">
                                 <input 
                                     type="checkbox" 
                                     name="notify_rector" 
@@ -125,7 +118,7 @@
                                     disabled
                                     class="sr-only peer"
                                 >
-                                <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-600"></div>
+                                <div class="w-11 h-6 bg-gray-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray-600 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gray-600 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-700"></div>
                             </label>
                         </div>
                     </div>
@@ -142,34 +135,21 @@
                 
                 <div class="space-y-3">
                     {{-- Disattiva Account --}}
-                    <button 
+                    <x-profile.settings-button 
+                        icon="pause_circle"
+                        label="Disattiva Account"
                         type="button"
                         onclick="openModal('deactivate-modal')"
-                        class="w-full bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition-colors flex items-center justify-between group"
-                    >
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-gray-700 transition-colors">
-                                <span class="material-icons text-gray-400 text-xl">pause_circle</span>
-                            </div>
-                            <span class="text-white font-medium">Disattiva Account</span>
-                        </div>
-                        <span class="material-icons text-gray-600 group-hover:text-gray-400 transition-colors">chevron_right</span>
-                    </button>
+                    />
 
                     {{-- Elimina Account --}}
-                    <button 
+                    <x-profile.settings-button 
+                        icon="delete_forever"
+                        label="Elimina Account"
                         type="button"
+                        variant="danger"
                         onclick="openModal('delete-modal')"
-                        class="w-full bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-red-900 transition-colors flex items-center justify-between group"
-                    >
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-red-900/20 rounded-full flex items-center justify-center group-hover:bg-red-900/30 transition-colors">
-                                <span class="material-icons text-red-500 text-xl">delete_forever</span>
-                            </div>
-                            <span class="text-red-500 font-medium">Elimina Account</span>
-                        </div>
-                        <span class="material-icons text-red-500 group-hover:text-red-400 transition-colors">chevron_right</span>
-                    </button>
+                    />
                 </div>
 
                 <p class="text-gray-600 text-xs text-center mt-4 px-4">
@@ -219,62 +199,14 @@
     </div>
 
     @push('page-scripts')
-    <script>
-        // Form submission handler
-        document.getElementById('settings-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast('check_circle', data.message || 'Modifiche salvate con successo!', 'success');
-                } else {
-                    showToast('error', data.message || 'Errore durante il salvataggio', 'error');
-                }
-            })
-            .catch(error => {
-                showToast('error', 'Si è verificato un errore. Riprova.', 'error');
-            });
-        });
-
-        function showToast(icon, message, type) {
-            const toast = document.getElementById('toast-notification');
-            const toastIcon = document.getElementById('toast-icon');
-            const toastMessage = document.getElementById('toast-message');
-            const toastContent = document.getElementById('toast-content');
-            
-            toastIcon.textContent = icon;
-            toastMessage.textContent = message;
-            
-            // Set colors based on type
-            if (type === 'success') {
-                toastIcon.className = 'material-icons text-2xl text-green-500';
-                toastContent.className = 'bg-gray-900 border border-green-900 rounded-2xl p-4 shadow-lg';
-            } else {
-                toastIcon.className = 'material-icons text-2xl text-red-500';
-                toastContent.className = 'bg-gray-900 border border-red-900 rounded-2xl p-4 shadow-lg';
-            }
-            
-            toast.classList.remove('hidden');
-            
-            setTimeout(() => {
-                closeToast();
-            }, 4000);
-        }
-
-        function closeToast() {
-            document.getElementById('toast-notification').classList.add('hidden');
-        }
-
+    @vite(['resources/js/pages/settings.js'])
+    <script type="module">
+        import { showToast, closeToast } from '../../js/pages/settings.js';
+        
+        // Make functions available globally for onclick handlers
+        window.showToast = showToast;
+        window.closeToast = closeToast;
+        
         // Success/error messages from server
         @if(session('success'))
             showToast('check_circle', "{{ session('success') }}", 'success');

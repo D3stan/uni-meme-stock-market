@@ -29,13 +29,13 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'notify_dividends' => ['nullable', 'boolean'],
-        ]);
-
         try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'notify_dividends' => ['nullable'],
+            ]);
+
             // Update name
             $user->name = $validated['name'];
 
@@ -53,21 +53,35 @@ class ProfileController extends Controller
 
             $user->save();
 
-            if ($request->expectsJson()) {
+            if ($request->expectsJson() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Modifiche salvate con successo!'
+                    'message' => 'Modifiche salvate con successo!',
+                    'user' => [
+                        'name' => $user->name,
+                        'avatar' => $user->avatar ? asset('storage/' . $user->avatar) : null,
+                    ]
                 ]);
             }
 
             return redirect()->route('profile.settings')
                 ->with('success', 'Modifiche salvate con successo!');
 
-        } catch (\Exception $e) {
-            if ($request->expectsJson()) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->expectsJson() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Errore durante il salvataggio delle modifiche.'
+                    'message' => 'Errore di validazione: ' . collect($e->errors())->flatten()->first()
+                ], 422);
+            }
+            throw $e;
+        } catch (\Exception $e) {
+            \Log::error('Profile update error: ' . $e->getMessage());
+            
+            if ($request->expectsJson() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Errore durante il salvataggio: ' . $e->getMessage()
                 ], 500);
             }
 
