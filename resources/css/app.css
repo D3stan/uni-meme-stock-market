@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import "flowbite/src/themes/default";
 
 @plugin "flowbite/plugin";
 
@@ -15,26 +14,42 @@
     
     /* ============================================
        Semantic Color System - AlmaStreet
+       Override Flowbite defaults with our brand colors
        ============================================ */
     
-    /* Brand Identity */
-    --color-brand: #10b981;           /* Emerald 500 - Primary CTA, Success, Profit, Buy */
-    --color-brand-dark: #064e3b;      /* Emerald 900 - Darker variant for hover/active */
-    --color-brand-light: #34d399;     /* Emerald 400 - Lighter variant for hover */
+    /* Brand Identity - Green for Success/Buy/Primary */
+    --color-brand: #10b981;
+    --color-brand-dark: #064e3b;
+    --color-brand-light: #34d399;
     
-    --color-brand-danger: #ef4444;    /* Red 500 - Sell, Loss, Error, Destructive actions */
-    --color-brand-danger-dark: #991b1b; /* Red 800 - Darker variant for hover */
+    /* Danger - Red for Sell/Loss/Error */
+    --color-brand-danger: #ef4444;
+    --color-brand-danger-dark: #991b1b;
     
-    --color-brand-accent: #3b82f6;    /* Blue 500 - Info, Links, Secondary actions */
+    /* Accent - Blue only for Info */
+    --color-brand-accent: #3b82f6;
     
-    /* Dark Mode Surface System (Layered Depth) */
-    --color-surface-50: #0f172a;      /* Slate 900 - Deepest layer, main background */
-    --color-surface-100: #1e293b;     /* Slate 800 - Cards, modals, elevated sections */
-    --color-surface-200: #334155;     /* Slate 700 - Borders, inputs, hover states */
+    /* Dark Mode Surfaces */
+    --color-surface-50: #0f172a;
+    --color-surface-100: #1e293b;
+    --color-surface-200: #334155;
     
-    /* Text Hierarchy */
-    --color-text-main: #f8fafc;       /* Slate 50 - Primary text */
-    --color-text-muted: #94a3b8;      /* Slate 400 - Secondary/muted text */
+    /* Text */
+    --color-text-main: #f8fafc;
+    --color-text-muted: #94a3b8;
+    
+    /* Override Flowbite's primary blue with our brand green */
+    --color-primary-50: #ecfdf5;
+    --color-primary-100: #d1fae5;
+    --color-primary-200: #a7f3d0;
+    --color-primary-300: #6ee7b7;
+    --color-primary-400: #34d399;
+    --color-primary-500: #10b981;
+    --color-primary-600: #059669;
+    --color-primary-700: #047857;
+    --color-primary-800: #065f46;
+    --color-primary-900: #064e3b;
+    --color-primary-950: #022c22;
 }
 
 @layer base {

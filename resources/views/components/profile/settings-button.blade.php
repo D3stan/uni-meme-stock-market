@@ -11,36 +11,36 @@
 
 @php
     $iconBgClass = match($variant) {
-        'danger' => 'bg-red-900/20 group-hover:bg-red-900/30',
-        'disabled' => 'bg-gray-800/50',
-        default => 'bg-gray-800 group-hover:bg-gray-700',
+        'danger' => 'bg-brand-danger/20 group-hover:bg-brand-danger/30',
+        'disabled' => 'bg-surface-200/50',
+        default => 'bg-surface-200 group-hover:bg-surface-200/80',
     };
     
     $iconColorClass = match($variant) {
-        'danger' => 'text-red-500',
-        'disabled' => 'text-gray-600',
-        default => 'text-white',
+        'danger' => 'text-brand-danger',
+        'disabled' => 'text-text-muted',
+        default => 'text-text-main',
     };
     
     $labelColorClass = match($variant) {
-        'danger' => 'text-red-500 font-medium',
-        'disabled' => 'text-gray-600 font-medium',
-        default => 'text-white font-medium',
+        'danger' => 'text-brand-danger font-medium',
+        'disabled' => 'text-text-muted font-medium',
+        default => 'text-text-main font-medium',
     };
     
     $borderHoverClass = match($variant) {
-        'danger' => 'hover:border-red-900',
+        'danger' => 'hover:border-brand-danger',
         'disabled' => '',
-        default => 'hover:border-gray-700',
+        default => 'hover:border-surface-200',
     };
     
     $chevronColorClass = match($variant) {
-        'danger' => 'text-red-500 group-hover:text-red-400',
-        'disabled' => 'text-gray-700',
-        default => 'text-gray-600 group-hover:text-gray-400',
+        'danger' => 'text-brand-danger group-hover:text-brand-danger',
+        'disabled' => 'text-text-muted',
+        default => 'text-text-muted group-hover:text-text-main',
     };
     
-    $baseClasses = 'w-full bg-gray-900 rounded-2xl p-5 border border-gray-800 transition-colors flex items-center justify-between group';
+    $baseClasses = 'w-full bg-surface-100 rounded-2xl p-5 border border-surface-200 transition-colors flex items-center justify-between group';
     
     if ($disabled) {
         $baseClasses .= ' cursor-not-allowed opacity-60';

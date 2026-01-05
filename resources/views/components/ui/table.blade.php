@@ -7,8 +7,8 @@
     'actions' => null, // Slot per azioni nella caption
 ])
 
-<div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-    <div class="overflow-x-auto focus:ring-2 focus:ring-green-500 outline-none" 
+<div class="bg-surface-100 rounded-2xl border border-surface-200 overflow-hidden">
+    <div class="overflow-x-auto focus:ring-2 focus:ring-brand outline-none" 
      tabindex="0" 
      role="region" 
      aria-labelledby="table-caption">
@@ -21,7 +21,7 @@
                     @endif
                 </div>
             </caption>
-            <thead class="bg-gray-800">
+            <thead class="bg-surface-200">
                 <tr>
                     @foreach($columns as $column)
                         @php
@@ -32,15 +32,15 @@
                                 default => 'text-left',
                             };
                         @endphp
-                        <th scope="col" class="px-6 py-4 {{ $alignClass }} text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 {{ $alignClass }} text-xs font-semibold text-text-muted uppercase tracking-wider">
                             {{ $column['label'] }}
                         </th>
                     @endforeach
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-800">
+            <tbody class="divide-y divide-surface-200">
                 @forelse($rows as $row)
-                    <tr class="hover:bg-gray-800 transition-colors">
+                    <tr class="hover:bg-surface-200 transition-colors">
                         @foreach($columns as $index => $column)
                             @php
                                 $key = $column['key'] ?? '';
@@ -57,7 +57,7 @@
                             @endphp
                             
                             @if($isFirstColumn)
-                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-gray-300 {{ $alignClass }}">
+                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}>
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)

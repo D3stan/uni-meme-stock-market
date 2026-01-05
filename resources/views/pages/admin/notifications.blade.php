@@ -5,7 +5,7 @@
         <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="white" />
         <x-ui.stat-card title="Lette" :value="number_format($stats['read'])" color="green-500" />
         <x-ui.stat-card title="Non Lette" :value="number_format($stats['unread'])" color="yellow-500" />
-        <x-ui.stat-card title="Globali" :value="number_format($stats['global'])" color="blue-500" />
+        <x-ui.stat-card title="Globali" :value="number_format($stats['global'])" color="brand-accent" />
         <x-ui.stat-card title="Personali" :value="number_format($stats['personal'])" color="purple-500" />
     </div>
 
@@ -35,7 +35,7 @@
                 'key' => 'user',
                 'render' => fn($row) => $row->user 
                     ? '<span class="text-white font-medium">' . $row->user->name . '</span>' 
-                    : '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">GLOBALE</span>'
+                    : '<span class="px-2 py-1 bg-brand-accent/20 text-brand-accent rounded-full text-xs font-semibold">GLOBALE</span>'
             ],
             [
                 'label' => 'Titolo',

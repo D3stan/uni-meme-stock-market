@@ -5,7 +5,7 @@
         <x-ui.stat-card title="Totale" :value="number_format($stats['total'])" color="white" />
         <x-ui.stat-card title="Acquisti" :value="number_format($stats['buy'])" color="green-500" />
         <x-ui.stat-card title="Vendite" :value="number_format($stats['sell'])" color="red-500" />
-        <x-ui.stat-card title="Bonus" :value="number_format($stats['bonus'])" color="blue-500" />
+        <x-ui.stat-card title="Bonus" :value="number_format($stats['bonus'])" color="brand-accent" />
         <x-ui.stat-card title="Dividendi" :value="number_format($stats['dividend'])" color="purple-500" />
         <x-ui.stat-card title="Volume" :value="'€' . number_format($stats['volume'], 0)" color="white" />
     </div>
@@ -45,7 +45,7 @@
                     $badges = [
                         'buy' => '<span class="px-2 py-1 bg-green-600/20 text-green-500 rounded-full text-xs font-semibold">ACQUISTO</span>',
                         'sell' => '<span class="px-2 py-1 bg-red-600/20 text-red-500 rounded-full text-xs font-semibold">VENDITA</span>',
-                        'bonus' => '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">BONUS</span>',
+                        'bonus' => '<span class="px-2 py-1 bg-brand-accent/20 text-brand-accent rounded-full text-xs font-semibold">BONUS</span>',
                         'dividend' => '<span class="px-2 py-1 bg-purple-600/20 text-purple-500 rounded-full text-xs font-semibold">DIVIDENDO</span>',
                         'listing_fee' => '<span class="px-2 py-1 bg-yellow-600/20 text-yellow-500 rounded-full text-xs font-semibold">LISTING FEE</span>',
                     ];

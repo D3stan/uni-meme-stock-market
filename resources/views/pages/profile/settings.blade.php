@@ -1,10 +1,10 @@
 <x-minimal>
-    <div class="bg-gray-950 min-h-screen text-white" data-page="settings">
+    <div class="bg-surface-50 min-h-screen text-text-main" data-page="settings">
         
         {{-- Header with back button --}}
-        <header class="sticky top-0 z-10 bg-gray-950/95 backdrop-blur-sm border-b border-gray-900">
+        <header class="sticky top-0 z-10 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
             <div class="flex items-center justify-center relative px-4 py-4">
-                <a href="{{ route('profile') }}" class="absolute left-4 text-green-500 hover:text-green-400 transition-colors flex items-center gap-1">
+                <a href="{{ route('profile') }}" class="absolute left-4 text-brand hover:text-brand-light transition-colors flex items-center gap-1">
                     <span class="material-icons">chevron_left</span>
                     <span class="font-medium">Indietro</span>
                 </a>
@@ -20,11 +20,11 @@
 
                 {{-- PROFILO PERSONALE Section --}}
                 <section class="mb-8">
-                    <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                    <h2 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-4">
                         PROFILO PERSONALE
                     </h2>
                     
-                    <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+                    <div class="card-base p-6">
                         {{-- Profile Picture Upload --}}
                         <div class="mb-6">
                             <x-profile.picture-upload :user="$user" />
@@ -32,7 +32,7 @@
 
                         {{-- Nickname Section --}}
                         <div>
-                            <label class="block text-sm font-medium text-green-500 mb-2">
+                            <label class="block text-sm font-medium text-brand mb-2">
                                 Nickname
                             </label>
                             <div class="relative">
@@ -40,22 +40,22 @@
                                     type="text" 
                                     name="name" 
                                     value="{{ old('name', $user->name) }}"
-                                    class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-green-500 transition-colors"
+                                    class="input-base text-lg font-medium"
                                     placeholder="Il tuo nickname"
                                 >
-                                <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
+                                <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-muted">
                                     <span class="material-icons text-xl">edit</span>
                                 </button>
                             </div>
                             @error('name')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-brand-danger text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         {{-- Save Button --}}
                         <button 
                             type="submit"
-                            class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
+                            class="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                         >
                             <span class="material-icons text-xl">save</span>
                             <span>Salva Modifiche</span>
@@ -65,7 +65,7 @@
 
                 {{-- SICUREZZA Section --}}
                 <section class="mb-8">
-                    <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                    <h2 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-4">
                         SICUREZZA
                     </h2>
                     
@@ -79,17 +79,17 @@
 
                 {{-- NOTIFICHE Section --}}
                 <section class="mb-8">
-                    <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                    <h2 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-4">
                         NOTIFICHE
                     </h2>
                     
-                    <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800 space-y-6">
+                    <div class="card-base p-6 space-y-6">
                         
                         {{-- Dividendi Meme Toggle --}}
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-white font-medium mb-1">Dividendi Meme</h3>
-                                <p class="text-gray-500 text-sm">Alert sui pagamenti accademici</p>
+                                <h3 class="text-text-main font-medium mb-1">Dividendi Meme</h3>
+                                <p class="text-text-muted text-sm">Alert sui pagamenti accademici</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input 
@@ -99,15 +99,15 @@
                                     {{ old('notify_dividends', true) ? 'checked' : '' }}
                                     class="sr-only peer"
                                 >
-                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                <div class="w-11 h-6 bg-surface-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand/30 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-text-main after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-text-main after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand"></div>
                             </label>
                         </div>
 
                         {{-- Comunicazioni Rettorato Toggle (Mandatory) --}}
                         <div class="flex items-center justify-between opacity-60">
                             <div>
-                                <h3 class="text-gray-600 font-medium mb-1">Comunicazioni Rettorato</h3>
-                                <p class="text-gray-700 text-sm">Obbligatorio per tutti gli studenti</p>
+                                <h3 class="text-text-muted font-medium mb-1">Comunicazioni Rettorato</h3>
+                                <p class="text-text-muted text-sm">Obbligatorio per tutti gli studenti</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-not-allowed">
                                 <input 
@@ -118,7 +118,7 @@
                                     disabled
                                     class="sr-only peer"
                                 >
-                                <div class="w-11 h-6 bg-gray-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray-600 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-gray-600 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-700"></div>
+                                <div class="w-11 h-6 bg-surface-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-text-muted/60 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-text-muted/60 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-surface-200/50"></div>
                             </label>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
 
             {{-- ZONA PERICOLOSA Section --}}
             <section class="mb-8">
-                <h2 class="text-xs font-semibold text-red-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <h2 class="text-xs font-semibold text-brand-danger uppercase tracking-wider mb-4 flex items-center gap-2">
                     <span class="material-icons text-base">warning</span>
                     ZONA PERICOLOSA
                 </h2>
@@ -152,7 +152,7 @@
                     />
                 </div>
 
-                <p class="text-gray-600 text-xs text-center mt-4 px-4">
+                <p class="text-text-muted text-xs text-center mt-4 px-4">
                     L'eliminazione dell'account è irreversibile e rimuoverà tutti i tuoi meme, crediti e cronologia di trading accademico.
                 </p>
             </section>
@@ -169,7 +169,7 @@
         title="Disattiva Account"
         message="Il tuo account verrà temporaneamente sospeso. Potrai riattivarlo in qualsiasi momento effettuando nuovamente il login."
         confirmText="Disattiva"
-        confirmClass="bg-gray-700 hover:bg-gray-600"
+        confirmClass="bg-surface-200 hover:bg-surface-200/80"
         :action="route('profile.deactivate')"
         method="POST"
     />
@@ -180,18 +180,18 @@
         title="Elimina Account"
         message="Questa azione è irreversibile! Tutti i tuoi dati, meme, crediti e cronologia verranno eliminati permanentemente."
         confirmText="Elimina Definitivamente"
-        confirmClass="bg-red-600 hover:bg-red-700"
+        confirmClass="bg-brand-danger hover:bg-brand-danger-dark"
         :action="route('profile.delete')"
         method="DELETE"
     />
 
     {{-- Success/Error Toast --}}
     <div id="toast-notification" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-sm w-full">
-        <div id="toast-content" class="bg-gray-900 border rounded-2xl p-4 shadow-lg">
+        <div id="toast-content" class="card-base p-4">
             <div class="flex items-center gap-3">
                 <span id="toast-icon" class="material-icons text-2xl"></span>
-                <p id="toast-message" class="text-white font-medium flex-1"></p>
-                <button onclick="closeToast()" class="text-gray-500 hover:text-gray-300">
+                <p id="toast-message" class="text-text-main font-medium flex-1"></p>
+                <button onclick="closeToast()" class="text-text-muted hover:text-text-main">
                     <span class="material-icons text-xl">close</span>
                 </button>
             </div>

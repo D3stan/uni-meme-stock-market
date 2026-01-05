@@ -106,8 +106,8 @@ class OrderModal {
             : 'Conferma Vendita';
         
         this.confirmBtn.className = type === 'buy'
-            ? 'w-full py-4 rounded-xl font-bold text-lg transition-all bg-green-500 text-gray-900 hover:bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-            : 'w-full py-4 rounded-xl font-bold text-lg transition-all bg-red-600 text-white hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2';
+            ? 'btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+            : 'w-full py-4 rounded-xl font-bold text-lg transition-all bg-brand-danger text-text-main hover:bg-brand-danger-dark disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2';
         
         // Show/hide holdings info for sell
         if (type === 'sell') {
@@ -326,7 +326,7 @@ class OrderModal {
         this.slippageExpected.textContent = formatCFU(expectedTotal);
         this.slippageActual.textContent = formatCFU(actualTotal);
         this.slippageChange.textContent = `${change >= 0 ? '+' : ''}${formatCFU(change)} (${changePercent}%)`;
-        this.slippageChange.className = change >= 0 ? 'font-mono text-red-400' : 'font-mono text-green-400';
+        this.slippageChange.className = change >= 0 ? 'font-mono text-brand-danger' : 'font-mono text-brand';
         
         // Show modal
         this.slippageBackdrop.classList.remove('hidden');

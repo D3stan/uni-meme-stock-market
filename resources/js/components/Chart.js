@@ -73,7 +73,7 @@ class Chart {
         } catch (error) {
             console.error('Chart initialization failed:', error);
             // Show fallback message
-            this.container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500"><p>Chart loading error. Please refresh.</p></div>';
+            this.container.innerHTML = '<div class="flex items-center justify-center h-full text-text-muted"><p>Chart loading error. Please refresh.</p></div>';
         }
     }
 

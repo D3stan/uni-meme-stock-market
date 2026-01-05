@@ -18,9 +18,9 @@
     };
     
     $colorClasses = match(true) {
-        $isPositive => 'bg-green-900 text-green-300',
-        $isNegative => 'bg-red-900 text-red-300',
-        default => 'bg-gray-700 text-gray-300',
+        $isPositive => 'badge-positive',
+        $isNegative => 'badge-negative',
+        default => 'badge-neutral',
     };
 @endphp
 

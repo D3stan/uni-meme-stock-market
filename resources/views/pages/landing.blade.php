@@ -1,6 +1,6 @@
 <x-guest title="Il mercato dei meme universitari">
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-gray-800">
+    <header class="fixed top-0 left-0 right-0 z-40 bg-surface-50/80 backdrop-blur-md border-b border-surface-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
@@ -10,7 +10,7 @@
                 </div>
                 
                 <!-- Login Button -->
-                <a href="{{ route('auth.login') }}" class="text-sm text-gray-300 hover:text-white transition-colors">
+                <a href="{{ route('auth.login') }}" class="text-sm text-text-muted hover:text-text-main transition-colors">
                     Accedi
                 </a>
             </div>
@@ -22,10 +22,10 @@
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
                 Il mercato dei meme<br>
-                <span class="text-green-500">universitari</span>
+                <span class="text-brand">universitari</span>
             </h1>
             
-            <p class="text-lg sm:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            <p class="text-lg sm:text-xl text-text-muted mb-8 max-w-2xl mx-auto">
                 Fai trading sui meme più virali dell'ateneo, scala la classifica e diventa il trader più quotato del campus
             </p>
             
@@ -36,7 +36,7 @@
                         Inizia a fare Trading
                     </x-forms.button>
                 </a>
-                <p class="text-sm text-gray-500 mt-3">
+                <p class="text-sm text-text-muted mt-3">
                     Registrati con la tua email istituzionale • 100 CFU gratis
                 </p>
             </div>
@@ -62,7 +62,7 @@
                 
                 <!-- Blurred 4th card + Conversion Block -->
                 <div class="relative">
-                    <div class="bg-gray-900 border border-gray-800 rounded-lg flex items-center gap-4 blur-sm opacity-50">
+                    <div class="bg-surface-100 border border-surface-200 rounded-lg flex items-center gap-4 blur-sm opacity-50">
                         <x-meme.card-compact 
                             name="Un segreto è un segreto"
                             image="storage/test/meme.jpeg" 

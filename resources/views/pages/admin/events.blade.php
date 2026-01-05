@@ -5,7 +5,7 @@
         <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="white" />
         <x-ui.stat-card title="Attivi" :value="number_format($stats['active'])" color="green-500" />
         <x-ui.stat-card title="Scaduti" :value="number_format($stats['expired'])" color="red-500" />
-        <x-ui.stat-card title="Permanenti" :value="number_format($stats['permanent'])" color="blue-500" />
+        <x-ui.stat-card title="Permanenti" :value="number_format($stats['permanent'])" color="brand-accent" />
     </div>
 
     {{-- Filters --}}
@@ -44,7 +44,7 @@
                 'key' => 'expires_at',
                 'render' => fn($row) => $row->expires_at 
                     ? '<span class="text-gray-300">' . $row->expires_at->format('d/m/Y H:i') . '</span>'
-                    : '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">PERMANENTE</span>'
+                    : '<span class="px-2 py-1 bg-brand-accent/20 text-brand-accent rounded-full text-xs font-semibold">PERMANENTE</span>'
             ],
             [
                 'label' => 'Stato',

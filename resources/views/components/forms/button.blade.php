@@ -6,15 +6,15 @@
 ])
 
 @php
-    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-lg focus:ring-4 focus:outline-none transition-colors';
+    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl focus:ring-4 focus:outline-none transition-colors';
     
     $variantClasses = match($variant) {
-        'primary' => 'text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800',
-        'secondary' => 'bg-gray-800 text-white border border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700',
-        'success' => 'text-white bg-green-600 hover:bg-green-700 focus:ring-green-800',
-        'danger' => 'text-white bg-red-600 hover:bg-red-700 focus:ring-red-900',
-        'outline' => 'border border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 focus:ring-blue-800',
-        default => 'text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800',
+        'primary' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
+        'secondary' => 'bg-surface-200 text-text-main border border-surface-200 hover:bg-surface-200/80 focus:ring-surface-200/50',
+        'success' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
+        'danger' => 'text-text-main bg-brand-danger hover:bg-brand-danger-dark focus:ring-brand-danger/50',
+        'outline' => 'border border-brand text-brand hover:text-text-main hover:bg-brand focus:ring-brand/50',
+        default => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
     };
     
     $sizeClasses = match($size) {

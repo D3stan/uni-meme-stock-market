@@ -11,7 +11,7 @@
 
 <div class="relative w-full">
     @if($icon)
-        <span aria-hidden="true" class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">{{ $icon }}</span>
+        <span aria-hidden="true" class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted pointer-events-none">{{ $icon }}</span>
     @endif
     <input 
         type="{{ $type }}"
@@ -21,10 +21,10 @@
         placeholder="{{ $placeholder }}"
         {{ $required ? 'required' : '' }}
         {{ $disabled ? 'disabled' : '' }}
-        {{ $attributes->merge(['class' => ($icon ? 'pl-12 ' : '') . ($type === 'password' ? 'pr-12 ' : '') . 'bg-input-background border border-gray-600 text-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400']) }}
+        {{ $attributes->merge(['class' => ($icon ? 'pl-12 ' : '') . ($type === 'password' ? 'pr-12 ' : '') . 'bg-surface-50 border border-surface-200 text-text-main text-sm rounded-lg focus:ring-brand focus:border-brand block w-full p-2.5 placeholder-text-muted']) }}
     >
     @if($type === 'password')
-        <button type="button" tabindex="-1" class="absolute right-3 top-0 h-full flex items-center text-gray-400 focus:outline-none" onclick="
+        <button type="button" tabindex="-1" class="absolute right-3 top-0 h-full flex items-center text-text-muted focus:outline-none" onclick="
             var input = this.previousElementSibling;
             var icon = this.querySelector('.material-icons');
             if(input.type === 'password') { input.type = 'text'; icon.innerHTML = 'visibility_off'; }

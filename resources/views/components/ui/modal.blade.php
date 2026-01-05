@@ -31,7 +31,7 @@ $maxWidthClasses = match($maxWidth) {
     <!-- Modal Container -->
     <div class="flex items-center justify-center min-h-screen p-4">
         <div 
-            class="modal-content relative w-full {{ $maxWidthClasses }} bg-gray-900 rounded-3xl shadow-2xl transform transition-all duration-300"
+            class="modal-content relative w-full {{ $maxWidthClasses }} bg-surface-100 rounded-3xl shadow-2xl transform transition-all duration-300"
             onclick="event.stopPropagation()"
         >
             {{ $slot }}

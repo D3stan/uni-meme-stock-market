@@ -3,20 +3,20 @@
 ])
 
 {{-- Modal backdrop --}}
-<div id="{{ $id }}" class="hidden fixed inset-0 z-50 overflow-y-auto bg-gray-900/80 backdrop-blur-sm">
+<div id="{{ $id }}" class="hidden fixed inset-0 z-50 overflow-y-auto bg-surface-50/80 backdrop-blur-sm">
     {{-- Modal container --}}
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
         {{-- Modal content --}}
-        <div class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-gray-900 shadow-xl rounded-3xl border border-gray-800">
+        <div class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-surface-100 shadow-xl rounded-3xl border border-surface-200">
             
             {{-- Close button --}}
-            <button type="button" onclick="closeModal('{{ $id }}')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-300 transition-colors">
+            <button type="button" onclick="closeModal('{{ $id }}')" class="absolute top-4 right-4 text-text-muted hover:text-text-main transition-colors">
                 <span class="material-icons text-2xl">close</span>
             </button>
 
             {{-- Icon --}}
             <div class="flex justify-center mb-4">
-                <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
+                <div class="w-16 h-16 bg-surface-200 rounded-full flex items-center justify-center">
                     <span class="material-icons text-white text-3xl">lock</span>
                 </div>
             </div>
@@ -80,7 +80,7 @@
 
                 {{-- Actions --}}
                 <div class="flex gap-3 mt-6">
-                    <button type="button" onclick="closeModal('{{ $id }}')" class="flex-1 px-4 py-3 text-white bg-gray-800 border border-gray-700 hover:bg-gray-700 rounded-xl font-medium transition-colors">
+                    <button type="button" onclick="closeModal('{{ $id }}')" class="flex-1 px-4 py-3 text-text-main bg-surface-200 border border-surface-200 hover:bg-surface-200/80 rounded-xl font-medium transition-colors">
                         Annulla
                     </button>
                     <button type="submit" class="flex-1 px-4 py-3 text-white bg-green-600 hover:bg-green-700 rounded-xl font-medium transition-colors">

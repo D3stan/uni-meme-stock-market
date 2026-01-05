@@ -61,7 +61,7 @@ export function initOtpVerification() {
 
             inputs.forEach(input => {
                 input.classList.remove('border-gray-700');
-                input.classList.add('border-green-500', 'bg-green-900/20');
+                input.classList.add('border-brand', 'bg-brand/20');
             });
 
             setTimeout(() => {
