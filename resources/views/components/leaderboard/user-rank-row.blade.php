@@ -2,7 +2,6 @@
     'rank' => 0,
     'username' => '',
     'avatar' => null,
-    'badge' => null,
     'netWorth' => 0,
     'isCurrentUser' => false,
 ])
@@ -26,9 +25,6 @@
         {{-- User Info --}}
         <div class="flex-1 min-w-0">
             <p class="text-text-main font-bold text-base truncate">{{ $username }}</p>
-            @if($badge)
-            <p class="text-text-muted text-xs truncate">{{ $badge }}</p>
-            @endif
         </div>
         
         {{-- Net Worth --}}

@@ -62,10 +62,20 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto mt-2 px-2">
+    <div class="max-w-7xl mx-auto mt-2 px-2" data-page="marketplace">
 
-        {{-- Meme Feed --}}
-        <div class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {{-- Meme Feed Skeleton (Visible by default for JS handling) --}}
+        <div id="meme-feed-skeleton" class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+        </div>
+
+        {{-- Meme Feed (Hidden by default, shown by JS after images load) --}}
+        <div id="meme-feed" class="hidden py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
             @forelse($memes as $meme)
                 <x-meme.card 
                     :name="$meme['name']"

@@ -7,6 +7,7 @@ use App\Services\UserService;
 use App\Models\Financial\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MarketplaceController extends Controller
 {
@@ -117,7 +118,7 @@ class MarketplaceController extends Controller
         }
         
         // Global rank (position in leaderboard by cached_net_worth)
-        $globalRank = \App\Models\User::where('cached_net_worth', '>', $user->cached_net_worth)
+        $globalRank = User::where('cached_net_worth', '>', $user->cached_net_worth)
             ->where('role', 'trader')
             ->count() + 1;
         
@@ -205,7 +206,7 @@ class MarketplaceController extends Controller
         $currentUser = auth()->user();
         
         // Get all traders (non-admin users) with their portfolio values
-        $allUsers = \App\Models\User::where('role', '!=', 'admin')
+        $allUsers = User::where('role', '!=', 'admin')
             ->with('portfolios.meme:id,current_price')
             ->get()
             ->map(function ($user) {
@@ -229,8 +230,7 @@ class MarketplaceController extends Controller
                 'rank' => $index + 1,
                 'user_id' => $user->id,
                 'username' => '@' . explode('@', $user->email)[0],
-                'avatar' => $user->avatar,
-                'badge' => null, // TODO: Get user's primary badge
+                'avatar' => $user->avatarUrl(),
                 'net_worth' => $user->calculated_net_worth,
                 'is_current_user' => $user->id === $currentUser->id,
             ];

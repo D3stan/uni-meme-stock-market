@@ -12,7 +12,7 @@
             {{-- Avatar with position badge --}}
             <div class="relative mb-3">
                 <img 
-                    src="{{ $second['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($second['username']) }}" 
+                    src="{{ $second['avatar'] }}" 
                     alt="{{ $second['username'] }}"
                     class="w-20 h-20 rounded-full border-4 border-surface-200 object-cover"
                 >
@@ -38,7 +38,7 @@
                 <div class="absolute inset-0 bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-full blur-xl opacity-50"></div>
                 <div class="relative bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-full p-1">
                     <img 
-                        src="{{ $first['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($first['username']) }}" 
+                        src="{{ $first['avatar'] }}" 
                         alt="{{ $first['username'] }}"
                         class="w-24 h-24 rounded-full border-4 border-yellow-300 object-cover"
                     >
@@ -62,7 +62,7 @@
             {{-- Avatar with position badge --}}
             <div class="relative mb-3">
                 <img 
-                    src="{{ $third['avatar'] ?? 'https://ui-avatars.com/api/?name=' . urlencode($third['username']) }}" 
+                    src="{{ $third['avatar']}}" 
                     alt="{{ $third['username'] }}"
                     class="w-20 h-20 rounded-full border-4 border-amber-700/30 object-cover"
                 >

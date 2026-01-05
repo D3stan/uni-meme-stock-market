@@ -48,8 +48,7 @@
                     <x-leaderboard.user-rank-row 
                         :rank="$user['rank']"
                         :username="$user['username']"
-                        :avatar="$user['avatar'] ?? null"
-                        :badge="$user['badge'] ?? null"
+                        :avatar="$user['avatar']"
                         :netWorth="$user['net_worth']"
                         :isCurrentUser="$user['is_current_user'] ?? false"
                     />
@@ -70,7 +69,7 @@
                 <x-leaderboard.user-position-card 
                     :rank="$currentUserPosition['rank']"
                     :username="$currentUserPosition['username']"
-                    :avatar="$currentUserPosition['avatar'] ?? null"
+                    :avatar="$currentUserPosition['avatar']"
                     :netWorth="$currentUserPosition['net_worth']"
                     :percentile="$currentUserPosition['percentile'] ?? null"
                     :hasBadge="$currentUserPosition['has_badge'] ?? false"
