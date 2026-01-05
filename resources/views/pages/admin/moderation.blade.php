@@ -77,7 +77,7 @@
                     data-text-alt="' . htmlspecialchars($row->text_alt ?? '') . '"
                     data-creator="' . htmlspecialchars($row->creator->name) . '"
                     data-creator-id="' . $row->creator_id . '"
-                    data-creator-avatar="' . htmlspecialchars($row->creator->avatar ?? 'https://via.placeholder.com/40') . '"
+                    data-creator-avatar="' . htmlspecialchars($row->creator->avatarUrl()) . '"
                     data-price="' . $row->current_price . '"
                     data-status="' . $row->status . '"
                     title="Visualizza meme"
@@ -90,7 +90,7 @@
 
     <x-ui.table :columns="$columns" :rows="$memes" :paginate="true" caption="Meme caricati dagli utenti" emptyMessage="Nessun meme trovato" />
 
-    <x-admin.moderationModal/>
+    <x-admin.moderation-modal/>
 
     @push('page-scripts')
     <script src="{{ asset('js/admin/moderation.js') }}"></script>

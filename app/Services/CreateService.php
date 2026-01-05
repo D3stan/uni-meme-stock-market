@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessMemeWithAI;
 use App\Models\Market\Category;
 use App\Models\Market\Meme;
 use App\Models\Financial\Transaction;
@@ -57,7 +58,7 @@ class CreateService
      */
     public function createMeme(array $data, UploadedFile $image, User $user): Meme
     {
-        return DB::transaction(function () use ($data, $image, $user) {
+        $meme = DB::transaction(function () use ($data, $image, $user) {
             // Unique filename
             $extension = $image->getClientOriginalExtension();
             $filename = Str::uuid() . '.' . $extension;
@@ -81,10 +82,8 @@ class CreateService
                 'status' => 'pending', 
             ]);
 
-            // Deduct listing fee
+            // Create transaction for fee
             $user->decrement('cfu_balance', 20.00);
-
-            // Create transaction record
             Transaction::create([
                 'user_id' => $user->id,
                 'meme_id' => $meme->id,
@@ -99,5 +98,9 @@ class CreateService
 
             return $meme;
         });
+
+        ProcessMemeWithAI::dispatch($meme);
+
+        return $meme;
     }
 }
