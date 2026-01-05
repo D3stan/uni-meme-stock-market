@@ -106,7 +106,7 @@
     </div>
 
     {{-- Notification Modal --}}
-    <x-ui.notification-modal />
+    <x-ui.notify-modal />
 
     @push('page-scripts')
     <script src="{{ asset('js/create.js') }}"></script>
