@@ -9,4 +9,5 @@ php artisan migrate
 rd public\storage
 php artisan storage:link
 composer run dev
+(php artisan queue:work)
 ```
