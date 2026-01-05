@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\MarketService;
+use App\Services\UserService;
 use App\Models\Financial\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class MarketplaceController extends Controller
 {
     protected MarketService $marketService;
+    protected UserService $userService;
 
-    public function __construct(MarketService $marketService)
+    public function __construct(MarketService $marketService, UserService $userService)
     {
         $this->marketService = $marketService;
+        $this->userService = $userService;
     }
 
     /**
@@ -39,8 +42,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.marketplace', [
             'memes' => $memes,
@@ -127,7 +130,7 @@ class MarketplaceController extends Controller
             ->count();
         
         // Format balance for top bar
-        $balance = number_format($user->cfu_balance, 2);
+        $balance = $user->cfu_balance;
 
         return view('pages.appshell.profile', [
             'balance' => $balance,
@@ -180,7 +183,7 @@ class MarketplaceController extends Controller
         $dailyChangePct = 12.5; // Mock
         
         // Format balance for top bar
-        $balance = number_format($user->cfu_balance, 2);
+        $balance = $user->cfu_balance;
         
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
@@ -202,8 +205,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.leaderboard', [
             'balance' => $balance,

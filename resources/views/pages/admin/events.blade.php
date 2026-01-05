@@ -87,7 +87,7 @@
         </x-slot:actions>
     </x-ui.table>
 
-    <x-admin.eventModal/>
+    <x-admin.event-modal/>
 
     @push('page-scripts')
     <script src="{{ asset('js/admin/events.js') }}"></script>

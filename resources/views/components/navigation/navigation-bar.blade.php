@@ -4,7 +4,7 @@
 <div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-[#11271a] px-4 py-2 flex items-center justify-between shadow-lg">
     <img src="{{ asset('favicon.ico') }}" alt="Favicon" class="w-7 h-7">
     <span class="font-mono font-bold text-white">
-        {{ $balance ?? '1,250.00' }} <span class="text-green-400">CFU</span>
+        {{ $balance ? number_format($balance, 2) : '0.00' }} <span class="text-green-400">CFU</span>
     </span>
     <div class="relative">
         <a href="#" aria-label="Notifiche">
@@ -94,7 +94,7 @@
         {{-- User Balance & Notifications --}}
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg border-2 border-green-800">
-                <span class="font-mono font-bold text-white">{{ $balance ?? '1,250.00' }} CFU</span>
+                <span class="font-mono font-bold text-white">{{ $balance ? number_format($balance, 2) : '1,250.00' }} CFU</span>
             </div>
             
             <a href="#" aria-label="Notifiche" class="relative p-2 text-gray-300 hover:text-white transition-colors">
