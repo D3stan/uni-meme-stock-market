@@ -29,33 +29,44 @@ class PriceHistorySeeder extends Seeder
 
             // Create historical records for last 7 days
             for ($day = 6; $day >= 1; $day--) {
-                $recordedAt = now()->subDays($day);
+                // More granular data for recent days (hourly for last 2 days, every 4 hours for older)
+                $interval = $day <= 2 ? 1 : 4;
                 
-                // Calculate price variation (random walk between base_price and current_price)
-                $progress = (7 - $day) / 7; // 0 to 1
-                $priceDiff = $meme->current_price - $meme->base_price;
-                $historicalPrice = $meme->base_price + ($priceDiff * $progress) + (rand(-20, 20) / 100);
-                
-                // Ensure price is positive
-                $historicalPrice = max(0.10, $historicalPrice);
-                
-                // Calculate supply growth
-                $supplyGrowth = floor($meme->circulating_supply * $progress * rand(70, 100) / 100);
+                for ($hour = 0; $hour < 24; $hour += $interval) {
+                    $recordedAt = now()->subDays($day)->startOfDay()->addHours($hour);
+                    
+                    // Calculate price variation (random walk between base_price and current_price)
+                    $progress = (7 - $day + ($hour / 24)) / 7; // 0 to 1
+                    $priceDiff = $meme->current_price - $meme->base_price;
+                    $historicalPrice = $meme->base_price + ($priceDiff * $progress) + (rand(-20, 20) / 100);
+                    
+                    // Ensure price is positive
+                    $historicalPrice = max(0.10, $historicalPrice);
+                    
+                    // Calculate supply growth
+                    $supplyGrowth = floor($meme->circulating_supply * $progress * rand(70, 100) / 100);
 
-                PriceHistory::create([
-                    'meme_id' => $meme->id,
-                    'price' => round($historicalPrice, 2),
-                    'circulating_supply_snapshot' => $supplyGrowth,
-                    'trigger_type' => rand(0, 1) ? 'buy' : 'sell',
-                    'recorded_at' => $recordedAt,
-                    'volume_24h' => rand(50, 500),
-                    'pct_change_24h' => rand(-15, 25) / 10,
-                ]);
+                    PriceHistory::create([
+                        'meme_id' => $meme->id,
+                        'price' => round($historicalPrice, 2),
+                        'circulating_supply_snapshot' => $supplyGrowth,
+                        'trigger_type' => rand(0, 1) ? 'buy' : 'sell',
+                        'recorded_at' => $recordedAt,
+                        'volume_24h' => rand(50, 500),
+                        'pct_change_24h' => rand(-15, 25) / 10,
+                    ]);
+                }
             }
 
-            // Create today's record at various times
-            for ($hour = 0; $hour < 24; $hour += 6) {
+            // Create today's record at various times (hourly, but only for past hours)
+            $currentHour = now()->hour;
+            for ($hour = 0; $hour <= $currentHour; $hour++) {
                 $recordedAt = now()->startOfDay()->addHours($hour);
+                
+                // Skip if this would be in the future
+                if ($recordedAt->isFuture()) {
+                    continue;
+                }
                 
                 // Price should be close to current_price
                 $variance = rand(-50, 50) / 1000; // ±5%

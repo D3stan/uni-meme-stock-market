@@ -86,23 +86,21 @@ class Chart {
             
             if (response.success && response.data.length > 0) {
                 this.series.setData(response.data);
+                this.updateTimeScale(period);
                 this.chart.timeScale().fitContent();
             } else {
                 console.warn('No price history data available');
-                // Show empty state message
-                this.showEmptyState();
             }
         } catch (error) {
             console.error('Failed to load chart data:', error);
-            this.showEmptyState('Error loading chart data');
+            this.showEmptyState();
         }
     }
 
     /**
      * Show empty state when no data available
      */
-    showEmptyState(message = 'No price history yet. Make the first trade!') {
-        // Create a simple placeholder data point to show the current price
+    showEmptyState() {
         const now = Math.floor(Date.now() / 1000);
         const placeholderData = [
             { time: now - 86400, value: window.TRADING_DATA?.currentPrice || 1 },
@@ -110,9 +108,24 @@ class Chart {
         ];
         this.series.setData(placeholderData);
         this.chart.timeScale().fitContent();
+    }
+
+    /**
+     * Update time scale format based on period
+     */
+    updateTimeScale(period) {
+        if (!this.chart) return;
         
-        // Log the message
-        console.info(message);
+        // For hourly periods (1h, 4h), show time
+        // For daily periods (1d), show only date
+        const showTime = period === '1h' || period === '4h';
+        
+        this.chart.applyOptions({
+            timeScale: {
+                timeVisible: showTime,
+                secondsVisible: false,
+            }
+        });
     }
 
     /**

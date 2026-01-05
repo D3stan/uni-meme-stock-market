@@ -2,11 +2,11 @@
 @props(['meme', 'userHoldings'])
 
 <!-- Backdrop -->
-<div id="order-modal-backdrop" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity"></div>
+<div id="order-modal-backdrop" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity opacity-0"></div>
 
 <!-- Bottom Sheet Modal -->
 <div id="order-modal" 
-     class="fixed bottom-0 left-0 right-0 bg-gray-900 rounded-t-3xl z-50 
+     class="fixed bottom-0 left-0 right-0 bg-gray-900 rounded-t-3xl z-[51] hidden
             transform translate-y-full transition-transform duration-300 ease-out
             max-h-[85vh] overflow-y-auto">
     

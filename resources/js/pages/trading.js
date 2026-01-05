@@ -163,10 +163,8 @@ class TradingPage {
             }
         }
         
-        // Update chart with new price point
-        if (this.chart) {
-            this.chart.update(data.current_price);
-        }
+        // Note: Chart data is NOT updated on polling to prevent duplicate points
+        // Chart only updates when user changes period or after a trade execution
     }
 
     /**

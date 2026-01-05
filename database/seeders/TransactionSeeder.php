@@ -32,8 +32,8 @@ class TransactionSeeder extends Seeder
                 'executed_at' => $trader->created_at,
             ]);
 
-            // Generate 5-15 random transactions per trader
-            $numTransactions = rand(5, 15);
+            // Generate 10-25 random transactions per trader (increased for more data)
+            $numTransactions = rand(10, 25);
             $currentBalance = 100.00;
 
             for ($i = 0; $i < $numTransactions; $i++) {

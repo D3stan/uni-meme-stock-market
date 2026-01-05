@@ -1,4 +1,4 @@
-<x-guest title="Registrati - AlmaStreet">
+<x-guest title="Registrati">
     <div class="flex-1 flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-md">
             <!-- Logo -->

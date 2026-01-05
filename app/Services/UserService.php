@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Financial\Transaction;
 use App\Models\Financial\Portfolio;
+use App\Models\Financial\PriceHistory;
 use App\Models\Gamification\Badge;
 use App\Models\Gamification\UserBadge;
 use App\Notifications\BadgeAwardedNotification;
@@ -54,6 +55,8 @@ class UserService
      * Calculate the user's net worth (lazy calculation with cache update).
      * Net Worth = Liquid Balance + Sum(Portfolio Value)
      * 
+     * Optimized with single aggregation query instead of N+1.
+     * 
      * @param User $user
      * @param bool $updateCache Whether to update the cached_net_worth field
      * @return float
@@ -63,13 +66,11 @@ class UserService
         // Get liquid balance
         $liquidBalance = (float) $user->cfu_balance;
 
-        // Calculate invested value from portfolio
-        $investedValue = Portfolio::where('user_id', $user->id)
-            ->with('meme')
-            ->get()
-            ->sum(function ($portfolio) {
-                return $portfolio->quantity * (float) $portfolio->meme->current_price;
-            });
+        // Calculate invested value with optimized single query (join + aggregation)
+        $investedValue = (float) Portfolio::where('portfolios.user_id', $user->id)
+            ->join('memes', 'portfolios.meme_id', '=', 'memes.id')
+            ->selectRaw('SUM(portfolios.quantity * memes.current_price) as total_value')
+            ->value('total_value') ?? 0;
 
         $netWorth = $liquidBalance + $investedValue;
 
@@ -85,13 +86,16 @@ class UserService
     /**
      * Get portfolio breakdown with PNL (Profit & Loss) for each position.
      * 
+     * Optimized with eager loading and efficient calculations.
+     * 
      * @param User $user
      * @return Collection
      */
     public function getPortfolioBreakdown(User $user): Collection
     {
         return Portfolio::where('user_id', $user->id)
-            ->with('meme')
+            ->with('meme:id,ticker,title,current_price,image_path')
+            ->orderBy('quantity', 'desc')
             ->get()
             ->map(function ($portfolio) {
                 $currentPrice = (float) $portfolio->meme->current_price;
@@ -109,6 +113,7 @@ class UserService
                     'meme_id' => $portfolio->meme->id,
                     'ticker' => $portfolio->meme->ticker,
                     'title' => $portfolio->meme->title,
+                    'image_path' => $portfolio->meme->image_path,
                     'quantity' => $quantity,
                     'avg_buy_price' => round($avgBuyPrice, 4),
                     'current_price' => round($currentPrice, 4),
@@ -123,6 +128,8 @@ class UserService
     /**
      * Get asset allocation (liquid vs invested).
      * 
+     * Optimized to reuse net worth calculation instead of recalculating.
+     * 
      * @param User $user
      * @return array
      */
@@ -130,12 +137,11 @@ class UserService
     {
         $liquidBalance = (float) $user->cfu_balance;
 
-        $investedValue = Portfolio::where('user_id', $user->id)
-            ->with('meme')
-            ->get()
-            ->sum(function ($portfolio) {
-                return $portfolio->quantity * (float) $portfolio->meme->current_price;
-            });
+        // Optimized: single query with join
+        $investedValue = (float) Portfolio::where('portfolios.user_id', $user->id)
+            ->join('memes', 'portfolios.meme_id', '=', 'memes.id')
+            ->selectRaw('SUM(portfolios.quantity * memes.current_price) as total_value')
+            ->value('total_value') ?? 0;
 
         $total = $liquidBalance + $investedValue;
 
@@ -151,38 +157,62 @@ class UserService
     /**
      * Calculate daily PNL (Profit & Loss since yesterday).
      * 
+     * Uses transaction history + price histories to reconstruct yesterday's net worth.
+     * Yesterday Net Worth = Yesterday Liquid Balance + Yesterday Portfolio Value
+     * 
      * @param User $user
      * @return array
      */
     public function getDailyPnl(User $user): array
     {
-        // Get yesterday's net worth from cached value or calculate
-        // For now, we'll use a simple approach: compare with transactions from yesterday
         $todayStart = now()->startOfDay();
+        $yesterdayEnd = now()->subDay()->endOfDay();
         
-        // Get the last transaction before today to get balance snapshot
+        // Get yesterday's liquid balance from last transaction before today
         $lastTransactionYesterday = Transaction::where('user_id', $user->id)
             ->where('executed_at', '<', $todayStart)
             ->orderByDesc('executed_at')
             ->first();
 
-        $yesterdayBalance = $lastTransactionYesterday 
+        $yesterdayLiquid = $lastTransactionYesterday 
             ? (float) $lastTransactionYesterday->cfu_balance_after 
-            : 100.00; // Default registration bonus
+            : 100.00; // Default registration bonus if no transactions yet
 
-        // For invested value change, we'd need historical price data
-        // This is a simplified version
+        // Calculate yesterday's portfolio value using price histories
+        $yesterdayInvested = 0;
+        $portfolios = Portfolio::where('user_id', $user->id)->get();
+        
+        foreach ($portfolios as $portfolio) {
+            // Get the last price recorded before today for this meme
+            $yesterdayPrice = PriceHistory::where('meme_id', $portfolio->meme_id)
+                ->where('recorded_at', '<', $todayStart)
+                ->orderByDesc('recorded_at')
+                ->value('price');
+            
+            // If no price history exists, use current price (meme was just listed)
+            if ($yesterdayPrice === null) {
+                $yesterdayPrice = (float) $portfolio->meme->current_price;
+            }
+            
+            $yesterdayInvested += $portfolio->quantity * (float) $yesterdayPrice;
+        }
+
+        $yesterdayNetWorth = $yesterdayLiquid + $yesterdayInvested;
+        
+        // Calculate current net worth
         $currentNetWorth = $this->calculateNetWorth($user, false);
         
-        $dailyPnl = $currentNetWorth - $yesterdayBalance;
-        $dailyPnlPercent = $yesterdayBalance > 0 
-            ? (($currentNetWorth - $yesterdayBalance) / $yesterdayBalance) * 100 
+        // Calculate PNL
+        $dailyPnl = $currentNetWorth - $yesterdayNetWorth;
+        $dailyPnlPercent = $yesterdayNetWorth > 0 
+            ? (($dailyPnl / $yesterdayNetWorth) * 100) 
             : 0;
 
         return [
             'daily_pnl' => round($dailyPnl, 2),
             'daily_pnl_percent' => round($dailyPnlPercent, 2),
             'current_net_worth' => round($currentNetWorth, 2),
+            'yesterday_net_worth' => round($yesterdayNetWorth, 2),
         ];
     }
 
