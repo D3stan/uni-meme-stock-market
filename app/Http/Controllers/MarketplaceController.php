@@ -41,7 +41,7 @@ class MarketplaceController extends Controller
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
         // Get user balance
-        $balance = $this->userService->calculateNetWorth(auth()->user());
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.marketplace', [
             'memes' => $memes,
@@ -56,8 +56,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.profile', [
             'balance' => $balance,
@@ -70,8 +70,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.portfolio', [
             'balance' => $balance,
@@ -84,8 +84,8 @@ class MarketplaceController extends Controller
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
-        // Get user balance (mock for now)
-        $balance = '1,250.00';
+        // Get user balance
+        $balance = auth()->user()->cfu_balance;
 
         return view('pages.appshell.leaderboard', [
             'balance' => $balance,
