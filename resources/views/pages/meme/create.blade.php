@@ -1,7 +1,7 @@
-<x-app active="create" title="Upload">
+<x-app active="create" title="Upload" :balance="$balance">
     
     <div class="max-w-2xl mx-auto pb-24">
-        <form id="uploadMemeForm" class="space-y-6">
+        <form id="uploadMemeForm" action="{{ route('meme.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             {{-- Upload Area --}}
@@ -59,7 +59,7 @@
 
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-400">Tuo saldo attuale</span>
-                        <span class="text-sm font-mono text-white">159.00 CFU</span>
+                        <span class="text-sm font-mono text-white">{{ number_format($balance, 2) }} CFU</span>
                     </div>
 
                     <div class="flex justify-between items-center">
@@ -70,9 +70,18 @@
                     <div class="border-t border-gray-700 pt-3">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-semibold text-white">Saldo dopo listing</span>
-                            <span class="text-base font-mono font-bold text-green-500">139.00 CFU</span>
+                            <span class="text-base font-mono font-bold {{ $balance >= 20 ? 'text-green-500' : 'text-red-500' }}">
+                                {{ number_format($balance - 20, 2) }} CFU
+                            </span>
                         </div>
                     </div>
+
+                    @if($balance < 20)
+                        <div class="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-center gap-2">
+                            <span aria-hidden="true" class="material-icons text-red-400 text-lg">warning</span>
+                            <span class="text-sm text-red-400 font-medium">Saldo insufficiente</span>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -95,4 +104,12 @@
             </div>
         </form>
     </div>
+
+    {{-- Notification Modal --}}
+    <x-ui.notification-modal />
+
+    @push('page-scripts')
+    <script src="{{ asset('js/create.js') }}"></script>
+    @endpush
+
 </x-app>
