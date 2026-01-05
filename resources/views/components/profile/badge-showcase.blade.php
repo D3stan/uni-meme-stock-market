@@ -8,9 +8,13 @@
     <div class="grid grid-cols-4 gap-3">
         @foreach($badges as $badge)
             <div class="flex flex-col items-center">
-                {{-- Badge Icon Circle --}}
-                <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2 {{ $badge->style ?? 'bg-gray-800' }} shadow-lg">
-                    <span class="material-icons text-xl text-white">{{ $badge->icon ?? 'star' }}</span>
+                {{-- Badge Image Circle --}}
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2 bg-gray-800 shadow-lg overflow-hidden">
+                    <img 
+                        src="{{ asset('storage/' . $badge->icon_path) }}" 
+                        alt="{{ $badge->name }}"
+                        class="w-full h-full object-contain"
+                    >
                 </div>
                 
                 {{-- Badge Name --}}

@@ -57,28 +57,7 @@ class MarketplaceController extends Controller
         // Load user's badges with pivot data
         $badges = $user->badges()
             ->orderBy('user_badges.awarded_at', 'desc')
-            ->get()
-            ->map(function ($badge) {
-                // Map badge names to Material Icons and styles
-                $iconMap = [
-                    'First Trade' => ['icon' => 'military_tech', 'style' => 'bg-blue-600'],
-                    'Diamond Hands 💎' => ['icon' => 'diamond', 'style' => 'bg-cyan-600'],
-                    'Paper Hands 📄' => ['icon' => 'crisis_alert', 'style' => 'bg-orange-700'],
-                    'Whale 🐋' => ['icon' => 'account_balance', 'style' => 'bg-purple-700'],
-                    'Day Trader' => ['icon' => 'trending_up', 'style' => 'bg-green-600'],
-                    'Meme Creator' => ['icon' => 'brush', 'style' => 'bg-pink-600'],
-                    'Diversified Portfolio' => ['icon' => 'dashboard', 'style' => 'bg-indigo-600'],
-                    'Stonks Master 📈' => ['icon' => 'rocket_launch', 'style' => 'bg-yellow-600'],
-                    'Early Adopter' => ['icon' => 'timer', 'style' => 'bg-teal-600'],
-                    'Lucky Trader 🍀' => ['icon' => 'casino', 'style' => 'bg-lime-600'],
-                ];
-                
-                $badgeConfig = $iconMap[$badge->name] ?? ['icon' => 'star', 'style' => 'bg-gray-700'];
-                $badge->icon = $badgeConfig['icon'];
-                $badge->style = $badgeConfig['style'];
-                
-                return $badge;
-            });
+            ->get();
         
         // Registration date formatted
         $registrationDate = $user->created_at->format('M Y');
