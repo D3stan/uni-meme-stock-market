@@ -18,7 +18,7 @@
         />
         
         {{-- Menu Options --}}
-        <x-profile.menu-options :unreadNotifications="$unreadNotifications" />
+        <x-profile.menu-options :unreadNotifications="$unreadNotifications" :isAdmin="$isAdmin"/>
         
         {{-- Version Footer 
         <div class="text-center mt-8 mb-4">

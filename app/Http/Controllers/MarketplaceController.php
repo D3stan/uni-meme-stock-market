@@ -132,6 +132,8 @@ class MarketplaceController extends Controller
         // Format balance for top bar
         $balance = $user->cfu_balance;
 
+        $isAdmin = $user->isAdmin();
+
         return view('pages.appshell.profile', [
             'balance' => $balance,
             'user' => $user,
@@ -140,6 +142,7 @@ class MarketplaceController extends Controller
             'totalTrades' => $totalTrades,
             'bestTrade' => $bestTrade,
             'globalRank' => $globalRank,
+            'isAdmin' => $isAdmin,
             'unreadNotifications' => $unreadNotifications,
         ]);
     }

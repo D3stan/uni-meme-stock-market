@@ -1,5 +1,6 @@
 @props([
     'unreadNotifications' => 0,
+    'isAdmin' => false
 ])
 
 <div class="px-4 mb-6">
@@ -39,6 +40,19 @@
                 <span class="material-icons text-gray-600 group-hover:text-gray-400 transition-colors">chevron_right</span>
             </div>
         </a>
+
+        {{-- Admin Panel --}}
+        @if($isAdmin)
+        <a href="{{ route('admin.admin') }}" class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition-colors flex items-center justify-between group">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-gray-700 transition-colors">
+                    <span class="material-icons text-white text-xl">shield</span>
+                </div>
+                <span class="text-white font-medium">Pannello Admin</span>
+            </div>
+            <span class="material-icons text-gray-600 group-hover:text-gray-400 transition-colors">chevron_right</span>
+        </a>
+        @endif
         
         {{-- Logout --}}
         <form action="{{ route('auth.logout') }}" method="POST">
