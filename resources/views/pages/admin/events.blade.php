@@ -2,10 +2,10 @@
 
     {{-- Statistics --}}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="white" />
-        <x-ui.stat-card title="Attivi" :value="number_format($stats['active'])" color="green-500" />
-        <x-ui.stat-card title="Scaduti" :value="number_format($stats['expired'])" color="red-500" />
-        <x-ui.stat-card title="Permanenti" :value="number_format($stats['permanent'])" color="blue-500" />
+        <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="text-main" />
+        <x-ui.stat-card title="Attivi" :value="number_format($stats['active'])" color="brand" />
+        <x-ui.stat-card title="Scaduti" :value="number_format($stats['expired'])" color="brand-danger" />
+        <x-ui.stat-card title="Permanenti" :value="number_format($stats['permanent'])" color="brand-accent" />
     </div>
 
     {{-- Filters --}}
@@ -21,7 +21,7 @@
             [
                 'label' => 'ID',
                 'key' => 'id',
-                'render' => fn($row) => '<span class="text-gray-400">#' . $row->id . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">#' . $row->id . '</span>'
             ],
             [
                 'label' => 'Data Creazione',
@@ -31,20 +31,20 @@
             [
                 'label' => 'Admin',
                 'key' => 'admin.name',
-                'render' => fn($row) => '<span class="text-white font-medium">' . $row->admin->name . '</span>'
+                'render' => fn($row) => '<span class="text-text-main font-medium">' . $row->admin->name . '</span>'
             ],
             [
                 'label' => 'Messaggio',
                 'key' => 'message',
                 'wrap' => true,
-                'render' => fn($row) => '<span class="text-gray-300">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
             ],
             [
                 'label' => 'Scadenza',
                 'key' => 'expires_at',
                 'render' => fn($row) => $row->expires_at 
-                    ? '<span class="text-gray-300">' . $row->expires_at->format('d/m/Y H:i') . '</span>'
-                    : '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">PERMANENTE</span>'
+                    ? '<span class="text-text-muted">' . $row->expires_at->format('d/m/Y H:i') . '</span>'
+                    : '<span class="badge-info">PERMANENTE</span>'
             ],
             [
                 'label' => 'Stato',
@@ -53,9 +53,9 @@
                 'render' => function($row) {
                     $isActive = $row->is_active && (!$row->expires_at || $row->expires_at->isFuture());
                     if ($isActive) {
-                        return '<span class="px-2 py-1 bg-green-600/20 text-green-500 rounded-full text-xs font-semibold">ATTIVO</span>';
+                        return '<span class="badge-positive">ATTIVO</span>';
                     } else {
-                        return '<span class="px-2 py-1 bg-red-600/20 text-red-500 rounded-full text-xs font-semibold">SCADUTO</span>';
+                        return '<span class="badge-negative">SCADUTO</span>';
                     }
                 }
             ],
@@ -65,14 +65,14 @@
                 'align' => 'center',
                 'render' => fn($row) => '
                 <button 
-                    class="edit-event-btn p-2 hover:bg-gray-800 rounded-lg transition-colors" 
+                    class="edit-event-btn p-2 hover:bg-surface-200 rounded-lg transition-colors" 
                     data-id="' . $row->id . '"
                     data-message="' . htmlspecialchars($row->message) . '"
                     data-expires-at="' . ($row->expires_at ? $row->expires_at->format('Y-m-d\TH:i') : '') . '"
                     data-is-active="' . ($row->is_active ? '1' : '0') . '"
                     title="Modifica evento"
                     aria-label="Modifica #{{ $row->id }}" >
-                    <span aria-hidden="true" class="material-icons text-gray-400 hover:text-white text-xl">edit</span>
+                    <span aria-hidden="true" class="material-icons text-text-muted hover:text-text-main text-xl">edit</span>
                 </button>'
             ],
         ];

@@ -92,23 +92,23 @@ class NotificationService {
         const configs = {
             success: {
                 icon: 'check_circle',
-                iconClass: 'text-green-400',
-                bgClass: 'bg-green-500/20'
+                iconClass: 'text-brand',
+                bgClass: 'bg-brand/20'
             },
             error: {
                 icon: 'error',
-                iconClass: 'text-red-400',
-                bgClass: 'bg-red-500/20'
+                iconClass: 'text-brand-danger',
+                bgClass: 'bg-brand-danger/20'
             },
             warning: {
                 icon: 'warning',
-                iconClass: 'text-yellow-400',
-                bgClass: 'bg-yellow-500/20'
+                iconClass: 'text-brand-accent',
+                bgClass: 'bg-brand-accent/20'
             },
             info: {
                 icon: 'info',
-                iconClass: 'text-blue-400',
-                bgClass: 'bg-blue-500/20'
+                iconClass: 'text-brand-accent',
+                bgClass: 'bg-brand-accent/20'
             }
         };
 

@@ -17,7 +17,7 @@
         {{-- Holdings List --}}
         <div class="space-y-4">
             <div class="flex items-center justify-between px-2">
-                <h2 class="text-xl font-bold text-white">I Tuoi Meme</h2>
+                <h2 class="text-xl font-bold text-text-main">I Tuoi Meme</h2>
             </div>
             
             @forelse($positions as $position)
@@ -37,7 +37,7 @@
                     icon="account_balance_wallet"
                     message="Nessuna posizione aperta"
                 >
-                    <a href="{{ route('market') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors">
+                    <a href="{{ route('market') }}" class="btn-primary inline-flex items-center gap-2">
                         <span class="material-icons text-lg">trending_up</span>
                         Esplora il Mercato
                     </a>

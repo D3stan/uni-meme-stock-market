@@ -2,8 +2,8 @@
 <x-ui.modal id="editEventModal" maxWidth="lg">
     <div class="p-6">
         <div class="flex items-center justify-between mb-6">
-            <h2 id="editEventModal-title" class="text-2xl font-bold text-white">Modifica Evento</h2>
-            <button onclick="hideModal('editEventModal')" aria-label="Chiudi" class="text-gray-400 hover:text-white transition-colors">
+            <h2 id="editEventModal-title" class="text-2xl font-bold text-text-main">Modifica Evento</h2>
+            <button onclick="hideModal('editEventModal')" aria-label="Chiudi" class="text-text-muted hover:text-text-main transition-colors">
                 <span class="material-icons" aria-hidden="true" >close</span>
             </button>
         </div>
@@ -30,7 +30,7 @@
             {{-- Actions --}}
             <div class="flex justify-end gap-3">
                 <x-forms.button onclick="hideModal('editEventModal')" variant="outline" size="lg">Annulla</x-forms.button>
-                <x-forms.button type="submit" variant="success" size="lg">Salva</x-forms.button>
+                <x-forms.button type="submit" variant="primary" size="lg">Salva</x-forms.button>
             </div>
         </form>
     </div>

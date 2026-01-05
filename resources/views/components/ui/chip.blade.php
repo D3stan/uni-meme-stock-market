@@ -9,13 +9,13 @@
     $baseClasses = 'inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap';
     
     $variantClasses = match($variant) {
-        'white' => 'bg-white text-gray-700 border border-gray-600 hover:bg-gray-600',
-        'success' => 'bg-green-600 text-white border border-green-600 hover:bg-green-700',
-        default => 'bg-transparent text-gray-300 border border-gray-600 hover:bg-gray-700',
+        'white' => 'bg-text-main text-surface-50 border border-surface-200 hover:bg-surface-200',
+        'success' => 'bg-brand text-surface-50 border border-brand hover:bg-brand-light',
+        default => 'bg-transparent text-text-muted border border-surface-200 hover:bg-surface-200',
     };
     
     if ($active) {
-        $variantClasses = 'bg-green-600 text-white border border-green-600 hover:bg-green-700';
+        $variantClasses = 'bg-brand text-surface-50 border border-brand hover:bg-brand-light';
     }
     
     $tag = $href ? 'a' : 'button';

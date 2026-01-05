@@ -7,13 +7,13 @@
     <img 
         src="{{ $user->avatarUrl() }}" 
         alt="{{ $user->name }}"
-        class="w-full h-full rounded-full object-cover border-4 border-gray-800"
+        class="w-full h-full rounded-full object-cover border-4 border-surface-200"
         id="avatar-preview"
     >
     
     {{-- Edit Icon Button --}}
-    <label for="avatar-upload" class="absolute bottom-0 right-0 w-10 h-10 bg-green-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-green-700 transition-colors border-4 border-gray-950">
-        <span class="material-icons text-white text-lg">edit</span>
+    <label for="avatar-upload" class="absolute bottom-0 right-0 w-10 h-10 bg-brand rounded-full flex items-center justify-center cursor-pointer hover:bg-brand-light transition-colors border-4 border-surface-50">
+        <span class="material-icons text-text-main text-lg">edit</span>
     </label>
     
     {{-- Hidden File Input --}}

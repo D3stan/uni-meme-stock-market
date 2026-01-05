@@ -37,7 +37,7 @@ class PortfolioManager {
                 labels: ['Investito', 'Liquidità'],
                 datasets: [{
                     data: [invested, liquid],
-                    backgroundColor: ['#10B981', '#4B5563'],
+                    backgroundColor: ['#10b981', '#334155'],
                     borderWidth: 0,
                 }]
             },

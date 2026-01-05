@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(tickerCheckTimeout);
 
             // Reset validation state
-            tickerInput.classList.remove('border-red-500', 'border-green-500');
+            tickerInput.classList.remove('border-brand-danger', 'border-brand');
             
             if (ticker.length >= 3) {
                 // Check ticker after 500ms delay
@@ -41,13 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.exists) {
-                tickerInput.classList.add('border-red-500');
-                tickerInput.classList.remove('border-green-500');
+                tickerInput.classList.add('border-brand-danger');
+                tickerInput.classList.remove('border-brand');
                 showTickerError('Ticker già esistente');
                 tickerValid = false;
             } else {
-                tickerInput.classList.add('border-green-500');
-                tickerInput.classList.remove('border-red-500');
+                tickerInput.classList.add('border-brand');
+                tickerInput.classList.remove('border-brand-danger');
                 hideTickerError();
                 tickerValid = true;
             }
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!errorEl) {
             errorEl = document.createElement('p');
             errorEl.id = 'ticker-error';
-            errorEl.className = 'mt-1 text-xs text-red-400';
+            errorEl.className = 'mt-1 text-xs text-brand-danger';
             tickerInput.parentElement.parentElement.appendChild(errorEl);
         }
         errorEl.textContent = message;

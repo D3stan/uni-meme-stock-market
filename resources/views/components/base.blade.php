@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-screen text-white bg-background">
+<body class="min-h-screen">
     {{ $slot }}
     @stack('scripts')
     @stack('page-scripts')

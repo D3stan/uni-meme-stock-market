@@ -51,35 +51,35 @@
 
             {{-- Billing --}}
             <div class="px-4">
-                <div class="bg-gray-800 rounded-lg p-4 space-y-3 border border-gray-700">
+                <div class="bg-surface-200 rounded-lg p-4 space-y-3 border border-surface-200">
                     <div class="flex items-center gap-2 mb-3">
-                        <span aria-hidden="true" class="material-icons text-green-500 text-lg">receipt</span>
-                        <h3 class="text-sm font-semibold text-white uppercase">Riepilogo Finanziario</h3>
+                        <span aria-hidden="true" class="material-icons text-brand text-lg">receipt</span>
+                        <h3 class="text-sm font-semibold text-text-main uppercase">Riepilogo Finanziario</h3>
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-400">Tuo saldo attuale</span>
-                        <span class="text-sm font-mono text-white">{{ number_format($balance, 2) }} CFU</span>
+                        <span class="text-sm text-text-muted">Tuo saldo attuale</span>
+                        <span class="text-sm font-mono text-text-main">{{ number_format($balance, 2) }} CFU</span>
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-400">Costo Listing (Fee)</span>
-                        <span class="text-sm font-mono text-red-400">- 20.00 CFU</span>
+                        <span class="text-sm text-text-muted">Costo Listing (Fee)</span>
+                        <span class="text-sm font-mono text-brand-danger">- 20.00 CFU</span>
                     </div>
 
-                    <div class="border-t border-gray-700 pt-3">
+                    <div class="border-t border-surface-200 pt-3">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm font-semibold text-white">Saldo dopo listing</span>
-                            <span class="text-base font-mono font-bold {{ $balance >= 20 ? 'text-green-500' : 'text-red-500' }}">
+                            <span class="text-sm font-semibold text-text-main">Saldo dopo listing</span>
+                            <span class="text-base font-mono font-bold {{ $balance >= 20 ? 'text-brand' : 'text-brand-danger' }}">
                                 {{ number_format($balance - 20, 2) }} CFU
                             </span>
                         </div>
                     </div>
 
                     @if($balance < 20)
-                        <div class="bg-red-600/20 border border-red-600/30 rounded-lg p-3 flex items-center gap-2">
-                            <span aria-hidden="true" class="material-icons text-red-400 text-lg">warning</span>
-                            <span class="text-sm text-red-400 font-medium">Saldo insufficiente</span>
+                        <div class="bg-brand-danger/20 border border-brand-danger/30 rounded-lg p-3 flex items-center gap-2">
+                            <span aria-hidden="true" class="material-icons text-brand-danger text-lg">warning</span>
+                            <span class="text-sm text-brand-danger font-medium">Saldo insufficiente</span>
                         </div>
                     @endif
                 </div>
@@ -89,7 +89,7 @@
             <div class="px-4">
                 <x-forms.button 
                     type="submit" 
-                    variant="success" 
+                    variant="primary" 
                     size="lg" 
                     class="w-full"
                     id="submitBtn"
@@ -98,7 +98,7 @@
                     Paga e Invia al Rettorato
                 </x-forms.button>
 
-                <p class="mt-3 text-xs text-gray-500 text-center">
+                <p class="mt-3 text-xs text-text-muted text-center">
                     La fee non è rimborsabile. Il meme sarà controllato dall'admin.
                 </p>
             </div>

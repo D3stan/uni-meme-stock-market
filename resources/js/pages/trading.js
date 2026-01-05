@@ -63,8 +63,8 @@ class TradingPage {
             this.currentView = 'chart';
             
             // Update button styles
-            chartBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-green-500 text-gray-900';
-            memeBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-gray-700 text-gray-300 hover:bg-gray-600';
+            chartBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-brand text-surface-50';
+            memeBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-surface-200 text-text-muted hover:bg-surface-200/80';
             
             // Show chart, hide meme
             chartContainer.classList.remove('hidden');
@@ -76,8 +76,8 @@ class TradingPage {
             this.currentView = 'meme';
             
             // Update button styles
-            memeBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-green-500 text-gray-900';
-            chartBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-gray-700 text-gray-300 hover:bg-gray-600';
+            memeBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-brand text-surface-50';
+            chartBtn.className = 'flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all bg-surface-200 text-text-muted hover:bg-surface-200/80';
             
             // Show meme, hide chart
             chartContainer.classList.add('hidden');
@@ -98,9 +98,9 @@ class TradingPage {
                 
                 // Update button styles
                 periodBtns.forEach(b => {
-                    b.className = 'period-btn px-6 py-2 rounded-full text-sm font-medium bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors';
+                    b.className = 'period-btn px-6 py-2 rounded-full text-sm font-medium bg-surface-200 text-text-muted hover:bg-surface-200/80 transition-colors';
                 });
-                btn.className = 'period-btn px-6 py-2 rounded-full text-sm font-medium bg-green-500 text-gray-900 transition-colors';
+                btn.className = 'period-btn px-6 py-2 rounded-full text-sm font-medium bg-brand text-surface-50 transition-colors';
                 
                 // Load new chart data
                 this.chart.changePeriod(period);
@@ -139,7 +139,7 @@ class TradingPage {
         if (priceElement) {
             const isPositive = data.price_change_24h.percentage >= 0;
             priceElement.textContent = `${data.current_price.toFixed(2)} CFU`;
-            priceElement.className = `text-5xl font-black font-mono tracking-tight mb-3 ${isPositive ? 'text-green-400' : 'text-red-400'}`;
+            priceElement.className = `text-5xl font-black font-mono tracking-tight mb-3 ${isPositive ? 'text-brand' : 'text-brand-danger'}`;
         }
         
         // Update 24h change badge
@@ -148,8 +148,8 @@ class TradingPage {
             const isPositive = data.price_change_24h.percentage >= 0;
             badgeElement.className = `inline-flex items-center gap-2 px-4 py-2 rounded-full border ${
                 isPositive 
-                    ? 'bg-green-500/20 border-green-500/50 text-green-400' 
-                    : 'bg-red-500/20 border-red-500/50 text-red-400'
+                    ? 'bg-brand/20 border-brand/50 text-brand' 
+                    : 'bg-brand-danger/20 border-brand-danger/50 text-brand-danger'
             }`;
             
             const iconElement = badgeElement.querySelector('.material-icons');

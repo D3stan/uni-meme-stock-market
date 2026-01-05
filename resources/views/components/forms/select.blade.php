@@ -8,7 +8,7 @@
 ])
 
 <div>
-    <label for="{{ $id }}" class="block text-xs font-semibold text-gray-400 uppercase mb-2">
+    <label for="{{ $id }}" class="block text-xs font-semibold text-text-muted uppercase mb-2">
         {{ $label }}
     </label>
     <div class="relative">
@@ -16,7 +16,7 @@
             id="{{ $id }}" 
             name="{{ $name }}"
             {{ $required ? 'required' : '' }}
-            {{ $attributes->merge(['class' => 'w-full h-12 px-4 pr-10 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent cursor-pointer']) }}
+            {{ $attributes->merge(['class' => 'input-base h-12 pr-10 cursor-pointer']) }}
             style="appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: none;"
         >
             <option value="" disabled selected>{{ $placeholder }}</option>
@@ -24,7 +24,7 @@
                 <option value="{{ $option['value'] }}">{{ $option['text'] }}</option>
             @endforeach
         </select>
-        <span class="material-icons absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+        <span class="material-icons absolute right-4 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none">
             expand_more
         </span>
     </div>

@@ -2,12 +2,12 @@
 
     {{-- Statistics --}}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <x-ui.stat-card title="Totale" :value="number_format($stats['total'])" color="white" />
-        <x-ui.stat-card title="Acquisti" :value="number_format($stats['buy'])" color="green-500" />
-        <x-ui.stat-card title="Vendite" :value="number_format($stats['sell'])" color="red-500" />
-        <x-ui.stat-card title="Bonus" :value="number_format($stats['bonus'])" color="blue-500" />
-        <x-ui.stat-card title="Dividendi" :value="number_format($stats['dividend'])" color="purple-500" />
-        <x-ui.stat-card title="Volume" :value="'€' . number_format($stats['volume'], 0)" color="white" />
+        <x-ui.stat-card title="Totale" :value="number_format($stats['total'])" color="text-main" />
+        <x-ui.stat-card title="Acquisti" :value="number_format($stats['buy'])" color="brand" />
+        <x-ui.stat-card title="Vendite" :value="number_format($stats['sell'])" color="brand-danger" />
+        <x-ui.stat-card title="Bonus" :value="number_format($stats['bonus'])" color="brand-accent" />
+        <x-ui.stat-card title="Dividendi" :value="number_format($stats['dividend'])" color="brand-accent" />
+        <x-ui.stat-card title="Volume" :value="'€' . number_format($stats['volume'], 0)" color="text-main" />
     </div>
 
     {{-- Filters --}}
@@ -26,7 +26,7 @@
             [
                 'label' => 'ID',
                 'key' => 'id',
-                'render' => fn($row) => '<span class="text-gray-400">#' . $row->id . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">#' . $row->id . '</span>'
             ],
             [
                 'label' => 'Data',
@@ -36,18 +36,18 @@
             [
                 'label' => 'Utente',
                 'key' => 'user.name',
-                'render' => fn($row) => '<span class="text-white font-medium">' . $row->user->name . '</span>'
+                'render' => fn($row) => '<span class="text-text-main font-medium">' . $row->user->name . '</span>'
             ],
             [
                 'label' => 'Tipo',
                 'key' => 'type',
                 'render' => function($row) {
                     $badges = [
-                        'buy' => '<span class="px-2 py-1 bg-green-600/20 text-green-500 rounded-full text-xs font-semibold">ACQUISTO</span>',
-                        'sell' => '<span class="px-2 py-1 bg-red-600/20 text-red-500 rounded-full text-xs font-semibold">VENDITA</span>',
-                        'bonus' => '<span class="px-2 py-1 bg-blue-600/20 text-blue-500 rounded-full text-xs font-semibold">BONUS</span>',
-                        'dividend' => '<span class="px-2 py-1 bg-purple-600/20 text-purple-500 rounded-full text-xs font-semibold">DIVIDENDO</span>',
-                        'listing_fee' => '<span class="px-2 py-1 bg-yellow-600/20 text-yellow-500 rounded-full text-xs font-semibold">LISTING FEE</span>',
+                        'buy' => '<span class="badge-positive">ACQUISTO</span>',
+                        'sell' => '<span class="badge-negative">VENDITA</span>',
+                        'bonus' => '<span class="badge-info">BONUS</span>',
+                        'dividend' => '<span class="badge-info">DIVIDENDO</span>',
+                        'listing_fee' => '<span class="badge-neutral">LISTING FEE</span>',
                     ];
                     return $badges[$row->type] ?? '';
                 }
@@ -57,7 +57,7 @@
                 'key' => 'meme',
                 'render' => fn($row) => $row->meme 
                     ? '<span class="font-semibold">$' . $row->meme->ticker . '</span>' 
-                    : '<span class="text-gray-500">-</span>'
+                    : '<span class="text-text-muted">-</span>'
             ],
             [
                 'label' => 'Quantità',
@@ -65,7 +65,7 @@
                 'align' => 'right',
                 'render' => fn($row) => $row->quantity 
                     ? number_format($row->quantity) 
-                    : '<span class="text-gray-500">-</span>'
+                    : '<span class="text-text-muted">-</span>'
             ],
             [
                 'label' => 'Prezzo',
@@ -73,13 +73,13 @@
                 'align' => 'right',
                 'render' => fn($row) => $row->price_per_share 
                     ? '€' . number_format($row->price_per_share, 2) 
-                    : '<span class="text-gray-500">-</span>'
+                    : '<span class="text-text-muted">-</span>'
             ],
             [
                 'label' => 'Fee',
                 'key' => 'fee_amount',
                 'align' => 'right',
-                'render' => fn($row) => '<span class="text-gray-400">€' . number_format($row->fee_amount, 2) . '</span>'
+                'render' => fn($row) => '<span class="text-text-muted">€' . number_format($row->fee_amount, 2) . '</span>'
             ],
             [
                 'label' => 'Totale',
@@ -87,7 +87,7 @@
                 'align' => 'right',
                 'render' => function($row) {
                     $isNegative = $row->type === 'buy' || $row->type === 'listing_fee';
-                    $color = $isNegative ? 'text-red-500' : 'text-green-500';
+                    $color = $isNegative ? 'text-brand-danger' : 'text-brand';
                     $sign = $isNegative ? '-' : '+';
                     return '<span class="font-semibold ' . $color . '">' . $sign . '€' . number_format(abs($row->total_amount), 2) . '</span>';
                 }
@@ -96,7 +96,7 @@
                 'label' => 'Saldo Dopo',
                 'key' => 'cfu_balance_after',
                 'align' => 'right',
-                'render' => fn($row) => '<span class="text-white font-medium">€' . number_format($row->cfu_balance_after, 2) . '</span>'
+                'render' => fn($row) => '<span class="text-text-main font-medium">€' . number_format($row->cfu_balance_after, 2) . '</span>'
             ],
         ];
     @endphp

@@ -2,12 +2,12 @@
     <x-ui.modal id="onboarding-bonus" :show="session('show_onboarding_modal', false)">
         <div class="p-8 text-center">
             <div class="mb-4">🎉</div>
-            <h2 class="text-3xl font-bold mb-2">Benvenuto su AlmaStreet!</h2>
-            <p class="text-5xl font-black text-green-500 mb-2">+100 CFU</p>
-            <p class="text-gray-400 mb-6">Usa questi CFU per iniziare a fare trading!</p>
-            <button onclick="hideModal('onboarding-bonus')" class="...">
+            <h2 class="text-3xl font-bold mb-2 text-text-main">Benvenuto su AlmaStreet!</h2>
+            <p class="text-5xl font-black text-brand mb-2">+100 CFU</p>
+            <p class="text-text-muted mb-6">Usa questi CFU per iniziare a fare trading!</p>
+            <x-forms.button onclick="hideModal('onboarding-bonus')" variant="primary">
                 Vai al Mercato
-            </button>
+            </x-forms.button>
         </div>
     </x-ui.modal>
     
@@ -18,7 +18,7 @@
 
     {{-- Filtri Chips --}}
     <div class="sticky top-[84px] lg:top-[112px] z-20">
-        <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-input-background border-b border-gray-800 rounded-b-xl">
+        <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-surface-50 border-b border-surface-200 rounded-b-xl">
             <div class="flex gap-2 min-w-max">
                 <a href="{{ route('market', ['filter' => 'all']) }}" class="whitespace-nowrap">
                     <x-ui.chip 
@@ -62,10 +62,20 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto mt-2 px-2">
+    <div class="max-w-7xl mx-auto mt-2 px-2" data-page="marketplace">
 
-        {{-- Meme Feed --}}
-        <div class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {{-- Meme Feed Skeleton (Visible by default for JS handling) --}}
+        <div id="meme-feed-skeleton" class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+            <x-meme.skeleton />
+        </div>
+
+        {{-- Meme Feed (Hidden by default, shown by JS after images load) --}}
+        <div id="meme-feed" class="hidden py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
             @forelse($memes as $meme)
                 <x-meme.card 
                     :name="$meme['name']"

@@ -91,11 +91,11 @@ function showToast(icon, message, type) {
     
     // Set colors based on type
     if (type === 'success') {
-        toastIcon.className = 'material-icons text-2xl text-green-500';
-        toastContent.className = 'bg-gray-900 border border-green-900 rounded-2xl p-4 shadow-lg';
+        toastIcon.className = 'material-icons text-2xl text-brand';
+        toastContent.className = 'bg-surface-100 border border-brand rounded-2xl p-4 shadow-lg';
     } else {
-        toastIcon.className = 'material-icons text-2xl text-red-500';
-        toastContent.className = 'bg-gray-900 border border-red-900 rounded-2xl p-4 shadow-lg';
+        toastIcon.className = 'material-icons text-2xl text-brand-danger';
+        toastContent.className = 'bg-surface-100 border border-brand-danger rounded-2xl p-4 shadow-lg';
     }
     
     toast.classList.remove('hidden');

@@ -30,7 +30,7 @@ function openModerationModal(button) {
     const titleEl = card.querySelector('h3.text-sm');
     if (titleEl) titleEl.textContent = title;
     
-    const tickerEl = card.querySelector('.text-xs.text-gray-400');
+    const tickerEl = card.querySelector('.text-xs.text-text-muted');
     if (tickerEl) tickerEl.textContent = '$' + ticker;
     
     // Update status badge
@@ -71,11 +71,11 @@ function openModerationModal(button) {
 
 function getStatusClasses(status) {
     const classes = {
-        'pending': 'bg-yellow-500 text-yellow-400 border-yellow-500',
-        'approved': 'bg-green-500 text-green-400 border-green-500',
-        'suspended': 'bg-red-500 text-red-400 border-red-500',
+        'pending': 'bg-brand-accent/10 text-brand-accent border-brand-accent/20',
+        'approved': 'bg-brand/10 text-brand border-brand/20',
+        'suspended': 'bg-brand-danger/10 text-brand-danger border-brand-danger/20',
     };
-    return classes[status] || 'bg-gray-500 text-gray-400 border-gray-500';
+    return classes[status] || 'bg-surface-200/30 text-text-muted border-surface-200';
 }
 
 function getStatusText(status) {

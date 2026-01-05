@@ -17,7 +17,7 @@
 
     {{-- Menu Operativo --}}
     <div class="mb-8">
-        <h2 class="text-2xl font-bold text-white mb-6">Menu Operativo</h2>
+        <h2 class="text-2xl font-bold text-text-main mb-6">Menu Operativo</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {{-- Approva Meme --}}
