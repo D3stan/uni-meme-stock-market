@@ -24,7 +24,7 @@ $maxWidthClasses = match($maxWidth) {
 >
     <!-- Backdrop -->
     <div 
-        class="modal-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
+        class="modal-backdrop fixed inset-0 bg-surface-50/80 backdrop-blur-sm transition-opacity duration-300"
         onclick="document.getElementById('{{ $id }}').classList.add('hidden')"
     ></div>
 

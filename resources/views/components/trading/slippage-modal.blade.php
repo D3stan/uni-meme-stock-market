@@ -1,7 +1,7 @@
 {{-- Slippage Alert Modal --}}
 
 <!-- Slippage Modal Backdrop -->
-<div id="slippage-modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] hidden"></div>
+<div id="slippage-modal-backdrop" class="fixed inset-0 bg-surface-50/80 z-[60] hidden"></div>
 
 <!-- Slippage Modal -->
 <div id="slippage-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 hidden">

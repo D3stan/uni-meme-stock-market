@@ -26,7 +26,7 @@
         <button 
             type="button"
             onclick="toggleNetWorthVisibility()"
-            class="ml-2 p-2 hover:bg-white/10 rounded-lg transition-colors"
+            class="ml-2 p-2 hover:bg-brand-light/20 rounded-lg transition-colors"
             aria-label="Toggle visibility"
         >
             <span class="material-icons text-text-main text-2xl" id="visibility-icon">visibility</span>

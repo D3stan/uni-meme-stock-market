@@ -2,7 +2,7 @@
 @props(['meme', 'userHoldings'])
 
 <!-- Backdrop -->
-<div id="order-modal-backdrop" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity opacity-0"></div>
+<div id="order-modal-backdrop" class="fixed inset-0 bg-surface-50/60 z-50 hidden transition-opacity opacity-0"></div>
 
 <!-- Bottom Sheet Modal -->
 <div id="order-modal" 

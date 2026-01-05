@@ -116,7 +116,7 @@
     }
     
     .btn-danger {
-        @apply bg-brand-danger hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand-danger/20;
+        @apply bg-brand-danger hover:bg-brand-danger-dark text-text-main font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand-danger/20;
     }
     
     .btn-secondary {

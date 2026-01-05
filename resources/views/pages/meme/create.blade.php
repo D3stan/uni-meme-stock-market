@@ -89,7 +89,7 @@
             <div class="px-4">
                 <x-forms.button 
                     type="submit" 
-                    variant="success" 
+                    variant="primary" 
                     size="lg" 
                     class="w-full"
                     id="submitBtn"

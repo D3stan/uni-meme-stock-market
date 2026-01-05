@@ -34,34 +34,34 @@ class Chart {
                     background: {
                         color: 'transparent'
                     },
-                    textColor: '#9ca3af',
+                    textColor: '#94a3b8',
                 },
                 grid: {
                     vertLines: { 
-                        color: 'rgba(42, 46, 57, 0.3)' 
+                        color: 'rgba(51, 65, 85, 0.1)' 
                     },
                     horzLines: { 
-                        color: 'rgba(42, 46, 57, 0.3)' 
+                        color: 'rgba(51, 65, 85, 0.1)' 
                     },
                 },
                 crosshair: {
                     mode: 0,
                 },
                 rightPriceScale: {
-                    borderColor: 'rgba(197, 203, 206, 0.4)',
+                    borderColor: 'rgba(51, 65, 85, 0.4)',
                 },
                 timeScale: {
-                    borderColor: 'rgba(197, 203, 206, 0.4)',
+                    borderColor: 'rgba(51, 65, 85, 0.4)',
                     timeVisible: true,
                     secondsVisible: false,
                 },
             });
 
-            // Create area series with green gradient
+            // Create area series with brand green gradient
             this.series = this.chart.addSeries(AreaSeries, {
-                topColor: 'rgba(34, 197, 94, 0.4)',
-                bottomColor: 'rgba(34, 197, 94, 0.0)',
-                lineColor: 'rgba(34, 197, 94, 1)',
+                topColor: 'rgba(16, 185, 129, 0.4)',
+                bottomColor: 'rgba(16, 185, 129, 0.0)',
+                lineColor: 'rgba(16, 185, 129, 1)',
                 lineWidth: 2,
             });
 

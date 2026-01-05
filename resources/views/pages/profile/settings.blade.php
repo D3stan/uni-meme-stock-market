@@ -32,7 +32,7 @@
 
                         {{-- Nickname Section --}}
                         <div>
-                            <label class="block text-sm font-medium text-brand mb-2">
+                            <label class="block text-sm font-medium text-text-muted mb-2">
                                 Nickname
                             </label>
                             <div class="relative">

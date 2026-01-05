@@ -49,7 +49,7 @@
                     @if($method !== 'POST')
                         @method($method)
                     @endif
-                    <button type="submit" class="w-full px-4 py-3 text-white {{ $confirmClass }} rounded-xl font-medium transition-colors">
+                    <button type="submit" class="w-full px-4 py-3 text-text-main {{ $confirmClass }} rounded-xl font-medium transition-colors">
                         {{ $confirmText }}
                     </button>
                 </form>
