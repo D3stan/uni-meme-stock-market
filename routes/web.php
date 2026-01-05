@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
 
+    // Upload // Debug (to be removed)
+    Route::get('/upload', function () { return view('pages.meme.upload'); });
+
     // Trading routes
     Route::get('/trade/{meme}', [TradingController::class, 'show'])->name('trade');
     
@@ -70,6 +73,3 @@ Route::get('/test-components', function () {
 Route::get('/test-navbar', function () {
     return view('test-navbar');
 });
-
-// Debug (to be removed)
-Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
