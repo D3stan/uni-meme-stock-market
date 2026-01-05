@@ -83,7 +83,7 @@
                     <button type="button" onclick="closeModal('{{ $id }}')" class="flex-1 px-4 py-3 text-white bg-gray-800 border border-gray-700 hover:bg-gray-700 rounded-xl font-medium transition-colors">
                         Annulla
                     </button>
-                    <button type="submit" class="flex-1 px-4 py-3 text-white bg-brand hover:bg-brand-dark rounded-xl font-medium transition-colors">
+                    <button type="submit" class="flex-1 px-4 py-3 text-white bg-green-600 hover:bg-green-700 rounded-xl font-medium transition-colors">
                         Conferma
                     </button>
                 </div>

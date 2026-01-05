@@ -3,12 +3,35 @@
  * Handles form submission, toast notifications, and modal interactions
  */
 
+// Define modal functions globally so they're available for inline onclick handlers
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+}
+
 export function initializeSettings() {
     const settingsForm = document.getElementById('settings-form');
     
     if (settingsForm) {
         settingsForm.addEventListener('submit', handleFormSubmit);
     }
+    
+    // Make functions globally available
+    window.showToast = showToast;
+    window.closeToast = closeToast;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
 }
 
 function handleFormSubmit(e) {
@@ -52,7 +75,7 @@ function handleFormSubmit(e) {
     });
 }
 
-export function showToast(icon, message, type) {
+function showToast(icon, message, type) {
     const toast = document.getElementById('toast-notification');
     const toastIcon = document.getElementById('toast-icon');
     const toastMessage = document.getElementById('toast-message');
@@ -82,12 +105,15 @@ export function showToast(icon, message, type) {
     }, 4000);
 }
 
-export function closeToast() {
+function closeToast() {
     const toast = document.getElementById('toast-notification');
     if (toast) {
         toast.classList.add('hidden');
     }
 }
+
+// Export all functions
+export { showToast, closeToast, openModal, closeModal };
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {

@@ -11,6 +11,23 @@ use Illuminate\Validation\Rules\Password;
 class ProfileController extends Controller
 {
     /**
+     * Serve avatar image from storage
+     */
+    public function serveAvatar($userId, $filename)
+    {
+        $path = 'data/' . $userId . '/' . $filename;
+        
+        if (!Storage::exists($path)) {
+            abort(404);
+        }
+        
+        $file = Storage::get($path);
+        $mimeType = Storage::mimeType($path);
+        
+        return response($file, 200)->header('Content-Type', $mimeType);
+    }
+
+    /**
      * Show the settings page
      */
     public function showSettings()
@@ -22,18 +39,24 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update profile settings
-     */
     public function updateSettings(Request $request)
     {
         $user = Auth::user();
 
+        // Define max file size in KB for validation
+        $maxFileSizeKB = 2048; // 2MB
+        $maxFileSizeBytes = $maxFileSizeKB * 1024;
+        $maxFileSizeMB = $maxFileSizeKB / 1024;
+
         try {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
-                'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', "max:{$maxFileSizeKB}"],
                 'notify_dividends' => ['nullable'],
+            ], [
+                'avatar.max' => "L'immagine è troppo grande. Dimensione massima: {$maxFileSizeMB}MB.",
+                'avatar.image' => 'Il file deve essere un\'immagine.',
+                'avatar.mimes' => 'Formato immagine non supportato. Usa: jpeg, png, jpg, gif.',
             ]);
 
             // Update name
@@ -41,14 +64,36 @@ class ProfileController extends Controller
 
             // Handle avatar upload
             if ($request->hasFile('avatar')) {
+                $file = $request->file('avatar');
+                
+                // Additional file size check in bytes
+                if ($file->getSize() > $maxFileSizeBytes) {
+                    if ($request->expectsJson() || $request->wantsJson()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "L'immagine è troppo grande. Dimensione massima: {$maxFileSizeMB}MB."
+                        ], 422);
+                    }
+                    return redirect()->route('profile.settings')
+                        ->with('error', "L'immagine è troppo grande. Dimensione massima: {$maxFileSizeMB}MB.");
+                }
+                
                 // Delete old avatar if exists
-                if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                    Storage::disk('public')->delete($user->avatar);
+                $userDir = 'data/' . $user->id;
+                if ($user->avatar && Storage::exists($userDir . '/' . $user->avatar)) {
+                    Storage::delete($userDir . '/' . $user->avatar);
                 }
 
-                // Store new avatar
-                $path = $request->file('avatar')->store('avatars', 'public');
-                $user->avatar = $path;
+                // Ensure user directory exists
+                Storage::makeDirectory($userDir);
+                
+                // Get the file extension
+                $extension = $file->getClientOriginalExtension();
+                
+                // Store with fixed name: avatar.{extension}
+                $filename = 'avatar.' . $extension;
+                $file->storeAs($userDir, $filename);
+                $user->avatar = $filename;
             }
 
             $user->save();
@@ -59,7 +104,7 @@ class ProfileController extends Controller
                     'message' => 'Modifiche salvate con successo!',
                     'user' => [
                         'name' => $user->name,
-                        'avatar' => $user->avatar ? asset('storage/' . $user->avatar) : null,
+                        'avatar' => $user->avatarUrl(),
                     ]
                 ]);
             }
@@ -71,7 +116,7 @@ class ProfileController extends Controller
             if ($request->expectsJson() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Errore di validazione: ' . collect($e->errors())->flatten()->first()
+                    'message' => collect($e->errors())->flatten()->first()
                 ], 422);
             }
             throw $e;
@@ -150,8 +195,9 @@ class ProfileController extends Controller
 
         try {
             // Delete avatar if exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+            $userDir = 'data/' . $user->id;
+            if ($user->avatar && Storage::exists($userDir . '/' . $user->avatar)) {
+                Storage::delete($userDir . '/' . $user->avatar);
             }
 
             // Soft delete or hard delete based on your requirements

@@ -27,6 +27,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
 });
 
+// Public avatar route (no auth required to view avatars)
+Route::get('/storage/data/{userId}/{filename}', [ProfileController::class, 'serveAvatar'])
+    ->where('userId', '[0-9]+')
+    ->where('filename', 'avatar\.(jpg|jpeg|png|gif)')
+    ->name('avatar.serve');
+
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');

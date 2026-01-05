@@ -1,10 +1,10 @@
 <x-minimal>
-    <div class="bg-gray-950 min-h-screen text-white">
+    <div class="bg-gray-950 min-h-screen text-white" data-page="settings">
         
         {{-- Header with back button --}}
         <header class="sticky top-0 z-10 bg-gray-950/95 backdrop-blur-sm border-b border-gray-900">
             <div class="flex items-center justify-center relative px-4 py-4">
-                <a href="{{ route('profile') }}" class="absolute left-4 text-brand hover:text-brand-soft transition-colors flex items-center gap-1">
+                <a href="{{ route('profile') }}" class="absolute left-4 text-green-500 hover:text-green-400 transition-colors flex items-center gap-1">
                     <span class="material-icons">chevron_left</span>
                     <span class="font-medium">Indietro</span>
                 </a>
@@ -32,7 +32,7 @@
 
                         {{-- Nickname Section --}}
                         <div>
-                            <label class="block text-sm font-medium text-brand mb-2">
+                            <label class="block text-sm font-medium text-green-500 mb-2">
                                 Nickname
                             </label>
                             <div class="relative">
@@ -40,7 +40,7 @@
                                     type="text" 
                                     name="name" 
                                     value="{{ old('name', $user->name) }}"
-                                    class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-brand transition-colors"
+                                    class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-green-500 transition-colors"
                                     placeholder="Il tuo nickname"
                                 >
                                 <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
@@ -55,7 +55,7 @@
                         {{-- Save Button --}}
                         <button 
                             type="submit"
-                            class="w-full mt-6 bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
+                            class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                         >
                             <span class="material-icons text-xl">save</span>
                             <span>Salva Modifiche</span>
@@ -99,7 +99,7 @@
                                     {{ old('notify_dividends', true) ? 'checked' : '' }}
                                     class="sr-only peer"
                                 >
-                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand/30 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand"></div>
+                                <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                             </label>
                         </div>
 
@@ -199,21 +199,18 @@
     </div>
 
     @push('page-scripts')
-    @vite(['resources/js/pages/settings.js'])
-    <script type="module">
-        import { showToast, closeToast } from '../../js/pages/settings.js';
-        
-        // Make functions available globally for onclick handlers
-        window.showToast = showToast;
-        window.closeToast = closeToast;
-        
+    <script>
         // Success/error messages from server
         @if(session('success'))
-            showToast('check_circle', "{{ session('success') }}", 'success');
+            if (typeof window.showToast === 'function') {
+                window.showToast('check_circle', "{{ session('success') }}", 'success');
+            }
         @endif
 
         @if(session('error'))
-            showToast('error', "{{ session('error') }}", 'error');
+            if (typeof window.showToast === 'function') {
+                window.showToast('error', "{{ session('error') }}", 'error');
+            }
         @endif
     </script>
     @endpush
