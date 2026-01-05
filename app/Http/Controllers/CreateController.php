@@ -22,6 +22,8 @@ class CreateController extends Controller
      */
     public function create(Request $request)
     {
-        return view('pages.meme.create');
+        $categories = $this->createService->getCategories();
+        
+        return view('pages.meme.create', compact('categories'));
     }
 }
