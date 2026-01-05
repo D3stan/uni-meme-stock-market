@@ -7,7 +7,7 @@
     
     <div class="space-y-3">
         {{-- Impostazioni Account --}}
-        <a href="#" class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition-colors flex items-center justify-between group">
+        <a href="{{ route('profile.settings') }}" class="bg-gray-900 rounded-2xl p-5 border border-gray-800 hover:border-gray-700 transition-colors flex items-center justify-between group">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center group-hover:bg-gray-700 transition-colors">
                     <span class="material-icons text-white text-xl">settings</span>

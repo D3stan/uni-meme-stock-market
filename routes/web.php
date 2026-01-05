@@ -5,6 +5,7 @@ use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TradingController;
+use App\Http\Controllers\ProfileController;
 
 // Guest routes (Landing page)
 Route::get('/', function () {
@@ -35,6 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/create', fn() => redirect('/test-navbar'))->name('create');
     Route::get('/leaderboard', [MarketplaceController::class, 'leaderboard'])->name('leaderboard');
     Route::get('/profile', [MarketplaceController::class, 'profile'])->name('profile');
+
+    // Profile settings routes
+    Route::get('/profile/settings', [ProfileController::class, 'showSettings'])->name('profile.settings');
+    Route::put('/profile/settings', [ProfileController::class, 'updateSettings'])->name('profile.settings.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::post('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
+    Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 
     // Trading routes
     Route::get('/trade/{meme}', [TradingController::class, 'show'])->name('trade');
