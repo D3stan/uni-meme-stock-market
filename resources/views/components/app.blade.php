@@ -1,4 +1,4 @@
-@props(['title' => null])
+@props(['title' => null, 'active' => null])
 
 <x-base :title="$title">
     {{-- Navigation bar component (renders fixed navs) --}}
