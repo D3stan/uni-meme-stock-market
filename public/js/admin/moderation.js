@@ -66,7 +66,7 @@ function openModerationModal(button) {
     document.getElementById('rejectForm').action = `/admin/moderation/${id}/reject`;
 
     // Show modal
-    showModal('moderationModal');
+    showModal('moderation-modal');
 }
 
 function getStatusClasses(status) {

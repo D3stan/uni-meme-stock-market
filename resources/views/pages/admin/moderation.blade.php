@@ -90,7 +90,7 @@
 
     <x-ui.table :columns="$columns" :rows="$memes" :paginate="true" caption="Meme caricati dagli utenti" emptyMessage="Nessun meme trovato" />
 
-    <x-admin.moderationModal/>
+    <x-admin.moderation-modal/>
 
     @push('page-scripts')
     <script src="{{ asset('js/admin/moderation.js') }}"></script>
