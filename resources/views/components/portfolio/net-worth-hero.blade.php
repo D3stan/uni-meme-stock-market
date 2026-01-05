@@ -45,25 +45,3 @@
         </div>
     </div>
 </div>
-
-@push('page-scripts')
-<script>
-    let netWorthVisible = true;
-    const originalValue = '{{ $formattedNetWorth }}';
-    
-    function toggleNetWorthVisibility() {
-        const valueElement = document.getElementById('net-worth-value');
-        const iconElement = document.getElementById('visibility-icon');
-        
-        netWorthVisible = !netWorthVisible;
-        
-        if (netWorthVisible) {
-            valueElement.textContent = originalValue;
-            iconElement.textContent = 'visibility';
-        } else {
-            valueElement.textContent = '•••••';
-            iconElement.textContent = 'visibility_off';
-        }
-    }
-</script>
-@endpush

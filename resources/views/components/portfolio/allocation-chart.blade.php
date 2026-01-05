@@ -19,7 +19,7 @@
     <div class="flex flex-col items-center gap-6">
         {{-- Donut Chart Container --}}
         <div class="relative w-48 h-48">
-            <canvas id="allocation-chart"></canvas>
+            <canvas id="allocation-chart" data-invested="{{ $invested }}" data-liquid="{{ $liquid }}"></canvas>
             {{-- Center Text --}}
             <div class="absolute inset-0 flex flex-col items-center justify-center">
                 <p class="text-xs text-gray-400 uppercase">Investito</p>
@@ -55,45 +55,3 @@
         </div>
     </div>
 </div>
-
-@push('page-scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('allocation-chart');
-        if (!ctx) return;
-        
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Investito', 'Liquidità'],
-                datasets: [{
-                    data: [{{ $invested }}, {{ $liquid }}],
-                    backgroundColor: ['#10B981', '#4B5563'],
-                    borderWidth: 0,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: true,
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                return label + ': ' + value.toFixed(2) + ' CFU';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
-@endpush

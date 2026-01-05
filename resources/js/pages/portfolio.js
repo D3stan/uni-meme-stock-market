@@ -3,8 +3,6 @@
  * Handles asset allocation chart and net worth visibility toggle
  */
 
-import Chart from 'chart.js/auto';
-
 class PortfolioManager {
     constructor() {
         this.netWorthVisible = true;
@@ -18,7 +16,7 @@ class PortfolioManager {
     init() {
         // Initialize allocation chart if element exists
         const chartElement = document.getElementById('allocation-chart');
-        if (chartElement) {
+        if (chartElement && typeof Chart !== 'undefined') {
             this.initAllocationChart(chartElement);
         }
 
@@ -91,8 +89,9 @@ class PortfolioManager {
             this.valueElement.textContent = this.originalValue;
             this.iconElement.textContent = 'visibility';
         } else {
-            // Generate dots based on original value length
-            const dots = '•'.repeat(this.originalValue.replace(/[,.\s]/g, '').length);
+            // Generate dots based on original value length (excluding formatting characters)
+            const digits = this.originalValue.replace(/[,.\ ]/g, '');
+            const dots = '•'.repeat(digits.length);
             this.valueElement.textContent = dots;
             this.iconElement.textContent = 'visibility_off';
         }

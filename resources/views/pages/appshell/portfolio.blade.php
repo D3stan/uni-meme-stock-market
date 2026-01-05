@@ -18,23 +18,20 @@
         <div class="space-y-4">
             <div class="flex items-center justify-between px-2">
                 <h2 class="text-xl font-bold text-white">I Tuoi Meme</h2>
-                @if($positions->count() > 3)
-                    <a href="#" class="text-sm font-semibold text-green-500 uppercase tracking-wide hover:text-green-400">
-                        Vedi Tutti
-                    </a>
-                @endif
             </div>
             
-            @forelse($positions->take(4) as $position)
-                <x-portfolio.position-row 
-                    :meme="$position['meme']"
-                    :quantity="$position['quantity']"
-                    :currentValue="$position['current_value']"
-                    :avgBuyPrice="$position['avg_buy_price']"
-                    :pnlAmount="$position['pnl_amount']"
-                    :pnlPct="$position['pnl_pct']"
-                    :tradeUrl="route('trade', ['meme' => $position['meme']->id])"
-                />
+            @forelse($positions as $position)
+                <a href="{{ route('trade', ['meme' => $position['meme']->id]) }}" class="block">
+                    <x-meme.card-compact
+                        mode="portfolio"
+                        :name="$position['meme']->title"
+                        :ticker="$position['meme']->ticker"
+                        :image="asset('storage/data/' . $position['meme']->creator_id . '/' . $position['meme']->image_path)"
+                        :quantity="$position['quantity']"
+                        :currentValue="$position['current_value']"
+                        :change="$position['pnl_pct']"
+                    />
+                </a>
             @empty
                 <x-ui.empty-state 
                     icon="account_balance_wallet"
@@ -49,4 +46,9 @@
         </div>
         
     </div>
+
+    @push('page-scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        @vite(['resources/js/pages/portfolio.js'])
+    @endpush
 </x-app>
