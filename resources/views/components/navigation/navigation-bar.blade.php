@@ -20,35 +20,35 @@
 <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-100/95 backdrop-blur-lg border-t border-surface-200/50">
     <div class="h-full flex items-center justify-center gap-4 px-6 py-3 max-w-2xl mx-auto">
         {{-- Market --}}
-        <a href="{{ route('market') }}" aria-label="Marketplace" class="flex items-center justify-center {{ $active === 'market' ? 'bg-brand px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+        <a href="{{ route('market') }}" aria-label="Marketplace" class="flex items-center justify-center {{ $active === 'market' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
             <span aria-hidden="true" class="material-icons {{ $active === 'market' ? 'text-surface-50 text-2xl' : 'text-text-muted text-2xl' }} group-hover:text-brand transition-colors">
                 dashboard
             </span>
         </a>
 
         {{-- Leaderboard --}}
-        <a href="{{ route('leaderboard') }}" aria-label="Classifica" class="flex items-center justify-center {{ $active === 'leaderboard' ? 'bg-brand px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+        <a href="{{ route('leaderboard') }}" aria-label="Classifica" class="flex items-center justify-center {{ $active === 'leaderboard' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
             <span aria-hidden="true" class="material-icons {{ $active === 'leaderboard' ? 'text-surface-50 text-2xl' : 'text-text-muted text-2xl' }} group-hover:text-brand transition-colors">
                 emoji_events
             </span>
         </a>
 
         {{-- Central Create Button --}}
-        <a href="{{ route('create') }}" aria-label="Crea" class="flex items-center justify-center bg-brand rounded-full border-4 border-surface-50 h-16 w-16 group transition-colors hover:bg-brand-light active:scale-95">
+        <a href="{{ route('create') }}" aria-label="Crea" class="flex items-center justify-center bg-brand rounded-full border-4 border-surface-50 h-16 w-16 group transition-colors hover:bg-brand-light">
             <span aria-hidden="true" class="material-icons text-text-main text-3xl">
                 add
             </span>
         </a>
 
         {{-- Portfolio --}}
-        <a href="{{ route('portfolio') }}" aria-label="Porfolio" class="flex items-center justify-center {{ $active === 'portfolio' ? 'bg-brand px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+        <a href="{{ route('portfolio') }}" aria-label="Porfolio" class="flex items-center justify-center {{ $active === 'portfolio' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
             <span aria-hidden="true" class="material-icons {{ $active === 'portfolio' ? 'text-surface-50 text-2xl' : 'text-text-muted text-2xl' }} group-hover:text-brand transition-colors">
                 account_balance_wallet
             </span>
         </a>
 
         {{-- Profile --}}
-        <a href="{{ route('profile') }}" aria-label="Profilo" class="flex items-center justify-center {{ $active === 'profile' ? 'bg-brand px-4' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+        <a href="{{ route('profile') }}" aria-label="Profilo" class="flex items-center justify-center {{ $active === 'profile' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
             <span aria-hidden="true" class="material-icons {{ $active === 'profile' ? 'text-surface-50 text-2xl' : 'text-text-muted text-2xl' }} group-hover:text-brand transition-colors">
                 person
             </span>

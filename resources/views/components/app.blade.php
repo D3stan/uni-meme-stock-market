@@ -1,4 +1,5 @@
 @use(App\Models\Utility\Notification)
+@use(App\Models\Admin\MarketCommunication)
 
 @props(['title' => null, 'active' => null, 'balance' => null, 'unreadNotifications' => null])
 
@@ -7,6 +8,11 @@
     $unreadCount = $unreadNotifications ?? (auth()->check() 
         ? Notification::forUser(auth()->id())->unread()->count() 
         : 0);
+    
+    // Get active market communications
+    $marketCommunications = MarketCommunication::active()
+        ->orderBy('expires_at', 'asc')
+        ->get();
 @endphp
 
 <x-base :title="$title">
@@ -14,7 +20,7 @@
     <x-navigation.navigation-bar :active="$active ?? null" :balance="$balance ?? null" :unreadNotifications="$unreadCount" />
 
     {{-- Notification Slide Panel --}}
-    <x-notifications.slide-panel />
+    <x-notifications.slide-panel :communications="$marketCommunications" />
 
     {{-- Top spacer: only mobile --}}
     <div class="lg:hidden h-10" aria-hidden="true"></div>
