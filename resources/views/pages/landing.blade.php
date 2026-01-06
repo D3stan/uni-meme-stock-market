@@ -19,34 +19,9 @@
 
     <!-- Hero Section -->
     <div class="relative pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <!-- Background Chart Graphic -->
-        <div class="absolute inset-0 pointer-events-none opacity-20">
-            <svg class="w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="none">
-                <!-- Simple candlestick-like bars -->
-                <line x1="50" y1="300" x2="50" y2="200" stroke="#10b981" stroke-width="2"/>
-                <rect x="45" y="220" width="10" height="60" fill="#10b981"/>
-                <line x1="100" y1="280" x2="100" y2="180" stroke="#ef4444" stroke-width="2"/>
-                <rect x="95" y="230" width="10" height="40" fill="#ef4444"/>
-                <line x1="150" y1="320" x2="150" y2="220" stroke="#10b981" stroke-width="2"/>
-                <rect x="145" y="240" width="10" height="70" fill="#10b981"/>
-                <line x1="200" y1="250" x2="200" y2="150" stroke="#10b981" stroke-width="2"/>
-                <rect x="195" y="170" width="10" height="60" fill="#10b981"/>
-                <line x1="250" y1="270" x2="250" y2="180" stroke="#ef4444" stroke-width="2"/>
-                <rect x="245" y="210" width="10" height="50" fill="#ef4444"/>
-                <line x1="300" y1="290" x2="300" y2="190" stroke="#ef4444" stroke-width="2"/>
-                <rect x="295" y="230" width="10" height="50" fill="#ef4444"/>
-                <line x1="350" y1="310" x2="350" y2="210" stroke="#10b981" stroke-width="2"/>
-                <rect x="345" y="230" width="10" height="70" fill="#10b981"/>
-                <line x1="400" y1="240" x2="400" y2="140" stroke="#10b981" stroke-width="2"/>
-                <rect x="395" y="160" width="10" height="70" fill="#10b981"/>
-                <line x1="450" y1="280" x2="450" y2="180" stroke="#ef4444" stroke-width="2"/>
-                <rect x="445" y="210" width="10" height="60" fill="#ef4444"/>
-                <line x1="500" y1="260" x2="500" y2="160" stroke="#10b981" stroke-width="2"/>
-                <rect x="495" y="180" width="10" height="70" fill="#10b981"/>
-                <!-- Trend line -->
-                <polyline points="50,280 100,260 150,290 200,220 250,250 300,270 350,280 400,200 450,240 500,220" 
-                    fill="none" stroke="#10b981" stroke-width="3" opacity="0.3"/>
-            </svg>
+        <!-- Background Chart Image -->
+        <div class="absolute inset-0 pointer-events-none opacity-10">
+            <img src="{{ asset('storage/test/placeholder.png') }}" alt="" class="w-full h-full object-cover">
         </div>
         
         <div class="relative max-w-4xl mx-auto text-center">
@@ -92,7 +67,7 @@
                 <span class="text-sm text-text-muted">Vol. 24h</span>
             </div>
             
-            <div class="space-y-3 relative">
+            <div class="space-y-3">
                 <!-- Top 3 Memes (Fully Visible) -->
                 @foreach($topMemes->take(3) as $index => $meme)
                     <x-meme.card-compact 
@@ -107,40 +82,27 @@
                     />
                 @endforeach
                 
-                <!-- Locked Section (Position 4+) -->
-                <div class="relative mt-6">
-                    <!-- Blurred preview of 4th position -->
-                    @if($topMemes->count() >= 4)
-                        <div class="blur-sm opacity-40 pointer-events-none">
-                            <x-meme.card-compact 
-                                mode="landing"
-                                :rank="4"
-                                :name="$topMemes[3]['name']"
-                                :image="$topMemes[3]['image']" 
-                                :ticker="$topMemes[3]['ticker']"
-                                :price="$topMemes[3]['price']"
-                                :change="$topMemes[3]['change']"
-                                :volume="$topMemes[3]['volume24h']"
-                            />
-                        </div>
-                    @endif
+                <!-- Locked Section -->
+                <div class="relative">
+                    <!-- Lock Icon and Message -->
+                    <div class="flex items-center justify-center py-8">
+                        <svg class="w-12 h-12 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
                     
-                    <!-- Lock Overlay -->
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="text-center bg-surface-50/95 backdrop-blur-md px-8 py-8 rounded-2xl border-2 border-surface-200 shadow-xl max-w-sm">
-                            <div class="mb-4">
-                                <svg class="w-16 h-16 mx-auto text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-text-main mb-2">Market Data Locked</h3>
-                            <p class="text-sm text-text-muted mb-6">Join other students trading CFUs.</p>
-                            <a href="{{ route('auth.register') }}" class="inline-block">
-                                <x-forms.button variant="primary" size="md" class="w-full">
-                                    Registrati per sbloccare →
-                                </x-forms.button>
-                            </a>
-                        </div>
+                    <div class="text-center mb-6">
+                        <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
+                        <p class="text-sm text-text-muted mb-4">Join other students trading CFUs.</p>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="flex justify-center">
+                        <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md">
+                            <x-forms.button variant="primary" size="md" class="w-full">
+                                Registrati per sbloccare →
+                            </x-forms.button>
+                        </a>
                     </div>
                 </div>
             </div>

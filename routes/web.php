@@ -8,7 +8,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TradingController;
 use App\Http\Controllers\ProfileController;
 use App\Services\MarketService;
-use App\Models\Financial\Transaction;
 
 // Guest routes (Landing page)
 Route::get('/', function (MarketService $marketService) {
@@ -16,22 +15,10 @@ Route::get('/', function (MarketService $marketService) {
         return redirect()->route('market');
     }
     
-    // Fetch top 5 memes by 24h volume for landing page
-    $topMemes = $marketService->getMarketplaceMemes('top_gainer', 5);
-    
-    // Calculate volume for each meme
-    $memesWithVolume = $topMemes->map(function ($meme) {
-        $volume24h = Transaction::where('meme_id', $meme['id'])
-            ->whereIn('type', ['buy', 'sell'])
-            ->where('executed_at', '>=', now()->subHours(24))
-            ->sum('total_amount');
-        
-        $meme['volume24h'] = $volume24h;
-        return $meme;
-    });
+    $topMemes = $marketService->getLandingPageTopMovers(5);
     
     return view('pages.landing', [
-        'topMemes' => $memesWithVolume
+        'topMemes' => $topMemes
     ]);
 })->name('welcome');
 

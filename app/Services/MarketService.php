@@ -522,4 +522,26 @@ class MarketService
             'total_fees_collected' => $totalFeesCollected,
         ];
     }
+
+    /**
+     * Get top movers for landing page with volume data.
+     * 
+     * @param int $limit
+     * @return \Illuminate\Support\Collection
+     */
+    public function getLandingPageTopMovers(int $limit = 5)
+    {
+        $topMemes = $this->getMarketplaceMemes('top_gainer', $limit);
+        
+        // Calculate volume for each meme
+        return $topMemes->map(function ($meme) {
+            $volume24h = Transaction::where('meme_id', $meme['id'])
+                ->whereIn('type', ['buy', 'sell'])
+                ->where('executed_at', '>=', now()->subHours(24))
+                ->sum('total_amount');
+            
+            $meme['volume24h'] = $volume24h;
+            return $meme;
+        });
+    }
 }
