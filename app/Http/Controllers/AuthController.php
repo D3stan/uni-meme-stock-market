@@ -99,11 +99,25 @@ class AuthController extends Controller
 
         // Handle password reset flow
         if ($pendingPasswordReset) {
-            session()->forget('pending_password_reset');
-            session()->flash('needs_password_change', true);
+            // Find user and log them in
+            $user = User::where('email', $email)->first();
+            
+            if ($user) {
+                Auth::login($user);
+                session()->forget('pending_password_reset');
+                
+                // Set flag to show password change prompt
+                session()->flash('needs_password_change', true);
+                session()->flash('toast', [
+                    'type' => 'warning',
+                    'message' => 'Per sicurezza, cambia subito la tua password dalle impostazioni del profilo.'
+                ]);
+                
+                return redirect()->route('market');
+            }
             
             return redirect()->route('auth.login')
-                ->with('success', 'Email verificata! Effettua il login e cambia la tua password.');
+                ->with('error', 'Utente non trovato.');
         }
 
         // Handle registration flow
