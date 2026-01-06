@@ -34,7 +34,7 @@
         </a>
 
         {{-- Central Create Button --}}
-        <a href="{{ route('create') }}" aria-label="Crea" class="flex items-center justify-center bg-brand rounded-full border-4 border-surface-50 h-16 w-16 group transition-colors hover:bg-brand-light">
+        <a href="{{ route('create') }}" aria-label="Crea" class="flex items-center justify-center bg-brand-dark rounded-full border-4 border-brand h-16 w-16 group transition-colors hover:bg-brand-light">
             <span aria-hidden="true" class="material-icons text-text-main text-3xl">
                 add
             </span>
