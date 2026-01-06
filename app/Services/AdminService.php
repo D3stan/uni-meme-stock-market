@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Market\Meme;
 use App\Models\Financial\Transaction;
 use App\Models\Utility\Notification;
@@ -10,6 +11,41 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AdminService
 {
+    /**
+     * Get dashboard summary statistics for users, memes, and fees (with weekly variation).
+     *
+     * @return array
+     */
+    public function getDashboardStats(): array
+    {
+        $totalUsers = User::count();
+        $usersLastWeek = User::where('created_at', '>=', now()->subWeek())->count();
+        $usersPrevWeek = User::whereBetween('created_at', [now()->subWeeks(2), now()->subWeek()])->count();
+        $userVariation = $usersPrevWeek == 0 ? 0 : (($usersLastWeek - $usersPrevWeek) / $usersPrevWeek) * 100;
+        $userVariation = round($userVariation, 2);
+
+        $totalMeme = Meme::count();
+        $memesLastWeek = Meme::where('created_at', '>=', now()->subWeek())->count();
+        $memesPrevWeek = Meme::whereBetween('created_at', [now()->subWeeks(2), now()->subWeek()])->count();
+        $memeVariation = $memesPrevWeek == 0 ? 0 : (($memesLastWeek - $memesPrevWeek) / $memesPrevWeek) * 100;
+        $memeVariation = round($memeVariation, 2);
+
+        $totalFees = number_format(Transaction::whereIn('type', ['buy', 'sell', 'listing_fee'])->sum('fee_amount'), 2, ',', '.');
+        $feesLastWeek = Transaction::whereIn('type', ['buy', 'sell', 'listing_fee'])->where('executed_at', '>=', now()->subWeek())->sum('fee_amount');
+        $feesPrevWeek = Transaction::whereIn('type', ['buy', 'sell', 'listing_fee'])->whereBetween('executed_at', [now()->subWeeks(2), now()->subWeek()])->sum('fee_amount');
+        $feeVariation = $feesPrevWeek == 0 ? 0 : (($feesLastWeek - $feesPrevWeek) / $feesPrevWeek) * 100;
+        $feeVariation = round($feeVariation, 2);
+
+        return [
+            'totalUsers' => $totalUsers,
+            'userVariation' => $userVariation,
+            'totalMeme' => $totalMeme,
+            'memeVariation' => $memeVariation,
+            'totalFees' => $totalFees,
+            'feeVariation' => $feeVariation,
+        ];
+    }
+
     /**
      * Get transactions ordered by most recent first.
      * 

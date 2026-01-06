@@ -26,7 +26,8 @@ class AdminController extends Controller
      */
     public function index(): View
     {
-        return view('pages.admin.index');
+        $stats = $this->adminService->getDashboardStats();
+        return view('pages.admin.index', $stats);
     }
 
     /**

@@ -3,15 +3,12 @@
     <div class="mb-8">
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
             {{-- Totale Utenti --}}
-            <x-ui.trend-card title="Utenti totali" value="12" variation="+4"/>
-
+            <x-ui.trend-card title="Utenti totali" :value="$totalUsers" :variation="($userVariation >= 0 ? '+' : '') . $userVariation"/>
+            {{-- Totale Meme --}}
+            <x-ui.trend-card title="Meme totali" :value="$totalMeme" :variation="($memeVariation >= 0 ? '+' : '') . $memeVariation"/>
             {{-- Totale Fee --}}
-            <x-ui.trend-card title="Totale Fee" value="€12,450" variation="+6.20"/>
-
-            {{-- Inflazione --}}
-            <x-ui.trend-card title="Inflazione" value="2.1%" variation="-0.50"/>
+            <x-ui.trend-card title="Totale Fee" value="€{{ $totalFees }}" :variation="($feeVariation >= 0 ? '+' : '') . $feeVariation"/>
         </div>
     </div>
 

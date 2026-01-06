@@ -8,8 +8,10 @@
     <div class="flex items-start justify-between mb-4">
         <div>
             <p class="text-text-muted text-lg mb-2">{{ $title }}</p>
-            <p class="text-4xl font-bold text-text-main">{{ $value }}</p>
+            <p class="text-{{ $variation ? '4xl': '7xl' }} font-bold text-text-main">{{ $value }}</p>
         </div>
     </div>
-    <x-ui.badge-change value="{{ $variation }}" size="lg" showIcon="true" />
+    @if ($variation)
+        <x-ui.badge-change value="{{ $variation }}" size="lg" showIcon="true" />
+    @endif
 </div>
