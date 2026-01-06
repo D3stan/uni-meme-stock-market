@@ -13,8 +13,8 @@
         <x-profile.stats-grid 
             :registrationDate="$registrationDate"
             :totalTrades="$totalTrades"
-            :bestTrade="$bestTrade"
-            :globalRank="$globalRank"
+            :badgeCount="$badgeCount"
+            :memeCount="$memeCount"
         />
         
         {{-- Menu Options --}}

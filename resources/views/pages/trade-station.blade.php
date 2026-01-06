@@ -34,10 +34,10 @@
 
         {{-- Slippage Alert Modal --}}
         <x-trading.slippage-modal />
-
-        {{-- Toast Notifications --}}
-        <x-ui.toast />
     </div>
+
+    {{-- Toast Notifications --}}
+    <x-ui.toast />
 
     @push('page-scripts')
         {{-- Pass server data to JavaScript --}}

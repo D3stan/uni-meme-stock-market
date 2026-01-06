@@ -185,32 +185,21 @@
         method="DELETE"
     />
 
-    {{-- Success/Error Toast --}}
-    <div id="toast-notification" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-sm w-full">
-        <div id="toast-content" class="card-base p-4">
-            <div class="flex items-center gap-3">
-                <span id="toast-icon" class="material-icons text-2xl"></span>
-                <p id="toast-message" class="text-text-main font-medium flex-1"></p>
-                <button onclick="closeToast()" class="text-text-muted hover:text-text-main">
-                    <span class="material-icons text-xl">close</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    {{-- Toast Notifications --}}
+    <x-ui.toast />
 
     @push('page-scripts')
-    <script>
+    <script type="module">
+        // Import NotificationService
+        import NotificationService from '/resources/js/services/NotificationService.js';
+        
         // Success/error messages from server
         @if(session('success'))
-            if (typeof window.showToast === 'function') {
-                window.showToast('check_circle', "{{ session('success') }}", 'success');
-            }
+            NotificationService.success("{{ session('success') }}");
         @endif
 
         @if(session('error'))
-            if (typeof window.showToast === 'function') {
-                window.showToast('error', "{{ session('error') }}", 'error');
-            }
+            NotificationService.error("{{ session('error') }}");
         @endif
     </script>
     @endpush
