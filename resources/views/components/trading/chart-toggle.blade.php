@@ -38,7 +38,7 @@
 </div>
 
 {{-- Meme Image Container (Initially Hidden) --}}
-<div id="meme-container" class="px-4 mb-6 hidden">
+<div id="meme-container" class="px-4 mb-6 hidden lg:h-1/2 lg:mx-auto">
     {{-- Meme Title and Category --}}
     <div class="mb-4 space-y-2">
         <h2 class="text-2xl font-bold text-text-main">{{ $meme->title }}</h2>
@@ -53,11 +53,11 @@
     </div>
 
     {{-- Meme Image --}}
-    <div class="bg-surface-100/50 rounded-lg overflow-hidden">
+    <div class=" rounded-lg overflow-hidden flex justify-center">
         @if($meme->image_path)
             <img src="{{ asset('storage/data/' . $meme->creator_id . '/' . basename($meme->image_path)) }}" 
                  alt="{{ $meme->text_alt }}" 
-                 class="w-full h-auto"
+                 class="w-full max-h-[70vh] object-contain"
                  onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\'>Immagine non supportata</span></div>'">
         @else
             <div class="flex items-center justify-center h-72 text-text-muted">
