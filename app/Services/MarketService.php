@@ -4,20 +4,11 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Market\Meme;
-use App\Models\Market\Category;
 use App\Models\Financial\Transaction;
-use App\Models\Financial\PriceHistory;
 use App\Models\Admin\GlobalSetting;
 use App\Models\Admin\AdminAction;
 use App\Models\Admin\MarketCommunication;
-use App\Exceptions\Financial\InsufficientFundsException;
-use App\Notifications\MemeProposedNotification;
-use App\Notifications\MemeApprovedNotification;
-use App\Notifications\MemeSuspendedNotification;
-use App\Notifications\MemeDelistedNotification;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class MarketService
