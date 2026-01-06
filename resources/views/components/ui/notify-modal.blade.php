@@ -27,6 +27,11 @@
             <button type="button" id="{{ $id }}-action" class="flex-1 px-4 py-3 rounded-xl font-medium transition-colors">OK</button>
         </div>
     </div>
+    <div id="notification-data" 
+        data-success="{{ session('success') }}" 
+        data-error="{{ session('error') }}"
+        class="hidden">
+    </div>
 </x-ui.modal>
 
 @push('page-scripts')
@@ -72,12 +77,16 @@
     }
 
     // Auto-show modal from session flash messages
-    @if(session('success'))
-        showNotificationModal('success', 'Successo', '{{ session('success') }}');
-    @endif
+    const dataEl = document.getElementById('notification-data');
+    const successMsg = dataEl.dataset.success;
+    const errorMsg = dataEl.dataset.error;
 
-    @if(session('error'))
-        showNotificationModal('error', 'Errore', '{{ session('error') }}');
-    @endif
+    if (successMsg) {
+        showNotificationModal('success', 'Successo', successMsg);
+    }
+
+    if (errorMsg) {
+        showNotificationModal('error', 'Errore', errorMsg);
+    }
 </script>
 @endpush

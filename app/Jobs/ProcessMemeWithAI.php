@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Throwable;
 use App\Models\Market\Meme;
 use App\Services\GeminiService;
+use App\Services\NotificationDispatcher;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -36,7 +37,7 @@ class ProcessMemeWithAI implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(GeminiService $geminiService): void
+    public function handle(GeminiService $geminiService, NotificationDispatcher $notificationDispatcher): void
     {
         // Skip if Gemini is not configured
         if (!$geminiService->isConfigured()) {
@@ -74,6 +75,7 @@ class ProcessMemeWithAI implements ShouldQueue
         if (!empty($result['is_appropriate']) && $result['is_appropriate'] === true) {
             $updateData['status'] = 'approved';
             $updateData['approved_at'] = now();
+            $notificationDispatcher->memeApproved($this->meme);
             Log::info('Meme auto-approved by AI', [
                 'meme_id' => $this->meme->id
             ]);

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\AdminService;
+use App\Services\NotificationDispatcher;
+use App\Models\Market\Meme;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -10,10 +13,12 @@ use Illuminate\View\View;
 class AdminController extends Controller
 {
     protected AdminService $adminService;
+    protected NotificationDispatcher $notificationDispatcher;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(AdminService $adminService, NotificationDispatcher $notificationDispatcher)
     {
         $this->adminService = $adminService;
+        $this->notificationDispatcher = $notificationDispatcher;
     }
 
     /**
@@ -107,7 +112,7 @@ class AdminController extends Controller
         ]);
 
         $this->adminService->createMarketCommunication([
-            'admin_id' => auth()->id(),
+            'admin_id' => Auth::id(),
             'message' => $validated['message'],
             'expires_at' => $validated['expires_at'] ?? null,
             'is_active' => $request->has('is_active'),
@@ -138,7 +143,9 @@ class AdminController extends Controller
      */
     public function approveMeme(int $id): RedirectResponse
     {
-        $this->adminService->approveMeme($id, auth()->id());
+        $this->adminService->approveMeme($id, Auth::id());
+        $meme = Meme::findOrFail($id);
+        $this->notificationDispatcher->memeApproved($meme);
 
         return redirect()->route('admin.moderation')->with('success', 'Meme approvato con successo');
     }
@@ -149,6 +156,8 @@ class AdminController extends Controller
     public function rejectMeme(int $id): RedirectResponse
     {
         $this->adminService->rejectMeme($id);
+        $meme = Meme::findOrFail($id);
+        $this->notificationDispatcher->memeRejected($meme);
 
         return redirect()->route('admin.moderation')->with('success', 'Meme rifiutato con successo');
     }

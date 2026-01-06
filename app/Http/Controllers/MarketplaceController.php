@@ -44,7 +44,7 @@ class MarketplaceController extends Controller
         $tickerMemes = $this->marketService->getTickerMemes(15);
 
         // Get user balance
-        $balance = auth()->user()->cfu_balance;
+        $balance = Auth::user()->cfu_balance;
 
         return view('pages.appshell.marketplace', [
             'memes' => $memes,
@@ -206,7 +206,7 @@ class MarketplaceController extends Controller
 
     public function leaderboard(Request $request)
     {
-        $currentUser = auth()->user();
+        $currentUser = Auth::user();
         
         // Get all traders (non-admin users) with their portfolio values
         $allUsers = User::where('role', '!=', 'admin')
