@@ -54,6 +54,52 @@ class MarketplaceController extends Controller
         ]);
     }
 
+    /**
+     * AJAX endpoint for infinite scroll meme loading
+     */
+    public function ajaxMemes(Request $request)
+    {
+        $filter = $request->get('filter', 'all');
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 20);
+
+        $validFilters = ['all', 'top_gainer', 'new_listing', 'high_risk'];
+        if (!in_array($filter, $validFilters)) {
+            $filter = 'all';
+        }
+
+        // Recupera i meme dal MarketService (come in index)
+        $memes = $this->marketService->getMarketplaceMemes($filter, $perPage, $page);
+        $memes->appends(['filter' => $filter]);
+
+        // Per ogni meme, aggiungi html renderizzato
+        $memesWithHtml = collect($memes->items())->map(function($meme) {
+            return array_merge($meme, [
+                'html' => view('components.meme.card', [
+                    'image' => $meme['image'],
+                    'alt' => $meme['text_alt'],
+                    'name' => $meme['name'],
+                    'ticker' => $meme['ticker'],
+                    'price' => $meme['price'],
+                    'change' => $meme['change'],
+                    'creatorAvatar' => $meme['creatorAvatar'],
+                    'creatorName' => $meme['creatorName'],
+                    'status' => $meme['status'],
+                    'tradeUrl' => route('trade', ['meme' => $meme['id']]),
+                ])->render()
+            ]);
+        });
+
+        return response()->json([
+            'data' => $memesWithHtml,
+            'current_page' => $memes->currentPage(),
+            'last_page' => $memes->lastPage(),
+            'next_page_url' => $memes->nextPageUrl(),
+            'prev_page_url' => $memes->previousPageUrl(),
+            'total' => $memes->total(),
+        ]);
+    }
+
     public function profile(Request $request)
     {
         $user = Auth::user();
