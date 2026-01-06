@@ -143,10 +143,8 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'current_password' => ['required', 'current_password'],
             'new_password' => ['required', 'confirmed', Password::min(8)],
         ], [
-            'current_password.current_password' => 'La password attuale non è corretta.',
             'new_password.confirmed' => 'Le password non corrispondono.',
             'new_password.min' => 'La password deve contenere almeno 8 caratteri.',
         ]);
@@ -154,6 +152,9 @@ class ProfileController extends Controller
         try {
             $user->password = Hash::make($validated['new_password']);
             $user->save();
+
+            // Clear the password change flag if it exists
+            session()->forget('needs_password_change');
 
             return redirect()->route('profile.settings')
                 ->with('success', 'Password modificata con successo!');

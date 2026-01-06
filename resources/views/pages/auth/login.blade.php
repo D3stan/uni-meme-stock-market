@@ -28,6 +28,9 @@
                             :value="old('email')"
                         />
                         <x-forms.validation-error field="email" />
+                        <div id="email-forgot-error" class="hidden text-brand-danger text-sm mt-1">
+                            Per favore inserisci la tua email per richiedere il reset della password.
+                        </div>
                     </div>
 
                     <!-- Password Field -->
@@ -44,6 +47,11 @@
                             required
                         />
                         <x-forms.validation-error field="password" />
+                        <div class="text-right mt-2">
+                            <a href="#" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
+                                Password dimenticata?
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -58,19 +66,66 @@
             </div>
 
             <!-- Footer Links -->
-            <div class="text-center mt-6 space-y-2">
+            <div class="text-center mt-6">
                 <p class="text-sm text-text-muted">
                     Non hai un account? 
                     <a href="{{ route('auth.register') }}" class="text-brand hover:text-brand-light font-medium transition-colors">
                         Registrati
                     </a>
                 </p>
-                <p class="text-sm">
-                    <a href="#" class="text-text-muted hover:text-text-main transition-colors">
-                        Password dimenticata?
-                    </a>
-                </p>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('email');
+            const email = emailInput.value.trim();
+            const errorDiv = document.getElementById('email-forgot-error');
+            
+            if (!email) {
+                errorDiv.classList.remove('hidden');
+                emailInput.focus();
+                emailInput.classList.add('border-brand-danger');
+                return;
+            }
+            
+            // Hide error and reset border
+            errorDiv.classList.add('hidden');
+            emailInput.classList.remove('border-brand-danger');
+            
+            // Send forgot password request
+            fetch('{{ route('auth.forgot-password.post') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to OTP page with email
+                    window.location.href = '{{ route('auth.verify-otp.show') }}';
+                } else {
+                    errorDiv.textContent = data.message || 'Errore durante l\'invio dell\'email.';
+                    errorDiv.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.textContent = 'Errore durante l\'invio della richiesta.';
+                errorDiv.classList.remove('hidden');
+            });
+        });
+
+        // Hide error when user starts typing
+        document.getElementById('email').addEventListener('input', function() {
+            const errorDiv = document.getElementById('email-forgot-error');
+            errorDiv.classList.add('hidden');
+            this.classList.remove('border-brand-danger');
+        });
+    </script>
 </x-guest>

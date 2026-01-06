@@ -32,6 +32,8 @@ Route::middleware('guest')->group(function () {
     
     Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+    
+    Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetOtp'])->name('auth.forgot-password.post');
 });
 
 // Public avatar route (no auth required to view avatars)
