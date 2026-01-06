@@ -1,5 +1,5 @@
 {{-- Key Statistics Section --}}
-@props(['meme'])
+@props(['meme', 'risk'])
 
 <div id="stats-section" class="px-4 mb-6">
     <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wide mb-3">
@@ -32,12 +32,20 @@
         </div>
 
         {{-- Risk Level --}}
-        <div class="bg-surface-200/50 rounded-lg p-4">
-            <div class="text-xs text-text-muted uppercase tracking-wide mb-1">Rischio</div>
-            <div class="text-xl font-bold text-brand-danger flex items-center gap-1">
-                <span>Alto</span>
-                <span class="material-icons text-lg">warning</span>
-            </div>
+            <div class="bg-surface-200/50 rounded-lg p-4">
+                <div class="text-xs text-text-muted uppercase tracking-wide mb-1">Rischio</div>
+                @inject('marketService', 'App\\Services\\MarketService')
+                @if($risk)
+                    <div class="text-xl font-bold text-brand-danger flex items-center gap-1">
+                        <span>Alto</span>
+                        <span class="material-icons text-lg" aria-hidden="true">warning</span>
+                    </div>
+                @else
+                    <div class="text-xl font-bold text-brand flex items-center gap-1">
+                        <span>Safe</span>
+                        <span class="material-icons text-lg" aria-hidden="true">check_circle</span>
+                    </div>
+                @endif
         </div>
     </div>
 </div>

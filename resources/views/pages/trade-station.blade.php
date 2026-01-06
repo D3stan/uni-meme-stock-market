@@ -24,7 +24,7 @@
         <x-trading.chart-toggle :meme="$meme" />
 
         {{-- Stats Section (visible only in chart view) --}}
-        <x-trading.stats-section :meme="$meme" />
+        <x-trading.stats-section :meme="$meme" :risk="$risk"/>
 
         {{-- Action Bar (Sticky Bottom) --}}
         <x-trading.action-bar :meme="$meme" />

@@ -8,13 +8,14 @@ use App\Models\Market\Meme;
 use App\Models\Financial\Portfolio;
 use App\Models\Financial\Transaction;
 use App\Services\TradingService;
+use App\Services\MarketService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class TradingController extends Controller
 {
-    public function __construct(public TradingService $tradingService)
+    public function __construct(public TradingService $tradingService, public MarketService $marketService)
     {
     }
 
@@ -34,8 +35,12 @@ class TradingController extends Controller
         // Calculate 24h price change
         $priceChange24h = $this->calculate24hChange($meme);
 
+        // Risk
+        $risk = $this->marketService->isHighRiskMeme($meme);
+
         return view('pages.trade-station', [
             'meme' => $meme,
+            'risk' => $risk,
             'userHoldings' => $userHoldings,
             'priceChange24h' => $priceChange24h,
         ]);
