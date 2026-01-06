@@ -97,12 +97,10 @@
             @endforelse
         </div>
 
-        {{-- Pagination --}}
-        @if($memes->hasPages())
-            <div class="px-4 pb-6">
-                {{ $memes->links() }}
-            </div>
-        @endif
+        {{-- Infinite scroll loading placeholder (gestito da JS) --}}
+        <div id="infinite-scroll-loader" class="hidden py-6 text-center text-text-muted">
+            Caricamento altri meme...
+        </div>
 
     </div>
 </x-app>
