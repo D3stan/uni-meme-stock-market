@@ -6,14 +6,12 @@
         id="btn-chart-view" 
         class="flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all
             bg-brand text-surface-50">
-        <span class="material-icons text-lg">📊</span>
         <span>Grafico</span>
     </button>
     <button 
         id="btn-meme-view" 
         class="flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold transition-all
             bg-surface-200 text-text-muted hover:bg-surface-200/80">
-        <span class="material-icons text-lg">🖼️</span>
         <span>Meme</span>
     </button>
 </div>
@@ -41,15 +39,29 @@
 
 {{-- Meme Image Container (Initially Hidden) --}}
 <div id="meme-container" class="px-4 mb-6 hidden">
+    {{-- Meme Title and Category --}}
+    <div class="mb-4 space-y-2">
+        <h2 class="text-2xl font-bold text-text-main">{{ $meme->title }}</h2>
+        @if($meme->category)
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-text-muted">Categoria:</span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand/10 text-brand">
+                    {{ $meme->category->name }}
+                </span>
+            </div>
+        @endif
+    </div>
+
+    {{-- Meme Image --}}
     <div class="bg-surface-100/50 rounded-lg overflow-hidden">
         @if($meme->image_path)
             <img src="{{ asset('storage/data/' . $meme->creator_id . '/' . basename($meme->image_path)) }}" 
-                 alt="{{ $meme->title }}" 
+                 alt="{{ $meme->text_alt }}" 
                  class="w-full h-auto"
-                 onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\'>image_not_supported</span></div>'">
+                 onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\'>Immagine non supportata</span></div>'">
         @else
             <div class="flex items-center justify-center h-72 text-text-muted">
-                <span class="material-icons text-6xl">image_not_supported</span>
+                <span class="material-icons text-6xl">Immagine non supportata</span>
             </div>
         @endif
     </div>

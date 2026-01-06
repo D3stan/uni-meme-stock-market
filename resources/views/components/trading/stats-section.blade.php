@@ -3,7 +3,7 @@
 
 <div id="stats-section" class="px-4 mb-6">
     <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wide mb-3">
-        Statistiche Chiave
+        Statistiche
     </h3>
     
     <div class="grid grid-cols-2 gap-3">
@@ -42,7 +42,7 @@
                     </div>
                 @else
                     <div class="text-xl font-bold text-brand flex items-center gap-1">
-                        <span>Safe</span>
+                        <span>Basso</span>
                         <span class="material-icons text-lg" aria-hidden="true">check_circle</span>
                     </div>
                 @endif
