@@ -58,14 +58,18 @@ class AuthController extends Controller
     public function showOtpVerification(): View
     {
         $pendingRegistration = session('pending_registration');
+        $pendingPasswordReset = session('pending_password_reset');
 
-        if (!$pendingRegistration) {
+        if (!$pendingRegistration && !$pendingPasswordReset) {
             return redirect()->route('auth.register')
                 ->with('error', 'No pending registration found. Please register first.');
         }
 
+        $email = $pendingRegistration['email'] ?? $pendingPasswordReset['email'] ?? '';
+
         return view('pages.auth.verify-otp', [
-            'email' => $pendingRegistration['email']
+            'email' => $email,
+            'isPasswordReset' => (bool)$pendingPasswordReset
         ]);
     }
 
@@ -76,19 +80,47 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $pendingRegistration = session('pending_registration');
+        $pendingPasswordReset = session('pending_password_reset');
 
-        if (!$pendingRegistration) {
+        if (!$pendingRegistration && !$pendingPasswordReset) {
             return redirect()->route('auth.register')
                 ->with('error', 'No pending registration found. Please register first.');
         }
 
+        // Get the email from either registration or password reset
+        $email = $validated['email'] ?? ($pendingRegistration['email'] ?? $pendingPasswordReset['email']);
+
         // Verify OTP
-        if (!$this->otpService->verify($validated['email'], $validated['code'])) {
+        if (!$this->otpService->verify($email, $validated['code'])) {
             return back()
                 ->withErrors(['code' => 'Invalid or expired verification code.'])
                 ->withInput();
         }
 
+        // Handle password reset flow
+        if ($pendingPasswordReset) {
+            // Find user and log them in
+            $user = User::where('email', $email)->first();
+            
+            if ($user) {
+                Auth::login($user);
+                session()->forget('pending_password_reset');
+                
+                // Set flag to show password change prompt
+                session()->flash('needs_password_change', true);
+                session()->flash('toast', [
+                    'type' => 'warning',
+                    'message' => 'Per sicurezza, cambia subito la tua password dalle impostazioni del profilo.'
+                ]);
+                
+                return redirect()->route('market');
+            }
+            
+            return redirect()->route('auth.login')
+                ->with('error', 'Utente non trovato.');
+        }
+
+        // Handle registration flow
         // Create user and grant bonus in a transaction
         DB::transaction(function () use ($pendingRegistration) {
             $user = User::create([
@@ -165,12 +197,50 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
+            // Check if user needs to change password
+            if (session('needs_password_change')) {
+                session()->flash('toast', [
+                    'type' => 'warning',
+                    'message' => 'Per sicurezza, ti consigliamo di cambiare la tua password dalle impostazioni del profilo.'
+                ]);
+            }
+
             return redirect()->intended(route('market'));
         }
 
         return back()
             ->withErrors(['email' => 'The provided credentials do not match our records.'])
             ->withInput($request->only('email'));
+    }
+
+    /**
+     * Send password reset OTP
+     */
+    public function sendPasswordResetOtp(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email', 'exists:users,email']
+        ], [
+            'email.exists' => 'Non esiste un account con questa email.'
+        ]);
+
+        $email = $request->input('email');
+        $user = User::where('email', $email)->first();
+
+        // Generate and send OTP
+        $this->otpService->generateAndSend($email, $user->name);
+
+        // Store password reset request in session
+        session([
+            'pending_password_reset' => [
+                'email' => $email,
+            ]
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Codice di verifica inviato alla tua email.'
+        ]);
     }
 
     /**

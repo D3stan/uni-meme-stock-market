@@ -7,14 +7,20 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TradingController;
 use App\Http\Controllers\ProfileController;
+use App\Services\MarketService;
 use App\Http\Controllers\NotificationController;
 
 // Guest routes (Landing page)
-Route::get('/', function () {
+Route::get('/', function (MarketService $marketService) {
     if (Auth::check()) {
         return redirect()->route('market');
     }
-    return view('pages.landing');
+    
+    $topMemes = $marketService->getLandingPageTopMovers(5);
+    
+    return view('pages.landing', [
+        'topMemes' => $topMemes
+    ]);
 })->name('welcome');
 
 // Authentication routes (Guest only)
@@ -27,6 +33,8 @@ Route::middleware('guest')->group(function () {
     
     Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+    
+    Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetOtp'])->name('auth.forgot-password.post');
 });
 
 // Public avatar route (no auth required to view avatars)

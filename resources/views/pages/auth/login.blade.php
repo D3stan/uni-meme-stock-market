@@ -1,5 +1,5 @@
 <x-guest title="Accedi">
-    <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
         <div class="w-full max-w-md">
             <!-- Logo -->
             <div class="text-center mb-8">
@@ -28,6 +28,9 @@
                             :value="old('email')"
                         />
                         <x-forms.validation-error field="email" />
+                        <div id="email-forgot-error" class="hidden text-brand-danger text-sm mt-1">
+                            Per favore inserisci la tua email per richiedere il reset della password.
+                        </div>
                     </div>
 
                     <!-- Password Field -->
@@ -44,6 +47,11 @@
                             required
                         />
                         <x-forms.validation-error field="password" />
+                        <div class="text-right mt-2">
+                            <a href="#" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
+                                Password dimenticata?
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -58,16 +66,11 @@
             </div>
 
             <!-- Footer Links -->
-            <div class="text-center mt-6 space-y-2">
+            <div class="text-center mt-6">
                 <p class="text-sm text-text-muted">
                     Non hai un account? 
                     <a href="{{ route('auth.register') }}" class="text-brand hover:text-brand-light font-medium transition-colors">
                         Registrati
-                    </a>
-                </p>
-                <p class="text-sm">
-                    <a href="#" class="text-text-muted hover:text-text-main transition-colors">
-                        Password dimenticata?
                     </a>
                 </p>
             </div>

@@ -31,20 +31,6 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Current Password --}}
-                <div>
-                    <label for="current_password" class="block text-sm font-medium text-text-muted mb-2">
-                        Password Attuale
-                    </label>
-                    <x-forms.input 
-                        type="password" 
-                        id="current_password" 
-                        name="current_password" 
-                        placeholder="Inserisci password attuale"
-                        required
-                    />
-                </div>
-
                 <!-- New Password -->
                 <div>
                     <label for="new_password" class="block text-sm font-medium text-text-muted mb-2">

@@ -1,12 +1,20 @@
 @props([
     'type' => 'button',
-    'variant' => 'primary', // primary, secondary, success, danger, outline
+    'variant' => 'primary', // primary, secondary, success, danger, outline, outline-neon
     'size' => 'md', // sm, md, lg
     'disabled' => false,
+    'rounded' => '2xl', // 'full', '2xl', 'xl', 'lg'
 ])
 
 @php
-    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl focus:ring-4 focus:outline-none transition-colors';
+    $roundedClass = match($rounded) {
+        'full' => 'rounded-full',
+        'xl' => 'rounded-xl',
+        'lg' => 'rounded-lg',
+        default => 'rounded-2xl',
+    };
+    
+    $baseClasses = "inline-flex items-center justify-center gap-2 font-medium $roundedClass focus:ring-4 focus:outline-none transition-colors";
     
     $variantClasses = match($variant) {
         'primary' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
@@ -14,6 +22,7 @@
         'success' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
         'danger' => 'text-text-main bg-brand-danger hover:bg-brand-danger-dark focus:ring-brand-danger/50',
         'outline' => 'border border-brand text-brand hover:text-text-main hover:bg-brand focus:ring-brand/50',
+        'outline-neon' => 'border-2 border-brand-neon bg-surface-100 text-brand-neon hover:bg-surface-100/80 focus:ring-brand-neon/50 shadow-lg shadow-brand-neon/20',
         default => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
     };
     

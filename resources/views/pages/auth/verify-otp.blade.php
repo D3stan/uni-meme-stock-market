@@ -3,7 +3,7 @@
         <div class="w-full max-w-md">
             {{-- Back Button --}}
             <div class="mb-6">
-                <a href="{{ route('auth.register') }}" class="inline-flex items-center text-sm text-text-muted hover:text-text-main transition-colors">
+                <a href="{{ session('pending_password_reset') ? route('auth.login') : route('auth.register') }}" class="inline-flex items-center text-sm text-text-muted hover:text-text-main transition-colors">
                     <span class="material-icons text-xl mr-1">arrow_back</span>
                     Indietro
                 </a>
@@ -17,10 +17,10 @@
                 <h1 class="text-2xl font-bold text-text-main mb-2">Controlla la tua email</h1>
                 <p class="text-sm text-text-muted">
                     Abbiamo inviato un codice a 6 cifre a<br>
-                    <span class="text-text-main font-medium">{{ session('pending_registration.email', $email ?? 'tua email') }}</span>
+                    <span class="text-text-main font-medium">{{ session('pending_registration.email', session('pending_password_reset.email', $email ?? 'tua email')) }}</span>
                 </p>
                 <p class="text-xs text-text-muted mt-2">
-                    Inserisci il codice per verificare il tuo account
+                    Inserisci il codice per {{ session('pending_password_reset') ? 'resettare la tua password' : 'verificare il tuo account' }}
                 </p>
             </div>
 
@@ -30,7 +30,7 @@
                     @csrf
 
                     {{-- Hidden email field --}}
-                    <input type="hidden" name="email" value="{{ session('pending_registration.email', $email ?? '') }}">
+                    <input type="hidden" name="email" value="{{ session('pending_registration.email', session('pending_password_reset.email', $email ?? '')) }}">
 
                     {{-- OTP Input Component --}}
                     <x-forms.otp-input />
