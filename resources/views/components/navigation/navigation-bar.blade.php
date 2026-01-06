@@ -1,4 +1,4 @@
-@props(['active' => null, 'balance' => null ])
+@props(['active' => null, 'balance' => null, 'unreadNotifications' => 0 ])
 
 {{-- Mobile Top Bar --}}
 <div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-surface-100 px-4 py-2 flex items-center justify-between shadow-lg">
@@ -7,10 +7,12 @@
         {{ $balance ? number_format($balance, 2) : '0.00' }} <span class="text-brand">CFU</span>
     </span>
     <div class="relative">
-        <a href="#" aria-label="Notifiche">
+        <button type="button" data-open-notifications aria-label="Notifiche" class="relative">
             <span aria-hidden="true" class="material-icons text-text-main text-2xl">notifications</span>
-            <span class="absolute top-0 right-0 block w-2 h-2 bg-brand-danger rounded-full ring-2 ring-surface-100"></span>
-        </a>
+            <span class="notification-badge absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-brand-danger text-white text-xs font-bold rounded-full flex items-center justify-center px-1 ring-2 ring-surface-100 {{ $unreadNotifications > 0 ? '' : 'hidden' }}">
+                {{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}
+            </span>
+        </button>
     </div>
 </div>
 
@@ -97,10 +99,12 @@
                 <span class="font-mono font-bold text-text-main">{{ $balance ? number_format($balance, 2) : '1,250.00' }} CFU</span>
             </div>
             
-            <a href="#" aria-label="Notifiche" class="relative p-2 text-text-muted hover:text-text-main transition-colors">
+            <button type="button" data-open-notifications aria-label="Notifiche" class="relative p-2 text-text-muted hover:text-text-main transition-colors">
                 <span aria-hidden="true" class="material-icons">notifications</span>
-                <span class="absolute top-1 right-1 w-2 h-2 bg-brand-danger rounded-full"></span>
-            </a>
+                <span class="notification-badge absolute top-0 right-0 min-w-[16px] h-[16px] bg-brand-danger text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 {{ $unreadNotifications > 0 ? '' : 'hidden' }}">
+                    {{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}
+                </span>
+            </button>
         </div>
     </div>
 </nav>
