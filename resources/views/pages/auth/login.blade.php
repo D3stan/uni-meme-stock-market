@@ -1,5 +1,5 @@
 <x-guest title="Accedi">
-    <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
         <div class="w-full max-w-md">
             <!-- Logo -->
             <div class="text-center mb-8">
@@ -76,56 +76,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('forgot-password-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('email');
-            const email = emailInput.value.trim();
-            const errorDiv = document.getElementById('email-forgot-error');
-            
-            if (!email) {
-                errorDiv.classList.remove('hidden');
-                emailInput.focus();
-                emailInput.classList.add('border-brand-danger');
-                return;
-            }
-            
-            // Hide error and reset border
-            errorDiv.classList.add('hidden');
-            emailInput.classList.remove('border-brand-danger');
-            
-            // Send forgot password request
-            fetch('{{ route('auth.forgot-password.post') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Redirect to OTP page with email
-                    window.location.href = '{{ route('auth.verify-otp.show') }}';
-                } else {
-                    errorDiv.textContent = data.message || 'Errore durante l\'invio dell\'email.';
-                    errorDiv.classList.remove('hidden');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorDiv.textContent = 'Errore durante l\'invio della richiesta.';
-                errorDiv.classList.remove('hidden');
-            });
-        });
-
-        // Hide error when user starts typing
-        document.getElementById('email').addEventListener('input', function() {
-            const errorDiv = document.getElementById('email-forgot-error');
-            errorDiv.classList.add('hidden');
-            this.classList.remove('border-brand-danger');
-        });
-    </script>
 </x-guest>
