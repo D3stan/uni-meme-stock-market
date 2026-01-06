@@ -51,4 +51,5 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   mario.rossi@studio.unibo.it / password');
         $this->command->info('   laura.bianchi@studio.unibo.it / password');
         $this->command->info('   giuseppe.verdi@studio.unibo.it / password');
+    }
 }
