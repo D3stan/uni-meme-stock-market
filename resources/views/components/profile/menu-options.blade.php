@@ -19,6 +19,7 @@
         </a>
         
         {{-- Centro Notifiche --}}
+        {{--
         <a href="#" class="bg-surface-100 rounded-2xl p-5 border border-surface-200 hover:border-surface-200/80 transition-colors flex items-center justify-between group">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 bg-surface-200 rounded-full flex items-center justify-center group-hover:bg-surface-200/80 transition-colors relative">
@@ -40,6 +41,7 @@
                 <span class="material-icons text-text-muted group-hover:text-text-main transition-colors">chevron_right</span>
             </div>
         </a>
+        --}}
 
         {{-- Admin Panel --}}
         @if($isAdmin)

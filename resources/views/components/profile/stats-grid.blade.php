@@ -1,8 +1,8 @@
 @props([
     'registrationDate' => null,
     'totalTrades' => 0,
-    'bestTrade' => null,
-    'globalRank' => null,
+    'badgeCount' => 0,
+    'memeCount' => 0,
 ])
 
 <div class="px-4 mb-6">
@@ -21,26 +21,18 @@
             <p class="text-2xl font-bold text-text-main">{{ number_format($totalTrades) }}</p>
         </div>
         
-        {{-- Miglior Trade --}}
+        {{-- Badge Guadagnati --}}
         <div class="bg-surface-100 rounded-xl p-4 border border-surface-200">
-            <p class="text-text-muted text-xs mb-1">Miglior Trade</p>
-            @if($bestTrade)
-                <p class="text-2xl font-bold text-brand">{{ $bestTrade['percentage'] }}</p>
-                <p class="text-xs text-text-muted mt-1">{{ $bestTrade['ticker'] }}</p>
-            @else
-                <p class="text-2xl font-bold text-text-muted">N/A</p>
-            @endif
+            <p class="text-text-muted text-xs mb-1">Badge Guadagnati</p>
+            <p class="text-2xl font-bold text-text-main">{{ number_format($badgeCount) }}</p>
+            <p class="text-xs text-text-muted mt-1">Traguardi</p>
         </div>
         
-        {{-- Posizione Globale --}}
+        {{-- Meme Creati --}}
         <div class="bg-surface-100 rounded-xl p-4 border border-surface-200">
-            <p class="text-text-muted text-xs mb-1">Posizione</p>
-            @if($globalRank)
-                <p class="text-2xl font-bold text-text-main">#{{ $globalRank }}</p>
-                <p class="text-xs text-text-muted mt-1">Global</p>
-            @else
-                <p class="text-2xl font-bold text-text-muted">N/R</p>
-            @endif
+            <p class="text-text-muted text-xs mb-1">Meme Creati</p>
+            <p class="text-2xl font-bold text-text-main">{{ number_format($memeCount) }}</p>
+            <p class="text-xs text-text-muted mt-1">Proposte</p>
         </div>
     </div>
 </div>
