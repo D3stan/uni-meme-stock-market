@@ -209,6 +209,17 @@ class MarketService
     }
 
     /**
+     * Return if meme is 'high_risk'
+     * 
+     * @param Meme $meme
+     * @return bool
+     */
+    public function isHighRiskMeme(Meme $meme): bool
+    {
+        return $meme->slope >= 0.01 || $meme->circulating_supply < 100;
+    }
+
+    /**
      * Get top gainers for ticker tape.
      * 
      * @param int $limit
