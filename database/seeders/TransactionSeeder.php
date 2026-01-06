@@ -14,8 +14,8 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
+        $memes = Meme::whereIn('id', range(1, 17))->get();
         $traders = User::where('role', 'trader')->get();
-        $memes = Meme::where('status', 'approved')->get();
         $taxRate = 0.02; // 2% fee
 
         foreach ($traders as $trader) {
@@ -32,26 +32,24 @@ class TransactionSeeder extends Seeder
                 'executed_at' => $trader->created_at,
             ]);
 
-            // Generate 10-25 random transactions per trader (increased for more data)
             $numTransactions = rand(10, 25);
             $currentBalance = 100.00;
 
             for ($i = 0; $i < $numTransactions; $i++) {
                 $meme = $memes->random();
-                $isBuy = rand(0, 1) === 1 || $currentBalance < 50; // More likely to buy if low balance
-                
+                $isBuy = rand(0, 1) === 1 || $currentBalance < 50;
+
                 if ($isBuy) {
                     $quantity = rand(1, 20);
                     $pricePerShare = $meme->current_price * rand(85, 115) / 100;
                     $subtotal = $quantity * $pricePerShare;
                     $feeAmount = $subtotal * $taxRate;
                     $totalAmount = $subtotal + $feeAmount;
-                    
-                    // Skip if not enough balance
+
                     if ($totalAmount > $currentBalance) {
                         continue;
                     }
-                    
+
                     $currentBalance -= $totalAmount;
 
                     Transaction::create([
@@ -66,13 +64,12 @@ class TransactionSeeder extends Seeder
                         'executed_at' => now()->subDays(rand(1, 30))->subHours(rand(0, 23)),
                     ]);
                 } else {
-                    // Sell
                     $quantity = rand(1, 10);
                     $pricePerShare = $meme->current_price * rand(85, 115) / 100;
                     $subtotal = $quantity * $pricePerShare;
                     $feeAmount = $subtotal * $taxRate;
                     $totalAmount = $subtotal - $feeAmount;
-                    
+
                     $currentBalance += $totalAmount;
 
                     Transaction::create([

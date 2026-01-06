@@ -13,7 +13,7 @@ class PriceHistorySeeder extends Seeder
      */
     public function run(): void
     {
-        $memes = Meme::where('status', 'approved')->get();
+        $memes = Meme::whereIn('id', range(1, 17))->get();
 
         foreach ($memes as $meme) {
             // Create IPO record
