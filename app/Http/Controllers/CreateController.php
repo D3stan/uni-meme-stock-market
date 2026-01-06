@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Services\CreateService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
@@ -25,7 +26,7 @@ class CreateController extends Controller
     public function create(Request $request)
     {
         $categories = $this->createService->getCategories();
-        $balance = $this->createService->getUserBalance(auth()->user());
+        $balance = $this->createService->getUserBalance(Auth::user());
         
         return view('pages.meme.create', compact('categories', 'balance'));
     }
@@ -69,7 +70,7 @@ class CreateController extends Controller
         }
 
         // Check user balance
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user->cfu_balance < 20.00) {
             return redirect()->back()
                 ->withInput()

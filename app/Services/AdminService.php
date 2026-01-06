@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Market\Meme;
 use App\Models\Financial\Transaction;
 use App\Models\Utility\Notification;
 use App\Models\Admin\MarketCommunication;
@@ -183,7 +184,7 @@ class AdminService
      */
     public function getMemes(string $filter = 'all', int $perPage = 20): LengthAwarePaginator
     {
-        $query = \App\Models\Market\Meme::with(['creator', 'category', 'approvedBy']);
+        $query = Meme::with(['creator', 'category', 'approvedBy']);
 
         switch ($filter) {
             case 'pending':
@@ -207,10 +208,10 @@ class AdminService
      */
     public function getMemeStats(): array
     {
-        $total = \App\Models\Market\Meme::count();
-        $pending = \App\Models\Market\Meme::pending()->count();
-        $approved = \App\Models\Market\Meme::approved()->count();
-        $suspended = \App\Models\Market\Meme::suspended()->count();
+        $total = Meme::count();
+        $pending = Meme::pending()->count();
+        $approved = Meme::approved()->count();
+        $suspended = Meme::suspended()->count();
 
         return [
             'total' => $total,
@@ -225,11 +226,11 @@ class AdminService
      * 
      * @param int $id
      * @param int $adminId
-     * @return \App\Models\Market\Meme
+     * @return Meme
      */
-    public function approveMeme(int $id, int $adminId): \App\Models\Market\Meme
+    public function approveMeme(int $id, int $adminId): Meme
     {
-        $meme = \App\Models\Market\Meme::findOrFail($id);
+        $meme = Meme::findOrFail($id);
         $meme->update([
             'status' => 'approved',
             'approved_at' => now(),
@@ -243,11 +244,11 @@ class AdminService
      * Reject (suspend) a meme.
      * 
      * @param int $id
-     * @return \App\Models\Market\Meme
+     * @return Meme
      */
-    public function rejectMeme(int $id): \App\Models\Market\Meme
+    public function rejectMeme(int $id): Meme
     {
-        $meme = \App\Models\Market\Meme::findOrFail($id);
+        $meme = Meme::findOrFail($id);
         $meme->update([
             'status' => 'suspended',
         ]);

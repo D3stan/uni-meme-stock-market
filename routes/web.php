@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\CreateController;
 use App\Http\Controllers\AuthController;

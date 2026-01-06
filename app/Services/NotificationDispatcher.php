@@ -29,4 +29,23 @@ class NotificationDispatcher
             )
         );
     }
+
+    /**
+     * Send notification when a meme is rejected.
+     *
+     * @param Meme $meme
+     * @return void
+     */
+    public function memeRejected(Meme $meme): void
+    {
+        $this->notificationService->createNotification(
+            $meme->creator,
+            'Il tuo Meme è stato Rifiutato! 😕',
+            sprintf(
+                'Il tuo meme "%s" ($%s) è stato rifiutato perchè contiene contenuti inadeguati!',
+                $meme->title,
+                $meme->ticker
+            )
+        );
+    }
 }
