@@ -65,7 +65,7 @@
     <div class="max-w-7xl mx-auto mt-2 px-2" data-page="marketplace">
 
         {{-- Meme Feed Skeleton (Visible by default for JS handling) --}}
-        <div id="meme-feed-skeleton" class="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div id="meme-feed-skeleton" class="py-6 grid grid-cols-1 gap-4">
             <x-meme.skeleton />
             <x-meme.skeleton />
             <x-meme.skeleton />
@@ -75,7 +75,7 @@
         </div>
 
         {{-- Meme Feed (Hidden by default, shown by JS after images load) --}}
-        <div id="meme-feed" class="hidden py-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div id="meme-feed" class="hidden py-6 flex flex-col items-center    gap-4">
             @forelse($memes as $meme)
                 <x-meme.card 
                     :name="$meme['name']"
@@ -88,6 +88,7 @@
                     :creatorAvatar="$meme['creatorAvatar']"
                     :status="$meme['status']"
                     :tradeUrl="route('trade', ['meme' => $meme['id']])"
+                    class="w-full lg:w-1/3"
                 />
             @empty
                 <x-ui.empty-state 

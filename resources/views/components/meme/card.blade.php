@@ -12,7 +12,7 @@
 ])
 
 
-<div {{ $attributes->merge(['class' => 'card-base']) }}>
+<div {{ $attributes->merge(['class' => 'card-base lg:max-w-1/3']) }}>
     {{-- Header Card --}}
     <div class="flex items-center justify-between p-4">
         <div class="flex items-center gap-3">
