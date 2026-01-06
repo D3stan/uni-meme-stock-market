@@ -1,6 +1,6 @@
 @props([
     'type' => 'button',
-    'variant' => 'primary', // primary, secondary, success, danger, outline
+    'variant' => 'primary', // primary, secondary, success, danger, outline, outline-neon
     'size' => 'md', // sm, md, lg
     'disabled' => false,
 ])
@@ -14,6 +14,7 @@
         'success' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
         'danger' => 'text-text-main bg-brand-danger hover:bg-brand-danger-dark focus:ring-brand-danger/50',
         'outline' => 'border border-brand text-brand hover:text-text-main hover:bg-brand focus:ring-brand/50',
+        'outline-neon' => 'border-2 border-brand-neon bg-surface-100 text-brand-neon hover:bg-surface-100/80 focus:ring-brand-neon/50 shadow-lg shadow-brand-neon/20',
         default => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
     };
     

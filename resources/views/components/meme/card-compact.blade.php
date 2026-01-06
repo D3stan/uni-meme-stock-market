@@ -29,9 +29,14 @@
             $formattedVolume = number_format($volume, 0);
         }
     }
+    
+    // Landing mode uses transparent background and no borders
+    $containerClasses = $isLandingMode 
+        ? 'flex items-center gap-3 p-3 cursor-pointer'
+        : 'flex items-center gap-3 bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-surface-200';
 @endphp
 
-<div {{ $attributes->merge(['class' => 'flex items-center gap-3 bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-surface-200']) }}>
+<div {{ $attributes->merge(['class' => $containerClasses]) }}>
     @if($isLandingMode && $rank)
         {{-- Ranking Number --}}
         <div class="flex-shrink-0 w-8 text-center">

@@ -67,7 +67,7 @@
                 <span class="text-sm text-text-muted">Vol. 24h</span>
             </div>
             
-            <div class="space-y-3">
+            <div class="space-y-3 relative">
                 <!-- Top 3 Memes (Fully Visible) -->
                 @foreach($topMemes->take(3) as $index => $meme)
                     <x-meme.card-compact 
@@ -82,25 +82,33 @@
                     />
                 @endforeach
                 
-                <!-- Locked Section -->
-                <div class="relative">
-                    <!-- Lock Icon and Message -->
-                    <div class="flex items-center justify-center py-8">
-                        <svg class="w-12 h-12 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
+                <!-- Gradient Fade Lock Section -->
+                <div class="relative pt-8">
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 gradient-fade-lock pointer-events-none"></div>
                     
-                    <div class="text-center mb-6">
-                        <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
-                        <p class="text-sm text-text-muted mb-4">Join other students trading CFUs.</p>
-                    </div>
-                    
-                    <!-- CTA Button -->
-                    <div class="flex justify-center">
+                    <!-- Lock Content -->
+                    <div class="relative flex flex-col items-center justify-center py-8 z-10">
+                        <!-- Lock Icon in Circle -->
+                        <div class="lock-icon-container mb-6">
+                            <svg class="w-8 h-8 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/>
+                            </svg>
+                        </div>
+                        
+                        <!-- Lock Text -->
+                        <div class="text-center mb-6">
+                            <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
+                            <p class="text-sm text-text-muted">Join other students trading CFUs.</p>
+                        </div>
+                        
+                        <!-- CTA Button -->
                         <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md">
-                            <x-forms.button variant="primary" size="md" class="w-full">
-                                Registrati per sbloccare →
+                            <x-forms.button variant="outline-neon" size="md" class="w-full">
+                                <span>Registrati per sbloccare</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
                             </x-forms.button>
                         </a>
                     </div>

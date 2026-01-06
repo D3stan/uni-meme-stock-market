@@ -21,6 +21,7 @@
     --color-brand: #10b981;
     --color-brand-dark: #064e3b;
     --color-brand-light: #34d399;
+    --color-brand-neon: #22c55e;
     
     /* Danger - Red for Sell/Loss/Error */
     --color-brand-danger: #ef4444;
@@ -29,10 +30,10 @@
     /* Accent - Blue only for Info */
     --color-brand-accent: #3b82f6;
     
-    /* Dark Mode Surfaces */
-    --color-surface-50: #0f172a;
-    --color-surface-100: #1e293b;
-    --color-surface-200: #334155;
+    /* Dark Mode Surfaces - Green Theme */
+    --color-surface-50: #0a1a14;
+    --color-surface-100: #0f2419;
+    --color-surface-200: #1a3a2e;
     
     /* Text */
     --color-text-main: #f8fafc;
@@ -121,5 +122,20 @@
     
     .btn-secondary {
         @apply bg-surface-200 hover:bg-surface-200/80 text-text-main font-bold py-3 px-6 rounded-xl transition-colors;
+    }
+    
+    .btn-outline-neon {
+        @apply bg-surface-100 hover:bg-surface-100/80 text-brand-neon font-bold py-3 px-6 rounded-xl transition-colors border-2 border-brand-neon shadow-lg shadow-brand-neon/20;
+    }
+    
+    /* ============================================
+       Landing Page Specific
+       ============================================ */
+    .lock-icon-container {
+        @apply w-16 h-16 rounded-full bg-surface-100 border-2 border-brand-neon flex items-center justify-center shadow-lg shadow-brand-neon/30;
+    }
+    
+    .gradient-fade-lock {
+        background: linear-gradient(to bottom, transparent 0%, rgba(10, 26, 20, 0.5) 30%, rgba(10, 26, 20, 0.95) 70%, #0a1a14 100%);
     }
 }
