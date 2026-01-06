@@ -18,10 +18,10 @@
     </header>
 
     <!-- Hero Section -->
-    <div class="relative pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div class="relative pt-24 pb-1 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <!-- Background Chart Image with Gradient Fade -->
         <div class="absolute inset-0 pointer-events-none">
-            <img src="{{ asset('storage/test/placeholder.png') }}" alt="" class="w-full h-full object-cover opacity-10">
+            <img src="{{ asset('landing-background.png') }}" alt="" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-t from-surface-50 via-surface-50/50 to-transparent"></div>
         </div>
         
@@ -36,7 +36,7 @@
             </div>
             
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-text-main mb-4 leading-tight">
-                Il mercato dei Meme<br>
+                Il mercato dei Meme
                 <span class="text-brand">è aperto.</span>
             </h1>
             
@@ -47,7 +47,7 @@
             <!-- CTA Button -->
             <div class="mb-12">
                 <a href="{{ route('auth.register') }}" class="inline-block w-full sm:w-auto">
-                    <x-forms.button variant="primary" size="lg" class="w-full sm:w-auto px-12 py-4 text-base font-bold rounded-xl shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30 transition-all">
+                    <x-forms.button variant="primary" size="lg" rounded="full" class="sm:w-auto px-20 py-4 text-base font-bold shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30">
                         Inizia a fare Trading
                     </x-forms.button>
                 </a>
@@ -85,9 +85,9 @@
                 
                 <!-- Blurred Memes Section with Lock Overlay -->
                 <div class="relative">
-                    <!-- Third Meme (Half Blurred) -->
+                    <!-- Third Meme (Partially visible with blur) -->
                     @if($topMemes->count() >= 3)
-                        <div class="blur-sm opacity-70">
+                        <div class="relative">
                             <x-meme.card-compact 
                                 mode="landing"
                                 :rank="3"
@@ -101,9 +101,9 @@
                         </div>
                     @endif
                     
-                    <!-- Fourth Meme (Fully Blurred) -->
+                    <!-- Fourth Meme (Hidden/Very blurred) -->
                     @if($topMemes->count() >= 4)
-                        <div class="blur-md opacity-40 mt-3">
+                        <div class="mt-3 blur-lg opacity-30">
                             <x-meme.card-compact 
                                 mode="landing"
                                 :rank="4"
@@ -117,16 +117,16 @@
                         </div>
                     @endif
                     
-                    <!-- Lock Overlay (Centered on top of 3rd & 4th memes) -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <!-- Gradient background for better visibility -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface-50/60 to-surface-50/90"></div>
+                    <!-- Lock Overlay (Centered on bottom half of 3rd and 4th memes) -->
+                    <div class="absolute inset-x-0 bottom-0 translate-y-6 h-48 flex flex-col items-center justify-center pointer-events-none">
+                        <!-- Gradient background -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface-50/70 to-surface-50"></div>
                         
                         <!-- Lock Content -->
                         <div class="relative z-10 flex flex-col items-center pointer-events-auto">
                             <!-- Lock Icon in Circle -->
-                            <div class="lock-icon-container mb-4">
-                                <svg class="w-8 h-8 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
+                            <div class="lock-icon-container mb-3">
+                                <svg class="w-7 h-7 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/>
                                 </svg>
                             </div>
@@ -137,10 +137,10 @@
                                 <p class="text-sm text-text-muted">Join other students trading CFUs.</p>
                             </div>
                             
-                            <!-- CTA Button -->
+                            <!-- CTA Button (Pill-shaped) -->
                             <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md px-4">
-                                <x-forms.button variant="outline-neon" size="md" class="w-full">
-                                    <span>Registrati per sbloccare</span>
+                                <x-forms.button variant="outline-neon" size="lg" rounded="full" class="w-full px-24 py-4">
+                                    <span>Sblocca Ora</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                     </svg>

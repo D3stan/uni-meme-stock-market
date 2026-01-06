@@ -3,10 +3,18 @@
     'variant' => 'primary', // primary, secondary, success, danger, outline, outline-neon
     'size' => 'md', // sm, md, lg
     'disabled' => false,
+    'rounded' => '2xl', // 'full', '2xl', 'xl', 'lg'
 ])
 
 @php
-    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-2xl focus:ring-4 focus:outline-none transition-colors';
+    $roundedClass = match($rounded) {
+        'full' => 'rounded-full',
+        'xl' => 'rounded-xl',
+        'lg' => 'rounded-lg',
+        default => 'rounded-2xl',
+    };
+    
+    $baseClasses = "inline-flex items-center justify-center gap-2 font-medium $roundedClass focus:ring-4 focus:outline-none transition-colors";
     
     $variantClasses = match($variant) {
         'primary' => 'text-text-main bg-brand hover:bg-brand-light focus:ring-brand/50',
