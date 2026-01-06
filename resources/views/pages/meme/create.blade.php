@@ -109,7 +109,7 @@
     <x-ui.notify-modal />
 
     @push('page-scripts')
-    <script src="{{ asset('js/create.js') }}"></script>
+        @vite(['resources/js/pages/create.js'])
     @endpush
 
 </x-app>

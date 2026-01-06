@@ -90,7 +90,7 @@
     <x-admin.event-modal/>
 
     @push('page-scripts')
-    <script src="{{ asset('js/admin/events.js') }}"></script>
+        @vite(['resources/js/pages/admin/events.js'])
     @endpush
 
 </x-admin>

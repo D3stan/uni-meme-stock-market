@@ -1,3 +1,7 @@
+/**
+ * Create page dynamic scripts
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('uploadMemeForm');
     const tickerInput = document.getElementById('ticker');

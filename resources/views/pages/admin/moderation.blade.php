@@ -93,7 +93,7 @@
     <x-admin.moderation-modal/>
 
     @push('page-scripts')
-    <script src="{{ asset('js/admin/moderation.js') }}"></script>
+        @vite(['resources/js/pages/admin/moderation.js'])
     @endpush
 
 </x-admin>
