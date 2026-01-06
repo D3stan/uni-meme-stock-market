@@ -75,7 +75,7 @@
         </div>
 
         {{-- Meme Feed (Hidden by default, shown by JS after images load) --}}
-        <div id="meme-feed" class="hidden py-6 flex flex-col items-center    gap-4">
+        <div id="meme-feed" class="hidden py-6 flex flex-col items-center gap-4">
             @forelse($memes as $meme)
                 <x-meme.card 
                     :name="$meme['name']"
