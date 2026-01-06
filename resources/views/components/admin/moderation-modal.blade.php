@@ -3,7 +3,7 @@
     <div class="p-6">
         <div class="flex items-center justify-between mb-6">
             <h2 id="moderationModal-title" class="text-2xl font-bold text-text-main">Modera Meme</h2>
-            <button onclick="hideModal('moderationModal')" aria-label="Chiudi" class="text-text-muted hover:text-text-main transition-colors">
+            <button onclick="hideModal('moderation-modal')" aria-label="Chiudi" class="text-text-muted hover:text-text-main transition-colors">
                 <span class="material-icons" aria-hidden="true">close</span>
             </button>
         </div>
