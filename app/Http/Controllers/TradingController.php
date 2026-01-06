@@ -38,7 +38,7 @@ class TradingController extends Controller
         // Risk
         $risk = $this->marketService->isHighRiskMeme($meme);
 
-        return view('pages.trade-station', [
+        return view('pages.appshell.trade-station', [
             'meme' => $meme,
             'risk' => $risk,
             'userHoldings' => $userHoldings,

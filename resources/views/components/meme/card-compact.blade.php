@@ -21,8 +21,8 @@
     $isLandingMode = $mode === 'landing';
     
     // Format volume for landing mode
-    $formattedVolume = '';
-    if ($isLandingMode && $volume > 0) {
+    $formattedVolume = '0';
+    if ($isLandingMode) {
         if ($volume >= 1000) {
             $formattedVolume = number_format($volume / 1000, 1) . 'k';
         } else {

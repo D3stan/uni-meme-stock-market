@@ -321,14 +321,10 @@ class MarketService
     {
         $topMemes = $this->getMarketplaceMemes('top_gainer', $limit);
         
-        // Calculate volume for each meme
-        return $topMemes->map(function ($meme) {
-            $volume24h = Transaction::where('meme_id', $meme['id'])
-                ->whereIn('type', ['buy', 'sell'])
-                ->where('executed_at', '>=', now()->subHours(24))
-                ->sum('total_amount');
-            
-            $meme['volume24h'] = $volume24h;
+        // Extract items from paginated results and ensure volume24h is included
+        return collect($topMemes->items())->map(function ($meme) {
+            // The volume24h is already calculated in getMarketplaceMemes,
+            // but it's returned as an array, so we just return it as is
             return $meme;
         });
     }
