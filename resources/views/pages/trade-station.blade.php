@@ -4,18 +4,13 @@
         {{-- Top Navigation Bar --}}
         <div class="sticky top-0 z-40 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
             <div class="flex items-center justify-between px-4 py-3">
+                {{-- Ticker --}}
+                <h1 class="text-xl font-bold">{{ $meme->ticker }}</h1>
+
                 {{-- Back Button --}}
                 <a href="{{ route('market') }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
                     <span class="material-icons text-2xl">arrow_back</span>
                 </a>
-
-                {{-- Ticker --}}
-                <h1 class="text-xl font-bold">{{ $meme->ticker }}</h1>
-
-                {{-- Watchlist/Favorite Button --}}
-                <button class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
-                    <span class="material-icons text-2xl">star_outline</span>
-                </button>
             </div>
         </div>
 
