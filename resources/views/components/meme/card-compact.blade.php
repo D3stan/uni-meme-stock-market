@@ -30,9 +30,9 @@
         }
     }
     
-    // Landing mode uses transparent background and no borders
+    // Landing mode uses transparent background but keeps borders
     $containerClasses = $isLandingMode 
-        ? 'flex items-center gap-3 p-3 cursor-pointer'
+        ? 'flex items-center gap-3 p-3 cursor-pointer border border-surface-200 rounded-lg'
         : 'flex items-center gap-3 bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-surface-200';
 @endphp
 

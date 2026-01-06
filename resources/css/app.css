@@ -113,19 +113,19 @@
        Button Variants
        ============================================ */
     .btn-primary {
-        @apply bg-brand hover:bg-brand-light text-surface-50 font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand/20;
+        @apply bg-brand hover:bg-brand-light text-surface-50 font-bold py-3 px-6 rounded-2xl transition-colors shadow-lg shadow-brand/20;
     }
     
     .btn-danger {
-        @apply bg-brand-danger hover:bg-brand-danger-dark text-text-main font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-brand-danger/20;
+        @apply bg-brand-danger hover:bg-brand-danger-dark text-text-main font-bold py-3 px-6 rounded-2xl transition-colors shadow-lg shadow-brand-danger/20;
     }
     
     .btn-secondary {
-        @apply bg-surface-200 hover:bg-surface-200/80 text-text-main font-bold py-3 px-6 rounded-xl transition-colors;
+        @apply bg-surface-200 hover:bg-surface-200/80 text-text-main font-bold py-3 px-6 rounded-2xl transition-colors;
     }
     
     .btn-outline-neon {
-        @apply bg-surface-100 hover:bg-surface-100/80 text-brand-neon font-bold py-3 px-6 rounded-xl transition-colors border-2 border-brand-neon shadow-lg shadow-brand-neon/20;
+        @apply bg-surface-100 hover:bg-surface-100/80 text-brand-neon font-bold py-3 px-6 rounded-2xl transition-colors border-2 border-brand-neon shadow-lg shadow-brand-neon/20;
     }
     
     /* ============================================

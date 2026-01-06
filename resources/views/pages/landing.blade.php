@@ -19,9 +19,10 @@
 
     <!-- Hero Section -->
     <div class="relative pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <!-- Background Chart Image -->
-        <div class="absolute inset-0 pointer-events-none opacity-10">
-            <img src="{{ asset('storage/test/placeholder.png') }}" alt="" class="w-full h-full object-cover">
+        <!-- Background Chart Image with Gradient Fade -->
+        <div class="absolute inset-0 pointer-events-none">
+            <img src="{{ asset('storage/test/placeholder.png') }}" alt="" class="w-full h-full object-cover opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-50 via-surface-50/50 to-transparent"></div>
         </div>
         
         <div class="relative max-w-4xl mx-auto text-center">
@@ -68,8 +69,8 @@
             </div>
             
             <div class="space-y-3 relative">
-                <!-- Top 3 Memes (Fully Visible) -->
-                @foreach($topMemes->take(3) as $index => $meme)
+                <!-- First 2 Memes (Fully Visible) -->
+                @foreach($topMemes->take(2) as $index => $meme)
                     <x-meme.card-compact 
                         mode="landing"
                         :rank="$index + 1"
@@ -82,35 +83,70 @@
                     />
                 @endforeach
                 
-                <!-- Gradient Fade Lock Section -->
-                <div class="relative pt-8">
-                    <!-- Gradient Overlay -->
-                    <div class="absolute inset-0 gradient-fade-lock pointer-events-none"></div>
+                <!-- Blurred Memes Section with Lock Overlay -->
+                <div class="relative">
+                    <!-- Third Meme (Half Blurred) -->
+                    @if($topMemes->count() >= 3)
+                        <div class="blur-sm opacity-70">
+                            <x-meme.card-compact 
+                                mode="landing"
+                                :rank="3"
+                                :name="$topMemes[2]['name']"
+                                :image="$topMemes[2]['image']" 
+                                :ticker="$topMemes[2]['ticker']"
+                                :price="$topMemes[2]['price']"
+                                :change="$topMemes[2]['change']"
+                                :volume="$topMemes[2]['volume24h']"
+                            />
+                        </div>
+                    @endif
                     
-                    <!-- Lock Content -->
-                    <div class="relative flex flex-col items-center justify-center py-8 z-10">
-                        <!-- Lock Icon in Circle -->
-                        <div class="lock-icon-container mb-6">
-                            <svg class="w-8 h-8 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/>
-                            </svg>
+                    <!-- Fourth Meme (Fully Blurred) -->
+                    @if($topMemes->count() >= 4)
+                        <div class="blur-md opacity-40 mt-3">
+                            <x-meme.card-compact 
+                                mode="landing"
+                                :rank="4"
+                                :name="$topMemes[3]['name']"
+                                :image="$topMemes[3]['image']" 
+                                :ticker="$topMemes[3]['ticker']"
+                                :price="$topMemes[3]['price']"
+                                :change="$topMemes[3]['change']"
+                                :volume="$topMemes[3]['volume24h']"
+                            />
                         </div>
+                    @endif
+                    
+                    <!-- Lock Overlay (Centered on top of 3rd & 4th memes) -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <!-- Gradient background for better visibility -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface-50/60 to-surface-50/90"></div>
                         
-                        <!-- Lock Text -->
-                        <div class="text-center mb-6">
-                            <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
-                            <p class="text-sm text-text-muted">Join other students trading CFUs.</p>
-                        </div>
-                        
-                        <!-- CTA Button -->
-                        <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md">
-                            <x-forms.button variant="outline-neon" size="md" class="w-full">
-                                <span>Registrati per sbloccare</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        <!-- Lock Content -->
+                        <div class="relative z-10 flex flex-col items-center pointer-events-auto">
+                            <!-- Lock Icon in Circle -->
+                            <div class="lock-icon-container mb-4">
+                                <svg class="w-8 h-8 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/>
                                 </svg>
-                            </x-forms.button>
-                        </a>
+                            </div>
+                            
+                            <!-- Lock Text -->
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
+                                <p class="text-sm text-text-muted">Join other students trading CFUs.</p>
+                            </div>
+                            
+                            <!-- CTA Button -->
+                            <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md px-4">
+                                <x-forms.button variant="outline-neon" size="md" class="w-full">
+                                    <span>Registrati per sbloccare</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                    </svg>
+                                </x-forms.button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
