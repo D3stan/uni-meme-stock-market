@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])->name('market');
+    Route::get('/marketplace/ajax', [MarketplaceController::class, 'ajaxMemes'])->name('market.ajax');
     Route::get('/portfolio', [MarketplaceController::class, 'portfolio'])->name('portfolio');
     Route::get('/create', [CreateController::class, 'create'])->name('create');
     Route::post('/meme/check-ticker', [CreateController::class, 'checkTicker'])->name('meme.check-ticker');
