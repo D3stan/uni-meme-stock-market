@@ -15,7 +15,7 @@
         ->get();
 @endphp
 
-<x-base :title="$title">
+<x-base :title="$title" :data-toast="session('toast') ? json_encode(session('toast')) : null">
     {{-- Navigation bar component (renders fixed navs) --}}
     <x-navigation.navigation-bar :active="$active ?? null" :balance="$balance ?? null" :unreadNotifications="$unreadCount" />
 
@@ -33,20 +33,7 @@
         </main>
     </div>
 
-    @if(session('toast'))
-        @push('page-scripts')
-        <script type="module">
-            import NotificationService from '{{ asset('resources/js/services/NotificationService.js') }}';
-            
-            document.addEventListener('DOMContentLoaded', () => {
-                const toast = @json(session('toast'));
-                NotificationService.show(toast.message, toast.type || 'info');
-            });
-        </script>
-        @endpush
-    @endif
-
     @push('scripts')
-        @vite(['resources/js/core/notifications.js'])
+        @vite(['resources/js/core/notifications.js', 'resources/js/core/toast.js'])
     @endpush
 </x-base>
