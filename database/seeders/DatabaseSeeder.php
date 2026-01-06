@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
             AdminActionSeeder::class,
         ]);
 
-        $this->command->info('');
         $this->command->info('🎉 Database seeded successfully!');
         $this->command->info('');
         $this->command->info('👤 Admin Account:');
@@ -52,13 +51,4 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   mario.rossi@studio.unibo.it / password');
         $this->command->info('   laura.bianchi@studio.unibo.it / password');
         $this->command->info('   giuseppe.verdi@studio.unibo.it / password');
-        $this->command->info('');
-        $this->command->info('📊 Data Summary:');
-        $this->command->info('   - 12 Memes with price history');
-        $this->command->info('   - 5 Traders with portfolios');
-        $this->command->info('   - Transactions, dividends, and notifications');
-        $this->command->info('   - 10 Achievement badges');
-        $this->command->info('   - Active market communications');
-        $this->command->info('');
-    }
 }

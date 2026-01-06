@@ -3,6 +3,8 @@
  * Handles form submission, toast notifications, and modal interactions
  */
 
+import NotificationService from '../services/NotificationService.js';
+
 // Define modal functions globally so they're available for inline onclick handlers
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -28,8 +30,6 @@ export function initializeSettings() {
     }
     
     // Make functions globally available
-    window.showToast = showToast;
-    window.closeToast = closeToast;
     window.openModal = openModal;
     window.closeModal = closeModal;
 }
@@ -57,7 +57,7 @@ function handleFormSubmit(e) {
     })
     .then(data => {
         if (data.success) {
-            showToast('check_circle', data.message || 'Modifiche salvate con successo!', 'success');
+            NotificationService.success(data.message || 'Modifiche salvate con successo!');
             // Update avatar if changed
             if (data.user && data.user.avatar) {
                 const avatarImg = document.getElementById('avatar-preview');
@@ -66,54 +66,17 @@ function handleFormSubmit(e) {
                 }
             }
         } else {
-            showToast('error', data.message || 'Errore durante il salvataggio', 'error');
+            NotificationService.error(data.message || 'Errore durante il salvataggio');
         }
     })
     .catch(error => {
         console.error('Form submission error:', error);
-        showToast('error', error.message || 'Si è verificato un errore. Riprova.', 'error');
+        NotificationService.error(error.message || 'Si è verificato un errore. Riprova.');
     });
 }
 
-function showToast(icon, message, type) {
-    const toast = document.getElementById('toast-notification');
-    const toastIcon = document.getElementById('toast-icon');
-    const toastMessage = document.getElementById('toast-message');
-    const toastContent = document.getElementById('toast-content');
-    
-    if (!toast || !toastIcon || !toastMessage || !toastContent) {
-        console.error('Toast elements not found');
-        return;
-    }
-    
-    toastIcon.textContent = icon;
-    toastMessage.textContent = message;
-    
-    // Set colors based on type
-    if (type === 'success') {
-        toastIcon.className = 'material-icons text-2xl text-brand';
-        toastContent.className = 'bg-surface-100 border border-brand rounded-2xl p-4 shadow-lg';
-    } else {
-        toastIcon.className = 'material-icons text-2xl text-brand-danger';
-        toastContent.className = 'bg-surface-100 border border-brand-danger rounded-2xl p-4 shadow-lg';
-    }
-    
-    toast.classList.remove('hidden');
-    
-    setTimeout(() => {
-        closeToast();
-    }, 4000);
-}
-
-function closeToast() {
-    const toast = document.getElementById('toast-notification');
-    if (toast) {
-        toast.classList.add('hidden');
-    }
-}
-
-// Export all functions
-export { showToast, closeToast, openModal, closeModal };
+// Export modal functions
+export { openModal, closeModal };
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
