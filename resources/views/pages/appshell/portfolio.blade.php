@@ -15,9 +15,9 @@
         />
         
         {{-- Holdings List --}}
-        <div class="space-y-4">
+        <section class="space-y-4" aria-labelledby="holdings-title">
             <div class="flex items-center justify-between px-2">
-                <h2 class="text-xl font-bold text-text-main">I Tuoi Meme</h2>
+                <h2 class="text-xl font-bold text-text-main" id="holdings-title">I Tuoi Meme</h2>
             </div>
             
             @forelse($positions as $position)
@@ -38,12 +38,12 @@
                     message="Nessuna posizione aperta"
                 >
                     <a href="{{ route('market') }}" class="btn-primary inline-flex items-center gap-2">
-                        <span class="material-icons text-lg">trending_up</span>
+                        <span class="material-icons text-lg" aria-hidden="true">trending_up</span>
                         Esplora il Mercato
                     </a>
                 </x-ui.empty-state>
             @endforelse
-        </div>
+        </section>
         
     </div>
 

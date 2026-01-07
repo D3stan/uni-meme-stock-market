@@ -18,7 +18,7 @@
     </header>
 
     <!-- Hero Section -->
-    <div class="relative pt-24 pb-1 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section class="relative pt-24 pb-1 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <!-- Background Chart Image with Gradient Fade -->
         <div class="absolute inset-0 pointer-events-none">
             <img src="{{ asset('landing-background.png') }}" alt="" class="w-full h-full object-cover opacity-30">
@@ -56,10 +56,10 @@
                 </p>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Market Teaser Section (Paywall Effect) -->
-    <div class="px-4 sm:px-6 lg:px-8 pb-16">
+    <section class="px-4 sm:px-6 lg:px-8 pb-16">
         <div class="max-w-4xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-text-main flex items-center gap-2">
@@ -126,7 +126,7 @@
                         <div class="relative z-10 flex flex-col items-center pointer-events-auto">
                             <!-- Lock Icon in Circle -->
                             <div class="lock-icon-container mb-3">
-                                <svg class="w-7 h-7 text-brand-light" fill="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-7 h-7 text-brand-light" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"/>
                                 </svg>
                             </div>
@@ -141,7 +141,7 @@
                             <a href="{{ route('auth.register') }}" class="inline-block w-full max-w-md px-4">
                                 <x-forms.button variant="outline-neon" size="lg" rounded="full" class="w-full px-24 py-4">
                                     <span>Sblocca Ora</span>
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                     </svg>
                                 </x-forms.button>
@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer class="mt-auto border-t border-surface-200 py-6">

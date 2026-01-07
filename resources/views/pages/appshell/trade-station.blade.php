@@ -2,17 +2,17 @@
 <x-base :title="$meme->ticker">
     <div class="min-h-screen bg-surface-50 pb-24">
         {{-- Top Navigation Bar --}}
-        <div class="sticky top-0 z-40 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
+        <header class="sticky top-0 z-40 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
             <div class="flex items-center justify-between px-4 py-3">
                 {{-- Ticker --}}
                 <h1 class="text-xl font-bold">{{ $meme->ticker }}</h1>
 
                 {{-- Back Button --}}
-                <a href="{{ route('market') }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
-                    <span class="material-icons text-2xl">arrow_back</span>
+                <a href="{{ route('market') }}" aria-label="Torna al mercato" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
+                    <span class="material-icons text-2xl" aria-hidden="true">arrow_back</span>
                 </a>
             </div>
-        </div>
+        </header>
 
         {{-- Price Header --}}
         <x-trading.price-header 
