@@ -12,7 +12,7 @@
         {{-- Icon --}}
         <div class="flex justify-center pb-4">
             <div id="{{ $id }}-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center">
-                <span id="{{ $id }}-icon" class="material-icons text-4xl"></span>
+                <span id="{{ $id }}-icon" class="material-icons text-4xl" aria-hidden="true"></span>
             </div>
         </div>
 

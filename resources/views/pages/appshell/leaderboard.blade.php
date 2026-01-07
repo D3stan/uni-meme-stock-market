@@ -2,13 +2,13 @@
     <div class="max-w-7xl mx-auto px-4 py-6 space-y-6">
         
         {{-- Hero Section: Title --}}
-        <div class="text-center space-y-2 py-4">
+        <header class="text-center space-y-2 py-4">
             <h1 class="text-4xl font-black text-text-main">Dean's List</h1>
             <p class="text-text-muted text-base">I migliori trader dell'ateneo</p>
-        </div>
+        </header>
         
         {{-- Time Period Filters --}}
-        <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+        <nav aria-label="Filtri temporali" class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 justify-center">
             <button 
                 onclick="filterLeaderboard('all')" 
                 data-filter="all"
@@ -42,7 +42,7 @@
         @endif
         
         {{-- Remaining Rankings (4th onwards) --}}
-        <div class="space-y-3 pt-4">
+        <div class="space-y-4 pt-4">
             @forelse($rankings ?? [] as $user)
                 @if($user['rank'] > 3)
                     <x-leaderboard.user-rank-row 

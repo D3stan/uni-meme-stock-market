@@ -4,7 +4,7 @@
 ])
 
 {{-- OTP Input Container --}}
-<div class="flex justify-center gap-2 mb-6" id="otp-inputs">
+<div class="flex justify-center gap-2 mb-6" id="otp-inputs" role="group" aria-label="Inserisci codice OTP">
     @for($i = 0; $i < $length; $i++)
     <input
         type="text"
@@ -14,6 +14,7 @@
         class="{{ $inputClass }}"
         data-index="{{ $i }}"
         autocomplete="off"
+        aria-label="Cifra {{ $i + 1 }}"
     >
     @endfor
 </div>

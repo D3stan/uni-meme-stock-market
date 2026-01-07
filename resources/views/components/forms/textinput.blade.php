@@ -18,7 +18,7 @@
     
     <div class="relative">
         @if($prefix)
-            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-main font-mono font-bold">{{ $prefix }}</span>
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-main font-mono font-bold" aria-hidden="true">{{ $prefix }}</span>
         @endif
         
         <input 
@@ -29,12 +29,13 @@
             placeholder="{{ $placeholder }}"
             {{ $required ? 'required' : '' }}
             {{ $maxlength ? "maxlength={$maxlength}" : '' }}
+            @if($helpText) aria-describedby="{{ $id }}-help" @endif
             {{ $attributes->merge(['class' => ($prefix ? 'pl-8 ' : '') . 'input-base h-12']) }}
         >
     </div>
     
     @if($helpText)
-        <p class="mt-1 text-xs text-text-muted">
+        <p id="{{ $id }}-help" class="mt-1 text-xs text-text-muted">
             {{ $helpText }}
         </p>
     @endif

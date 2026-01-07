@@ -13,10 +13,11 @@
     @endif
 
     <input type="datetime-local" id="{{ $id }}" name="{{ $name }}" onkeydown="return false" onclick="this.showPicker()"
+        @if($helpText) aria-describedby="{{ $id }}-help" @endif
         class="input-base cursor-pointer"
     />
 
     @if($helpText)
-        <p class="mt-1 text-xs text-text-muted">{{ $helpText }}</p>
+        <p id="{{ $id }}-help" class="mt-1 text-xs text-text-muted">{{ $helpText }}</p>
     @endif
 </div>

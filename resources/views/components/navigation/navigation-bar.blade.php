@@ -1,8 +1,8 @@
 @props(['active' => null, 'balance' => null, 'unreadNotifications' => 0 ])
 
 {{-- Mobile Top Bar --}}
-<div class="lg:hidden fixed top-0 left-0 w-full z-50 bg-surface-100 px-4 py-2 flex items-center justify-between shadow-lg">
-    <img src="{{ asset('favicon.ico') }}" alt="Favicon" class="w-7 h-7">
+<header class="lg:hidden fixed top-0 left-0 w-full z-50 bg-surface-100 px-4 py-2 flex items-center justify-between shadow-lg">
+    <img src="{{ asset('favicon.ico') }}" alt="Logo AlmaStreet" class="w-7 h-7">
     <span class="font-mono font-bold text-text-main">
         {{ $balance ? number_format($balance, 2) : '0.00' }} <span class="text-brand">CFU</span>
     </span>
@@ -14,7 +14,7 @@
             </span>
         </button>
     </div>
-</div>
+</header>
 
 {{-- Mobile Bottom Navigation --}}
 <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-100/95 backdrop-blur-lg border-t border-surface-200/50">
@@ -41,7 +41,7 @@
         </a>
 
         {{-- Portfolio --}}
-        <a href="{{ route('portfolio') }}" aria-label="Porfolio" class="flex items-center justify-center {{ $active === 'portfolio' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
+        <a href="{{ route('portfolio') }}" aria-label="Portafoglio" class="flex items-center justify-center {{ $active === 'portfolio' ? 'bg-brand' : '' }} rounded-full h-12 min-w-[48px] group transition-colors">
             <span aria-hidden="true" class="material-icons {{ $active === 'portfolio' ? 'text-surface-50 text-2xl' : 'text-text-muted text-2xl' }} group-hover:text-brand transition-colors">
                 account_balance_wallet
             </span>
@@ -61,7 +61,7 @@
     <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
         {{-- Logo --}}
         <div class="flex items-center">
-            <img src="{{ asset('favicon.ico') }}" alt="Favicon" class="w-6 h-6 mr-2">
+            <img src="{{ asset('favicon.ico') }}" alt="Logo AlmaStreet" class="w-6 h-6 mr-2">
             <span class="text-2xl font-black text-brand">AlmaStreet</span>
         </div>
 

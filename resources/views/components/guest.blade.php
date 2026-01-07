@@ -1,5 +1,5 @@
 <x-base :title="$title ?? 'AlmaStreet'">
-    <div class="min-h-screen flex flex-col">
+    <main class="min-h-screen flex flex-col">
         {{ $slot }}
-    </div>
+    </main>
 </x-base>

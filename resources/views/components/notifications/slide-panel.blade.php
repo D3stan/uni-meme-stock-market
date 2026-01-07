@@ -20,7 +20,7 @@
             <h2 id="notification-panel-title" class="text-xl font-bold text-text-main">Notifiche</h2>
         </div>
         <button type="button" id="notification-close-btn" aria-label="Chiudi pannello notifiche" class="p-2 text-text-muted hover:text-text-main transition-colors rounded-lg hover:bg-surface-200">
-            <span class="material-icons text-2xl">close</span>
+            <span aria-hidden="true" class="material-icons text-2xl">close</span>
         </button>
     </header>
 
@@ -92,7 +92,7 @@
                     id="notification-modal-close"
                     class="p-1 text-text-muted hover:text-text-main transition-colors"
                     aria-label="Chiudi">
-                <span class="material-icons">close</span>
+                <span aria-hidden="true" class="material-icons">close</span>
             </button>
         </header>
         {{-- Modal Body --}}

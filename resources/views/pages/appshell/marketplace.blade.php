@@ -18,7 +18,7 @@
 
     {{-- Filtri Chips --}}
     <div id="main-market-content" class="sticky top-[84px] lg:top-[112px] z-20 outline-none" tabindex="-1">
-        <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-surface-50 border-b border-surface-200 rounded-b-xl">
+        <nav aria-label="Filtri di mercato" class="overflow-x-auto hide-scrollbar px-4 py-3 bg-surface-50 border-b border-surface-200 rounded-b-xl">
             <div class="flex gap-2 min-w-max">
                 <a href="{{ route('market', ['filter' => 'all']) }}" class="whitespace-nowrap">
                     <x-ui.chip 
@@ -59,7 +59,7 @@
                     </x-ui.chip>
                 </a>
             </div>
-        </div>
+        </nav>
     </div>
 
     <div class="max-w-7xl mx-auto mt-2 px-2" data-page="marketplace">

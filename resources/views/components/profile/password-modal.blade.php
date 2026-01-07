@@ -31,7 +31,7 @@
                 @csrf
                 @method('PUT')
 
-                <!-- New Password -->
+                {{-- New Password --}}
                 <div>
                     <label for="new_password" class="block text-sm font-medium text-text-muted mb-2">
                         Nuova Password

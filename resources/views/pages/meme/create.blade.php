@@ -51,10 +51,10 @@
 
             {{-- Billing --}}
             <div class="px-4">
-                <div class="bg-surface-200 rounded-lg p-4 space-y-3 border border-surface-200">
+                <section aria-labelledby="financial-summary-title" class="bg-surface-200 rounded-lg p-4 space-y-3 border border-surface-200">
                     <div class="flex items-center gap-2 mb-3">
                         <span aria-hidden="true" class="material-icons text-brand text-lg">receipt</span>
-                        <h3 class="text-sm font-semibold text-text-main uppercase">Riepilogo Finanziario</h3>
+                        <h3 id="financial-summary-title" class="text-sm font-semibold text-text-main uppercase">Riepilogo Finanziario</h3>
                     </div>
 
                     <div class="flex justify-between items-center">
@@ -82,7 +82,7 @@
                             <span class="text-sm text-brand-danger font-medium">Saldo insufficiente</span>
                         </div>
                     @endif
-                </div>
+                </section>
             </div>
 
             {{-- CTA Principale --}}

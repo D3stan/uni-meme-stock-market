@@ -17,7 +17,7 @@
 @endphp
 
 <div class="p-6">
-    <div id="{{ $uploadBoxId }}" class="relative h-60 border-2 border-dashed border-surface-200 rounded-xl bg-surface-50 flex flex-col items-center justify-center cursor-pointer hover:border-brand transition-colors">
+    <button type="button" id="{{ $uploadBoxId }}" class="w-full relative h-60 border-2 border-dashed border-surface-200 rounded-xl bg-surface-50 flex flex-col items-center justify-center cursor-pointer hover:border-brand transition-colors focus:outline-none focus:ring-4 focus:ring-brand/20">
         
         {{-- Empty State --}}
         <div id="{{ $emptyStateId }}" class="text-center">
@@ -28,14 +28,14 @@
 
         {{-- Image Preview (hidden by default) --}}
         <div id="{{ $previewId }}" class="hidden w-full h-full">
-            <img id="{{ $previewImgId }}" src="" alt="Preview" class="w-full h-full object-contain rounded-xl">
-            <button type="button" id="{{ $changeBtnId }}" class="absolute top-3 right-3 px-3 py-1.5 bg-surface-200/90 hover:bg-surface-200 border border-surface-200 text-text-main text-xs font-medium rounded-lg transition-colors">
+            <img id="{{ $previewImgId }}" src="" alt="Anteprima immagine" class="w-full h-full object-contain rounded-xl">
+            <span id="{{ $changeBtnId }}" class="absolute top-3 right-3 px-3 py-1.5 bg-surface-200/90 hover:bg-surface-200 border border-surface-200 text-text-main text-xs font-medium rounded-lg transition-colors shadow-sm">
                 Cambia
-            </button>
+            </span>
         </div>
 
         <input type="file" id="{{ $inputId }}" name="{{ $name }}" accept="{{ $accept }}" class="hidden">
-    </div>
+    </button>
 </div>
 
 @push('page-scripts')
@@ -50,15 +50,10 @@
 
         // Click on upload to open file input
         uploadBox.addEventListener('click', function(e) {
-            if (!e.target.closest('#{{ $changeBtnId }}')) {
+            // Prevent recursive trigger if clicking the file input itself (though it's hidden)
+            if (e.target !== imageInput) {
                 imageInput.click();
             }
-        });
-
-        // Click on change button
-        changeImageBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            imageInput.click();
         });
 
         // Handle file selection

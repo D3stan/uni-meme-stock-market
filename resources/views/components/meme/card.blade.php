@@ -19,7 +19,7 @@
             {{-- Avatar Creatore --}}
             <img 
                 src="{{ $creatorAvatar }}" 
-                alt="{{ $creatorName }}"
+                alt="Creatore: {{ $creatorName }}"
                 class="w-8 h-8 rounded-full object-cover"
             >
             <div>
@@ -37,14 +37,14 @@
                     default => 'badge-neutral',
                 };
             @endphp
-            <span class="{{ $statusClasses }}">
+            <span class="{{ $statusClasses }}" aria-label="Stato: {{ $status }}">
                 {{ ucfirst($status) }}
             </span>
         @endif
     </div>
     
     {{-- Media (Immagine Meme) --}}
-    <a href="{{ $tradeUrl }}" class="block">
+    <a href="{{ $tradeUrl }}" class="block" aria-hidden="true" tabindex="-1">
         <img 
             src="{{ asset($image) }}" 
             alt="{{ $alt }}"
@@ -57,7 +57,7 @@
         <div class="flex items-end justify-between mb-4">
             {{-- Prezzo --}}
             <div>
-                <p class="text-2xl font-bold font-mono text-text-main">{{ number_format($price, 2) }}</p>
+                <p class="text-2xl font-bold font-mono text-text-main">{{ number_format($price, 2) }} <span class="sr-only">CFU</span></p>
                 <p class="text-xs text-text-muted">Prezzo</p>
             </div>
             
@@ -66,10 +66,10 @@
         </div>
         
         {{-- Bottone Trade --}}
-        <a href="{{ $tradeUrl }}" class="block">
+        <a href="{{ $tradeUrl }}" class="block w-full">
             <x-forms.button variant="primary" class="w-full">
-                Trade
+                Trade {{ $name }}
             </x-forms.button>
         </a>
     </div>
-</div>
+</article>

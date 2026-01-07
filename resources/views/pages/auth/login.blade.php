@@ -1,19 +1,19 @@
 <x-guest title="Accedi">
-    <div class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
+    <section class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
         <div class="w-full max-w-md">
-            <!-- Logo -->
+            {{-- Logo --}}
             <div class="text-center mb-8">
                 <img src="{{ asset('icon.png') }}" alt="AlmaStreet" class="h-12 w-12 mx-auto mb-3">
                 <h1 class="text-2xl font-bold text-text-main mb-2">Bentornato su AlmaStreet</h1>
                 <p class="text-sm text-text-muted">Accedi per continuare a fare trading</p>
             </div>
 
-            <!-- Form Card -->
+            {{-- Form Card --}}
             <div class="bg-surface-100/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-surface-200 shadow-xl">
                 <form method="POST" action="{{ route('auth.login.post') }}" class="space-y-4">
                     @csrf
 
-                    <!-- Email Field -->
+                    {{-- Email Field --}}
                     <div>
                         <label for="email" class="block text-sm font-medium text-text-muted mb-2">
                             Email
@@ -33,7 +33,7 @@
                         </div>
                     </div>
 
-                    <!-- Password Field -->
+                    {{-- Password Field --}}
                     <div>
                         <label for="password" class="block text-sm font-medium text-text-muted mb-2">
                             Password
@@ -48,13 +48,13 @@
                         />
                         <x-forms.validation-error field="password" />
                         <div class="text-right mt-2">
-                            <a href="#" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
+                            <button type="button" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
                                 Password dimenticata?
-                            </a>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
+                    {{-- Submit Button --}}
                     <x-forms.button 
                         type="submit" 
                         variant="primary"
@@ -65,7 +65,7 @@
                 </form>
             </div>
 
-            <!-- Footer Links -->
+            {{-- Footer Links --}}
             <div class="text-center mt-6">
                 <p class="text-sm text-text-muted">
                     Non hai un account? 
@@ -75,5 +75,5 @@
                 </p>
             </div>
         </div>
-    </div>
+    </section>
 </x-guest>

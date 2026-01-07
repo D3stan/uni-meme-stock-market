@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between mb-6">
             <h2 id="editEventModal-title" class="text-2xl font-bold text-text-main">Modifica Evento</h2>
             <button onclick="hideModal('editEventModal')" aria-label="Chiudi" class="text-text-muted hover:text-text-main transition-colors">
-                <span class="material-icons" aria-hidden="true" >close</span>
+                <span class="material-icons" aria-hidden="true">close</span>
             </button>
         </div>
 
@@ -14,7 +14,7 @@
 
             {{-- Messaggio --}}
             <div class="mb-4">
-                <x-forms.textarea for="event_message" title=Messaggio id="event_message" name="message" placeholder="Inserisci il messaggio dell'evento..."/>
+                <x-forms.textarea label="Messaggio" id="event_message" name="message" placeholder="Inserisci il messaggio dell'evento..."/>
             </div>
 
             {{-- Data Scadenza --}}
@@ -24,7 +24,7 @@
 
             {{-- Stato Attivo --}}
             <div class="mb-6">
-                <x-forms.toggle id="event_is_active" name="is_active" value="1" text="Evento Attivo"/>
+                <x-forms.toggle id="event_is_active" name="is_active" value="1" text="Evento Attivo" checked/>
             </div>
 
             {{-- Actions --}}

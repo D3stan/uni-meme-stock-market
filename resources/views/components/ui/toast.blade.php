@@ -14,8 +14,8 @@
         <div class="flex-1 min-w-0">
             <p class="toast-message text-sm font-medium text-text-main"></p>
         </div>
-        <button class="toast-close flex-shrink-0 text-text-muted hover:text-text-main transition-colors">
-            <span class="material-icons text-lg">close</span>
+        <button class="toast-close flex-shrink-0 text-text-muted hover:text-text-main transition-colors" aria-label="Chiudi">
+            <span class="material-icons text-lg" aria-hidden="true">close</span>
         </button>
     </div>
 </template>

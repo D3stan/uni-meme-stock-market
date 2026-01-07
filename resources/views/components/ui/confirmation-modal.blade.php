@@ -17,14 +17,14 @@
         <div class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-surface-100 shadow-xl rounded-3xl border border-surface-200">
             
             {{-- Close button --}}
-            <button type="button" onclick="closeModal('{{ $id }}')" class="absolute top-4 right-4 text-text-muted hover:text-text-main transition-colors">
-                <span class="material-icons text-2xl">close</span>
+            <button type="button" onclick="closeModal('{{ $id }}')" aria-label="Chiudi" class="absolute top-4 right-4 text-text-muted hover:text-text-main transition-colors">
+                <span class="material-icons text-2xl" aria-hidden="true">close</span>
             </button>
 
             {{-- Icon --}}
             <div class="flex justify-center mb-4">
                 <div class="w-16 h-16 bg-brand-danger/20 rounded-full flex items-center justify-center">
-                    <span class="material-icons text-brand-danger text-3xl">warning</span>
+                    <span class="material-icons text-brand-danger text-3xl" aria-hidden="true">warning</span>
                 </div>
             </div>
 

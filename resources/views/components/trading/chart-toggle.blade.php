@@ -18,7 +18,7 @@
 
 {{-- Chart Container --}}
 <div id="chart-container" class="px-4 mb-6">
-    <div id="chart" class="w-full h-72 bg-surface-100/50 rounded-lg"></div>
+    <div id="chart" role="img" aria-label="Grafico interattivo dell'andamento prezzi" class="w-full h-72 bg-surface-100/50 rounded-lg"></div>
     
     {{-- Time Period Selector --}}
     <div class="flex justify-center gap-3 mt-4">
@@ -58,10 +58,11 @@
             <img src="{{ asset('storage/data/' . $meme->creator_id . '/' . basename($meme->image_path)) }}" 
                  alt="{{ $meme->text_alt }}" 
                  class="w-full max-h-[70vh] object-contain"
-                 onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\'>Immagine non supportata</span></div>'">
+                 onerror="this.parentElement.innerHTML='<div class=\'flex flex-col items-center justify-center h-72 text-text-muted\'><span class=\'material-icons text-6xl\' aria-hidden=\'true\'>broken_image</span><span class=\'mt-2\'>Immagine non supportata</span></div>'">
         @else
-            <div class="flex items-center justify-center h-72 text-text-muted">
-                <span class="material-icons text-6xl">Immagine non supportata</span>
+            <div class="flex flex-col items-center justify-center h-72 text-text-muted">
+                <span class="material-icons text-6xl" aria-hidden="true">broken_image</span>
+                <span class="mt-2">Immagine non supportata</span>
             </div>
         @endif
     </div>

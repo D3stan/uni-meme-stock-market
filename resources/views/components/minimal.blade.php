@@ -1,5 +1,5 @@
 <x-base>
-    <div class="min-h-screen">
+    <main class="min-h-screen">
         {{ $slot }}
-    </div>
+    </main>
 </x-base>

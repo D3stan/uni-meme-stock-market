@@ -11,7 +11,7 @@
             {{-- Header --}}
             <header class="flex items-center justify-between mb-8">
                 <h1 class="text-3xl font-bold text-text-main">{{ $title }}</h1>
-                <a href="{{ $href }}" aria-label="{{ $label }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors">
+                <a href="{{ $href }}" aria-label="{{ $label }}" class="p-2 hover:bg-surface-200 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand">
                     <span class="material-icons text-text-main text-3xl" aria-hidden="true">{{ $icon }}</span>
                 </a>
             </header>
