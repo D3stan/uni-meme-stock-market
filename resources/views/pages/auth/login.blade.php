@@ -1,5 +1,5 @@
 <x-guest title="Accedi">
-    <div class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
+    <section class="flex-1 flex items-center justify-center px-4 py-12" data-page="login">
         <div class="w-full max-w-md">
             <!-- Logo -->
             <div class="text-center mb-8">
@@ -48,9 +48,9 @@
                         />
                         <x-forms.validation-error field="password" />
                         <div class="text-right mt-2">
-                            <a href="#" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
+                            <button type="button" id="forgot-password-link" class="text-sm text-brand hover:text-brand-light font-medium transition-colors">
                                 Password dimenticata?
-                            </a>
+                            </button>
                         </div>
                     </div>
 
@@ -75,5 +75,5 @@
                 </p>
             </div>
         </div>
-    </div>
+    </section>
 </x-guest>

@@ -1,5 +1,5 @@
 <x-guest title="Registrati">
-    <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <section class="flex-1 flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-md">
             <!-- Logo -->
             <div class="text-center mb-8">
@@ -100,5 +100,5 @@
                 </p>
             </div>
         </div>
-    </div>
+    </section>
 </x-guest>
