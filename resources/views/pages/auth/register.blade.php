@@ -1,19 +1,19 @@
 <x-guest title="Registrati">
     <section class="flex-1 flex items-center justify-center px-4 py-12">
         <div class="w-full max-w-md">
-            <!-- Logo -->
+            {{-- Logo --}}
             <div class="text-center mb-8">
                 <img src="{{ asset('icon.png') }}" alt="AlmaStreet" class="h-12 w-12 mx-auto mb-3">
                 <h1 class="text-2xl font-bold text-text-main mb-2">Crea il tuo account</h1>
                 <p class="text-sm text-text-muted">Usa la tua email istituzionale</p>
             </div>
 
-            <!-- Form Card -->
+            {{-- Form Card --}}
             <div class="bg-surface-100/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-surface-200 shadow-xl">
                 <form method="POST" action="{{ route('auth.register.post') }}" class="space-y-4">
                     @csrf
 
-                    <!-- Email Field -->
+                    {{-- Email Field --}}
                     <div>
                         <label for="email" class="block text-sm font-medium text-text-muted mb-2">
                             Email Istituzionale
@@ -30,7 +30,7 @@
                         <x-forms.validation-error field="email" />
                     </div>
 
-                    <!-- Name Field -->
+                    {{-- Name Field --}}
                     <div>
                         <label for="name" class="block text-sm font-medium text-text-muted mb-2">
                             Nome Completo
@@ -47,7 +47,7 @@
                         <x-forms.validation-error field="name" />
                     </div>
 
-                    <!-- Password Field -->
+                    {{-- Password Field --}}
                     <div>
                         <label for="password" class="block text-sm font-medium text-text-muted mb-2">
                             Password
@@ -63,7 +63,7 @@
                         <x-forms.validation-error field="password" />
                     </div>
 
-                    <!-- Password Confirmation Field -->
+                    {{-- Password Confirmation Field --}}
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-text-muted mb-2">
                             Conferma Password
@@ -79,7 +79,7 @@
                         <x-forms.validation-error field="password_confirmation" />
                     </div>
 
-                    <!-- Submit Button -->
+                    {{-- Submit Button --}}
                     <x-forms.button 
                         type="submit" 
                         variant="primary"
@@ -90,7 +90,7 @@
                 </form>
             </div>
 
-            <!-- Footer Link -->
+            {{-- Footer Link --}}
             <div class="text-center mt-6">
                 <p class="text-sm text-text-muted">
                     Hai già un account? 

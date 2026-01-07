@@ -1,9 +1,9 @@
 {{-- Slippage Alert Modal --}}
 
-<!-- Slippage Modal Backdrop -->
+{{-- Slippage Modal Backdrop --}}
 <div id="slippage-modal-backdrop" class="fixed inset-0 bg-surface-50/80 z-[60] hidden"></div>
 
-<!-- Slippage Modal -->
+{{-- Slippage Modal --}}
 <div id="slippage-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 hidden">
     <div class="bg-surface-100 rounded-2xl max-w-sm w-full p-6 border border-brand-accent/30">
         {{-- Warning Icon --}}
