@@ -20,7 +20,7 @@
             <h2 id="notification-panel-title" class="text-xl font-bold text-text-main">Notifiche</h2>
         </div>
         <button type="button" id="notification-close-btn" aria-label="Chiudi pannello notifiche" class="p-2 text-text-muted hover:text-text-main transition-colors rounded-lg hover:bg-surface-200">
-            <span class="material-icons text-2xl">close</span>
+            <span aria-hidden="true" class="material-icons text-2xl">close</span>
         </button>
     </header>
 
@@ -29,13 +29,13 @@
     <section class="border-b border-surface-200 bg-gradient-to-r from-brand/10 to-transparent shrink-0">
         <div class="px-4 py-3">
             <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-brand text-lg">campaign</span>
+                <span aria-hidden="true" class="material-icons text-brand text-lg">campaign</span>
                 <h3 class="text-sm font-semibold text-text-main">Eventi Attivi</h3>
             </div>
             <div class="space-y-2 max-h-32 overflow-y-auto hide-scrollbar">
                 @foreach($communications as $comm)
                 <div class="flex items-start gap-2 p-2 bg-surface-100/80 rounded-lg border border-brand/20">
-                    <span class="material-icons text-brand-warning text-sm mt-0.5">schedule</span>
+                    <span aria-hidden="true" class="material-icons text-brand-warning text-sm mt-0.5">schedule</span>
                     <div class="flex-1 min-w-0">
                         <p class="text-xs text-text-main leading-tight line-clamp-2">{{ $comm->message }}</p>
                         @if($comm->expires_at)
@@ -84,7 +84,7 @@
                     id="notification-modal-close"
                     class="p-1 text-text-muted hover:text-text-main transition-colors"
                     aria-label="Chiudi">
-                <span class="material-icons">close</span>
+                <span aria-hidden="true" class="material-icons">close</span>
             </button>
         </header>
         {{-- Modal Body --}}

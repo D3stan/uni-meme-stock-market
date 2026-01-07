@@ -12,16 +12,16 @@
     $formattedLiquid = number_format($liquid, 2);
 @endphp
 
-<div class="bg-surface-100 rounded-3xl p-6 border border-surface-200">
+<section aria-labelledby="allocation-title" class="bg-surface-100 rounded-3xl p-6 border border-surface-200">
     {{-- Title --}}
-    <h2 class="text-lg font-semibold text-text-main mb-6">Allocazione Patrimonio</h2>
+    <h2 id="allocation-title" class="text-lg font-semibold text-text-main mb-6">Allocazione Patrimonio</h2>
     
     <div class="flex flex-col items-center gap-6">
         {{-- Donut Chart Container --}}
-        <div class="relative w-48 h-48">
-            <canvas id="allocation-chart" data-invested="{{ $invested }}" data-liquid="{{ $liquid }}"></canvas>
+        <div class="relative w-48 h-48" role="img" aria-label="Grafico a ciambella: {{ $investedPct }}% Investito, {{ $liquidPct }}% Liquidità">
+            <canvas aria-hidden="true" id="allocation-chart" data-invested="{{ $invested }}" data-liquid="{{ $liquid }}"></canvas>
             {{-- Center Text --}}
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <div class="absolute inset-0 flex flex-col items-center justify-center" aria-hidden="true">
                 <p class="text-xs text-text-muted uppercase">Investito</p>
                 <p class="text-3xl font-black text-text-main">{{ $investedPct }}%</p>
             </div>
@@ -32,7 +32,7 @@
             {{-- Invested --}}
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-brand"></div>
+                    <div class="w-3 h-3 rounded-full bg-brand" aria-hidden="true"></div>
                     <span class="text-sm text-text-muted">Investito</span>
                 </div>
                 <div class="text-right">
@@ -44,7 +44,7 @@
             {{-- Liquid --}}
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-surface-200"></div>
+                    <div class="w-3 h-3 rounded-full bg-surface-200" aria-hidden="true"></div>
                     <span class="text-sm text-text-muted">Liquidità</span>
                 </div>
                 <div class="text-right">
@@ -54,4 +54,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

@@ -11,7 +11,7 @@
     $formattedPct = ($isPositive ? '+' : '') . number_format($dailyChangePct, 1);
 @endphp
 
-<div class="bg-brand-dark rounded-3xl p-6 shadow-lg">
+<section aria-label="Riepilogo Valore Netto" class="bg-brand-dark rounded-3xl p-6 shadow-lg">
     {{-- Label --}}
     <p class="text-text-main/70 text-sm font-medium mb-2 uppercase tracking-wide text-center">Valore Totale</p>
     
@@ -27,16 +27,16 @@
             type="button"
             onclick="toggleNetWorthVisibility()"
             class="ml-2 p-2 hover:bg-brand-light/20 rounded-lg transition-colors"
-            aria-label="Toggle visibility"
+            aria-label="Mostra/Nascondi saldo"
         >
-            <span class="material-icons text-text-main text-2xl" id="visibility-icon">visibility</span>
+            <span aria-hidden="true" class="material-icons text-text-main text-2xl" id="visibility-icon">visibility</span>
         </button>
     </div>
     
     {{-- Daily Change Badge --}}
     <div class="flex justify-center">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full {{ $isPositive ? 'badge-positive' : 'badge-negative' }}">
-            <span class="material-icons text-sm">
+            <span aria-hidden="true" class="material-icons text-sm">
                 {{ $isPositive ? 'trending_up' : 'trending_down' }}
             </span>
             <span class="font-bold text-sm">
@@ -44,4 +44,4 @@
             </span>
         </div>
     </div>
-</div>
+</section>
