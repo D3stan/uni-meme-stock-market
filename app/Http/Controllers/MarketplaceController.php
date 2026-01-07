@@ -38,7 +38,7 @@ class MarketplaceController extends Controller
         }
 
         // Get memes from market service
-        $memes = $this->marketService->getMarketplaceMemes($filter, 20);
+        $memes = $this->marketService->getMarketplaceMemes($filter, 5);
 
         // Get ticker data for top movers
         $tickerMemes = $this->marketService->getTickerMemes(15);
@@ -61,7 +61,7 @@ class MarketplaceController extends Controller
     {
         $filter = $request->get('filter', 'all');
         $page = $request->get('page', 1);
-        $perPage = $request->get('per_page', 20);
+        $perPage = $request->get('per_page', 5);
 
         $validFilters = ['all', 'top_gainer', 'new_listing', 'high_risk'];
         if (!in_array($filter, $validFilters)) {
@@ -69,7 +69,7 @@ class MarketplaceController extends Controller
         }
 
         // Recupera i meme dal MarketService (come in index)
-        $memes = $this->marketService->getMarketplaceMemes($filter, $perPage, $page);
+        $memes = $this->marketService->getMarketplaceMemes($filter, $perPage);
         $memes->appends(['filter' => $filter]);
 
         // Per ogni meme, aggiungi html renderizzato

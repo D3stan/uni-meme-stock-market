@@ -85,7 +85,7 @@
                     :creatorAvatar="$meme['creatorAvatar']"
                     :status="$meme['status']"
                     :tradeUrl="route('trade', ['meme' => $meme['id']])"
-                    class="w-full lg:w-1/3"
+                    class="w-full"
                 />
             @empty
                 <x-ui.empty-state 

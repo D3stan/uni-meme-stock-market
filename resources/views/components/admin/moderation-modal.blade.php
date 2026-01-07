@@ -22,6 +22,7 @@
                 creatorName=""
                 status=""
                 tradeUrl="#"
+                class="lg:w-full"
             />
         </div>
 

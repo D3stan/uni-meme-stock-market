@@ -117,14 +117,13 @@ class MarketService
 
         // Add price change 24h calculation
         $query->leftJoin('price_histories as ph_24h', function ($join) {
-            $join->on('memes.id', '=', 'ph_24h.meme_id')
-                ->where('ph_24h.recorded_at', '>=', now()->subHours(24))
-                ->where('ph_24h.recorded_at', '=', function ($subQuery) {
-                    $subQuery->select(DB::raw('MIN(recorded_at)'))
-                        ->from('price_histories as ph_inner')
-                        ->whereColumn('ph_inner.meme_id', 'memes.id')
-                        ->where('ph_inner.recorded_at', '>=', now()->subHours(24));
-                });
+            $join->on('ph_24h.id', '=', DB::raw("
+                (SELECT id FROM price_histories 
+                 WHERE meme_id = memes.id 
+                 AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                 ORDER BY recorded_at ASC, id ASC
+                 LIMIT 1)
+            "));
         });
 
         $query->select(
@@ -141,13 +140,15 @@ class MarketService
         switch ($filter) {
             case 'top_gainer':
                 // Top gainers: highest positive percentage change in 24h
-                $query->orderByRaw('pct_change_24h DESC');
+                $query->orderByRaw('pct_change_24h DESC')
+                      ->orderBy('memes.id', 'desc');
                 break;
 
             case 'new_listing':
                 // New listings: approved in the last 7 days
                 $query->where('approved_at', '>=', now()->subDays(7))
-                    ->orderByDesc('approved_at');
+                    ->orderByDesc('approved_at')
+                    ->orderBy('memes.id', 'desc');
                 break;
 
             case 'high_risk':
@@ -156,13 +157,15 @@ class MarketService
                     $q->where('slope', '>=', 0.01) // High slope = more volatile
                         ->orWhere('circulating_supply', '<', 100); // Low supply = risky
                 })
-                ->orderByDesc('slope');
+                ->orderByDesc('slope')
+                ->orderBy('memes.id', 'desc');
                 break;
 
             case 'all':
             default:
                 // All: ordered by market cap (current_price * circulating_supply)
-                $query->orderByRaw('(memes.current_price * memes.circulating_supply) DESC');
+                $query->orderByRaw('(memes.current_price * memes.circulating_supply) DESC')
+                      ->orderBy('memes.id', 'desc');
                 break;
         }
 
