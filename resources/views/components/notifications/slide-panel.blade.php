@@ -69,7 +69,7 @@
     </div>
 
     {{-- Content (loaded via fetch) --}}
-    <div id="notification-content" class="overflow-y-auto flex-1 p-4 custom-scrollbar">
+    <div id="notification-content" class="overflow-y-auto flex-1 p-4">
         {{-- Loading state --}}
         <div id="notification-loading" class="flex flex-col items-center justify-center h-48">
             <div class="w-8 h-8 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
