@@ -65,13 +65,10 @@
     <div class="max-w-7xl mx-auto mt-2 px-2" data-page="marketplace">
 
         {{-- Meme Feed Skeleton (Visible by default for JS handling) --}}
-        <div id="meme-feed-skeleton" class="py-6 grid grid-cols-1 gap-4">
-            <x-meme.skeleton />
-            <x-meme.skeleton />
-            <x-meme.skeleton />
-            <x-meme.skeleton />
-            <x-meme.skeleton />
-            <x-meme.skeleton />
+        <div id="meme-feed-skeleton" class="py-6 flex flex-col items-center gap-4">
+            <x-meme.skeleton class="w-full lg:w-1/3" />
+            <x-meme.skeleton class="w-full lg:w-1/3" />
+            <x-meme.skeleton class="w-full lg:w-1/3" />
         </div>
 
         {{-- Meme Feed (Hidden by default, shown by JS after images load) --}}
