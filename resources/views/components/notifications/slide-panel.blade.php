@@ -34,8 +34,8 @@
             </div>
             <div class="space-y-2 max-h-32 overflow-y-auto hide-scrollbar">
                 @foreach($communications as $comm)
-                <div class="flex items-start gap-2 p-2 bg-surface-100/80 rounded-lg border border-brand/20">
-                    <span class="material-icons text-brand-warning text-sm mt-0.5">schedule</span>
+                <div class="flex items-start gap-2 p-2 bg-surface-100/80 rounded-lg border border-brand/20 relative group">
+                    <span class="material-icons text-brand-warning text-sm mt-0.5" aria-hidden="true">schedule</span>
                     <div class="flex-1 min-w-0">
                         <p class="text-xs text-text-main leading-tight line-clamp-2">{{ $comm->message }}</p>
                         @if($comm->expires_at)
@@ -46,6 +46,14 @@
                         <p class="text-[10px] text-text-muted mt-1">Nessuna scadenza</p>
                         @endif
                     </div>
+                    <button type="button" 
+                            class="event-detail-btn p-1 text-text-muted hover:text-brand transition-colors shrink-0"
+                            aria-label="Visualizza dettagli evento"
+                            data-title="Evento"
+                            data-date="{{ $comm->created_at->format('d/m/Y H:i') }}" 
+                            data-message="{{ $comm->message }}">
+                        <span class="material-icons text-base" aria-hidden="true">info</span>
+                    </button>
                 </div>
                 @endforeach
             </div>

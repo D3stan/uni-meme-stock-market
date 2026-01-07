@@ -224,6 +224,21 @@
     }
 
     /**
+     * Show modal with specific content
+     */
+    function showModal(title, date, message) {
+        modalTitle.textContent = title;
+        modalDate.textContent = date;
+        modalMessage.textContent = message;
+
+        isModalOpen = true;
+        modalTriggerElement = document.activeElement;
+        detailModal.classList.remove('pointer-events-none', 'opacity-0');
+        detailModal.setAttribute('aria-hidden', 'false');
+        modalClose.focus();
+    }
+
+    /**
      * Open detail modal
      */
     async function openDetailModal(id) {
@@ -237,15 +252,11 @@
             const data = await response.json();
 
             if (data.success) {
-                modalTitle.textContent = data.notification.title;
-                modalDate.textContent = data.notification.created_at;
-                modalMessage.textContent = data.notification.message;
-
-                isModalOpen = true;
-                modalTriggerElement = document.activeElement;
-                detailModal.classList.remove('pointer-events-none', 'opacity-0');
-                detailModal.setAttribute('aria-hidden', 'false');
-                modalClose.focus();
+                showModal(
+                    data.notification.title,
+                    data.notification.created_at,
+                    data.notification.message
+                );
             }
         } catch (error) {
             console.error('Error loading notification detail:', error);
@@ -273,6 +284,18 @@
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
             openPanel();
+        });
+    });
+
+    // Event listeners for static event buttons
+    document.querySelectorAll('.event-detail-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal(
+                btn.dataset.title,
+                btn.dataset.date,
+                btn.dataset.message
+            );
         });
     });
 
