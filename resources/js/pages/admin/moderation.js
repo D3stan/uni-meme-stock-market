@@ -58,7 +58,7 @@ function openModerationModal(button) {
     // Update text alternative
     const textAltEl = document.getElementById('meme-alt-text');
     if (textAltEl) {
-        textAltEl.textContent = textAlt || 'Nessuna alternativa testuale disponibile';
+        textAltEl.value = textAlt || '';
     }
 
     // Set form actions
@@ -95,4 +95,16 @@ document.addEventListener('DOMContentLoaded', function() {
             openModerationModal(button);
         }
     });
+    
+    // Handle approve form submission - copy textarea value to hidden input
+    const approveForm = document.getElementById('approveForm');
+    if (approveForm) {
+        approveForm.addEventListener('submit', function(e) {
+            const textAlt = document.getElementById('meme-alt-text');
+            const hiddenInput = document.getElementById('text-alt-hidden');
+            if (textAlt && hiddenInput) {
+                hiddenInput.value = textAlt.value;
+            }
+        });
+    }
 });

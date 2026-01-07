@@ -25,12 +25,11 @@
             />
         </div>
 
-        {{-- Text Alternative (for future implementation) --}}
+        {{-- Text Alternative --}}
         <div class="mb-6 p-4 bg-surface-100 rounded-lg border border-surface-200">
-            <h3 class="text-sm font-semibold text-text-muted mb-2">Alternativa Testuale</h3>
-            <p id="meme-alt-text" class="text-text-muted text-sm">
-                [Campo da implementare nel database]
-            </p>
+            <x-forms.textarea for="meme-alt-text" title="Alternativa Testuale" id="meme-alt-text" name="text_alt" 
+                placeholder="Descrivi il contenuto del meme per gli screen reader..." 
+            />
         </div>
 
         {{-- Actions --}}
@@ -45,6 +44,7 @@
             
             <form id="approveForm" method="POST" class="flex-1">
                 @csrf
+                <input type="hidden" id="text-alt-hidden" name="text_alt" value="">
                 <x-forms.button type="submit" variant="primary" size="lg" class="w-full">
                     <span class="material-icons text-lg">check</span>
                     Approva
