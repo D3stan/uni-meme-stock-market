@@ -8,7 +8,7 @@
 
 {{-- Slide Panel --}}
 <aside id="notification-panel"
-       class="fixed top-0 right-0 h-full w-[85%] max-w-[320px] lg:max-w-[360px] bg-surface-100 z-[70] transform translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col"
+       class="fixed top-0 right-0 h-full w-[85%] max-w-[320px] lg:max-w-[360px] bg-surface-100 z-[70] transform translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col invisible"
        role="dialog"
        aria-modal="true"
        aria-labelledby="notification-panel-title"

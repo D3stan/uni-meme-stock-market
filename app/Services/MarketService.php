@@ -240,6 +240,7 @@ class MarketService
                     });
             })
             ->select(
+                'memes.id',
                 'memes.ticker',
                 'memes.current_price',
                 DB::raw('COALESCE(ph_24h.price, memes.base_price) as price_24h_ago'),
@@ -254,6 +255,7 @@ class MarketService
             ->get()
             ->map(function ($meme) {
                 return [
+                    'id' => $meme->id,
                     'ticker' => $meme->ticker,
                     'price' => round($meme->current_price, 2),
                     'change' => round($meme->pct_change_24h ?? 0, 2),

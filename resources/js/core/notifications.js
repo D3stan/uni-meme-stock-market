@@ -46,11 +46,17 @@
         overlay.setAttribute('aria-hidden', 'false');
 
         // Sliding
-        panel.classList.remove('translate-x-full');
+        panel.classList.remove('invisible');
+        requestAnimationFrame(() => {
+            panel.classList.remove('translate-x-full');
+        });
+        
         panel.setAttribute('aria-hidden', 'false');
 
         document.body.style.overflow = 'hidden';
-        closeBtn.focus();
+        setTimeout(() => {
+            closeBtn.focus();
+        }, 300);
 
         loadNotifications();
     }
@@ -78,6 +84,11 @@
         panel.setAttribute('aria-hidden', 'true');
 
         document.body.style.overflow = '';
+        
+        // Wait for animation to finish before hiding completely
+        setTimeout(() => {
+            panel.classList.add('invisible');
+        }, 300);
     }
 
     /**

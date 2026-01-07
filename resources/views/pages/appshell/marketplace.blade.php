@@ -17,7 +17,7 @@
     </div>
 
     {{-- Filtri Chips --}}
-    <div class="sticky top-[84px] lg:top-[112px] z-20">
+    <div id="main-market-content" class="sticky top-[84px] lg:top-[112px] z-20 outline-none" tabindex="-1">
         <div class="overflow-x-auto hide-scrollbar px-4 py-3 bg-surface-50 border-b border-surface-200 rounded-b-xl">
             <div class="flex gap-2 min-w-max">
                 <a href="{{ route('market', ['filter' => 'all']) }}" class="whitespace-nowrap">
