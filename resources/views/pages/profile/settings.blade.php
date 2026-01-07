@@ -5,7 +5,7 @@
         <header class="sticky top-0 z-10 bg-surface-50/95 backdrop-blur-sm border-b border-surface-200">
             <div class="flex items-center justify-center relative px-4 py-4">
                 <a href="{{ route('profile') }}" class="absolute left-4 text-brand hover:text-brand-light transition-colors flex items-center gap-1">
-                    <span class="material-icons">chevron_left</span>
+                    <span class="material-icons" aria-hidden="true">chevron_left</span>
                     <span class="font-medium">Indietro</span>
                 </a>
                 <h1 class="text-xl font-bold">Impostazioni</h1>
@@ -43,8 +43,8 @@
                                     class="input-base text-lg font-medium"
                                     placeholder="Il tuo nickname"
                                 >
-                                <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-muted">
-                                    <span class="material-icons text-xl">edit</span>
+                                <button type="button" aria-label="Modifica Nickname" class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-muted">
+                                    <span class="material-icons text-xl" aria-hidden="true">edit</span>
                                 </button>
                             </div>
                             @error('name')
@@ -57,7 +57,7 @@
                             type="submit"
                             class="btn-primary w-full mt-6 flex items-center justify-center gap-2"
                         >
-                            <span class="material-icons text-xl">save</span>
+                            <span class="material-icons text-xl" aria-hidden="true">save</span>
                             <span>Salva Modifiche</span>
                         </button>
                     </div>
@@ -88,7 +88,7 @@
                         {{-- Dividendi Meme Toggle --}}
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-text-main font-medium mb-1">Dividendi Meme</h3>
+                                <h3 id="dividends-toggle-label" class="text-text-main font-medium mb-1">Dividendi Meme</h3>
                                 <p class="text-text-muted text-sm">Alert sui pagamenti accademici</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
@@ -96,6 +96,7 @@
                                     type="checkbox" 
                                     name="notify_dividends" 
                                     value="1" 
+                                    aria-labelledby="dividends-toggle-label"
                                     {{ old('notify_dividends', true) ? 'checked' : '' }}
                                     class="sr-only peer"
                                 >
@@ -106,7 +107,7 @@
                         {{-- Comunicazioni Rettorato Toggle (Mandatory) --}}
                         <div class="flex items-center justify-between opacity-60">
                             <div>
-                                <h3 class="text-text-muted font-medium mb-1">Comunicazioni Rettorato</h3>
+                                <h3 id="rector-toggle-label" class="text-text-muted font-medium mb-1">Comunicazioni Rettorato</h3>
                                 <p class="text-text-muted text-sm">Obbligatorio per tutti gli studenti</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-not-allowed">
@@ -114,6 +115,7 @@
                                     type="checkbox" 
                                     name="notify_rector" 
                                     value="1" 
+                                    aria-labelledby="rector-toggle-label"
                                     checked
                                     disabled
                                     class="sr-only peer"
@@ -129,7 +131,7 @@
             {{-- ZONA PERICOLOSA Section --}}
             <section class="mb-8">
                 <h2 class="text-xs font-semibold text-brand-danger uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span class="material-icons text-base">warning</span>
+                    <span class="material-icons text-base" aria-hidden="true">warning</span>
                     ZONA PERICOLOSA
                 </h2>
                 
