@@ -12,11 +12,11 @@
 @endphp
 
 <div class="bg-surface-100 rounded-2xl border border-surface-200 overflow-hidden">
-    <div class="overflow-x-auto focus:ring-2 focus:ring-brand outline-none" 
+    <div class="overflow-x-auto focus:ring-2 focus:ring-brand outline-none relative" 
      tabindex="0" 
      role="region" 
      aria-labelledby="{{ $tableId }}">
-        <table class="w-full">
+        <table class="w-full relative">
             <caption id="{{ $tableId }}" class="py-4 px-6">
                 <div class="flex items-center justify-between">
                     <p class="text-left">{{ $caption }}</p>
@@ -25,9 +25,9 @@
                     @endif
                 </div>
             </caption>
-            <thead class="bg-surface-200">
+            <thead class="bg-surface-200 sticky md:static top-0 z-10">
                 <tr>
-                    @foreach($columns as $column)
+                    @foreach($columns as $index => $column)
                         @php
                             $align = $column['align'] ?? 'left';
                             $alignClass = match($align) {
@@ -35,8 +35,10 @@
                                 'center' => 'text-center',
                                 default => 'text-left',
                             };
+                            $isFirstColumn = $index === 0;
+                            $stickyClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-20 bg-surface-200' : '';
                         @endphp
-                        <th scope="col" class="px-6 py-4 {{ $alignClass }} text-xs font-semibold text-text-muted uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 {{ $alignClass }} {{ $stickyClass }} text-xs font-semibold text-text-muted uppercase tracking-wider">
                             {{ $column['label'] }}
                         </th>
                     @endforeach
@@ -58,10 +60,11 @@
                                 $wrapClass = $wrap ? 'whitespace-normal break-words' : 'whitespace-nowrap';
                                 $hasRenderCallback = isset($column['render']) && is_callable($column['render']);
                                 $isFirstColumn = $index === 0;
+                                $stickyCellClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-10 bg-surface-100' : '';
                             @endphp
                             
                             @if($isFirstColumn)
-                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}">
+                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} {{ $stickyCellClass }} text-sm text-text-muted {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
