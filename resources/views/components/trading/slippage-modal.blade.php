@@ -4,17 +4,21 @@
 <div id="slippage-modal-backdrop" class="fixed inset-0 bg-surface-50/80 z-[60] hidden"></div>
 
 {{-- Slippage Modal --}}
-<div id="slippage-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 hidden">
+<div id="slippage-modal" 
+     role="alertdialog" 
+     aria-modal="true" 
+     aria-labelledby="slippage-title"
+     class="fixed inset-0 z-[70] flex items-center justify-center p-4 hidden">
     <div class="bg-surface-100 rounded-2xl max-w-sm w-full p-6 border border-brand-accent/30">
         {{-- Warning Icon --}}
         <div class="flex justify-center mb-4">
             <div class="w-16 h-16 bg-brand-accent/20 rounded-full flex items-center justify-center">
-                <span class="material-icons text-4xl text-brand-accent">warning</span>
+                <span class="material-icons text-4xl text-brand-accent" aria-hidden="true">warning</span>
             </div>
         </div>
 
         {{-- Title --}}
-        <h3 class="text-2xl font-bold text-center mb-2 text-text-main">
+        <h3 id="slippage-title" class="text-2xl font-bold text-center mb-2 text-text-main">
             Prezzo cambiato!
         </h3>
 

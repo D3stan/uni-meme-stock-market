@@ -6,6 +6,9 @@
 
 {{-- Bottom Sheet Modal --}}
 <div id="order-modal" 
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modal-title"
      class="fixed bottom-0 left-0 right-0 bg-surface-100 rounded-t-3xl z-[51] hidden
             transform translate-y-full transition-transform duration-300 ease-out
             max-h-[85vh] overflow-y-auto">
@@ -22,7 +25,7 @@
                 Acquista {{ $meme->ticker }}
             </h2>
             <div class="flex items-center gap-2 bg-surface-200/50 rounded-lg px-3 py-2 w-fit">
-                <span class="material-icons text-sm text-text-muted">account_balance_wallet</span>
+                <span class="material-icons text-sm text-text-muted" aria-hidden="true">account_balance_wallet</span>
                 <span class="text-sm text-text-muted">Saldo:</span>
                 <span id="user-balance" class="font-mono font-semibold">
                     {{ number_format(auth()->user()->cfu_balance, 2) }} CFU
@@ -76,7 +79,7 @@
                 id="cost-accordion-toggle"
                 class="w-full flex items-center justify-between py-3 text-left">
                 <span class="text-sm font-semibold text-text-muted">Dettagli costi</span>
-                <span class="material-icons text-text-muted transition-transform" id="accordion-icon">
+                <span class="material-icons text-text-muted transition-transform" id="accordion-icon" aria-hidden="true">
                     expand_more
                 </span>
             </button>
@@ -109,7 +112,7 @@
             id="btn-confirm-order" 
             class="btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
             <span id="btn-spinner" class="hidden">
-                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="animate-spin h-5 w-5" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>

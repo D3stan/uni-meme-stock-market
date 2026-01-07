@@ -9,7 +9,7 @@
             data-action="sell"
             class="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg
                 bg-brand-danger/20 border-2 border-brand-danger text-brand-danger hover:bg-brand-danger/30 transition-all">
-            <span class="material-icons">sell</span>
+            <span class="material-icons" aria-hidden="true">sell</span>
             <span>VENDI</span>
         </button>
 
@@ -19,7 +19,7 @@
             data-action="buy"
             class="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg
                 bg-brand text-surface-50 hover:bg-brand-light transition-all">
-            <span class="material-icons">shopping_cart</span>
+            <span class="material-icons" aria-hidden="true">shopping_cart</span>
             <span>COMPRA</span>
         </button>
     </div>
