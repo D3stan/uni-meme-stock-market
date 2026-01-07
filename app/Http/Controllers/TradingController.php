@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PreviewOrderRequest;
 use App\Http\Requests\ExecuteOrderRequest;
+use App\Exceptions\Market\SlippageExceededException;
 use App\Models\Market\Meme;
 use App\Models\Financial\Portfolio;
 use App\Models\Financial\Transaction;
@@ -111,7 +112,7 @@ class TradingController extends Controller
                     'new_price' => $meme->current_price,
                 ],
             ]);
-        } catch (\App\Exceptions\Market\SlippageExceededException $e) {
+        } catch (SlippageExceededException $e) {
             // Slippage detected - client should re-preview
             return response()->json([
                 'success' => false,

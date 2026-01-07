@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -13,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo('/login');
         $middleware->redirectUsersTo('/marketplace');
-        $middleware->alias(['admin' => \App\Http\Middleware\AdminMiddleware::class,]);
+        $middleware->alias(['admin' => AdminMiddleware::class,]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

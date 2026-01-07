@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Market;
 
+use App\Models\Market\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CategoryFactory extends Factory
 {
-    protected $model = \App\Models\Market\Category::class;
+    protected $model = Category::class;
 
     public function definition(): array
     {

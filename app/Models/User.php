@@ -9,6 +9,15 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Financial\Portfolio;
+use App\Models\Financial\Transaction;
+use App\Models\Market\Meme;
+use App\Models\Gamification\Badge;
+use App\Models\Gamification\UserBadge;
+use App\Models\Utility\Notification;
+use App\Models\Market\Watchlist;
+use App\Models\Admin\MarketCommunication;
+use App\Models\Admin\AdminAction;
 
 class User extends Authenticatable
 {
@@ -62,50 +71,50 @@ class User extends Authenticatable
     // Relationships
     public function portfolios(): HasMany
     {
-        return $this->hasMany(\App\Models\Financial\Portfolio::class);
+        return $this->hasMany(Portfolio::class);
     }
 
     public function transactions(): HasMany
     {
-        return $this->hasMany(\App\Models\Financial\Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 
     public function createdMemes(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Meme::class, 'creator_id');
+        return $this->hasMany(Meme::class, 'creator_id');
     }
 
     public function approvedMemes(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Meme::class, 'approved_by');
+        return $this->hasMany(Meme::class, 'approved_by');
     }
 
     public function badges(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Gamification\Badge::class, 'user_badges')
-            ->using(\App\Models\Gamification\UserBadge::class)
+        return $this->belongsToMany(Badge::class, 'user_badges')
+            ->using(UserBadge::class)
             ->withPivot('awarded_at')
             ->withTimestamps();
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(\App\Models\Utility\Notification::class);
+        return $this->hasMany(Notification::class);
     }
 
     public function watchlist(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Watchlist::class);
+        return $this->hasMany(Watchlist::class);
     }
 
     public function marketCommunications(): HasMany
     {
-        return $this->hasMany(\App\Models\Admin\MarketCommunication::class, 'admin_id');
+        return $this->hasMany(MarketCommunication::class, 'admin_id');
     }
 
     public function adminActions(): HasMany
     {
-        return $this->hasMany(\App\Models\Admin\AdminAction::class, 'admin_id');
+        return $this->hasMany(AdminAction::class, 'admin_id');
     }
 
     // Helper Methods

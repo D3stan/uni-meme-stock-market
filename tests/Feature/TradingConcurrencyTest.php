@@ -6,6 +6,9 @@ use App\Models\Financial\Transaction;
 use App\Models\Market\Meme;
 use App\Models\User;
 use App\Services\TradingService;
+use App\Exceptions\Financial\InsufficientFundsException;
+use App\Exceptions\Financial\InsufficientSharesException;
+use App\Exceptions\Market\SlippageExceededException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -64,7 +67,7 @@ describe('concurrent buy operations', function () {
         try {
             $this->service->executeBuy($user, $meme, 10);
             $this->fail('Expected InsufficientFundsException');
-        } catch (\App\Exceptions\Financial\InsufficientFundsException $e) {
+        } catch (InsufficientFundsException $e) {
             // Expected
         }
 
@@ -166,7 +169,7 @@ describe('concurrent sell operations', function () {
         try {
             $this->service->executeSell($user, $meme, 1);
             $this->fail('Expected InsufficientSharesException');
-        } catch (\App\Exceptions\Financial\InsufficientSharesException $e) {
+        } catch (InsufficientSharesException $e) {
             // Expected
         }
 
@@ -225,7 +228,7 @@ describe('transaction rollback on failure', function () {
         // Try to buy with slippage protection that will fail
         try {
             $this->service->executeBuy($user, $meme, 10, 5.00); // Wrong expected total
-        } catch (\App\Exceptions\Market\SlippageExceededException $e) {
+        } catch (SlippageExceededException $e) {
             // Expected
         }
 
@@ -248,7 +251,7 @@ describe('transaction rollback on failure', function () {
         for ($i = 0; $i < 5; $i++) {
             try {
                 $this->service->executeBuy($user, $meme, 10);
-            } catch (\App\Exceptions\Financial\InsufficientFundsException $e) {
+            } catch (InsufficientFundsException $e) {
                 // Expected
             }
         }

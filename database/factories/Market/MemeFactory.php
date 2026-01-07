@@ -3,6 +3,7 @@
 namespace Database\Factories\Market;
 
 use App\Models\Market\Category;
+use App\Models\Market\Meme;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MemeFactory extends Factory
 {
-    protected $model = \App\Models\Market\Meme::class;
+    protected $model = Meme::class;
 
     public function definition(): array
     {
