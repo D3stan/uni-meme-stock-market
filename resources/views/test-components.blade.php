@@ -1,9 +1,9 @@
 <x-base>
-    <main class="max-w-2xl mx-4 md:mx-auto space-y-12 my-6">
+    <main class="max-w-2xl mx-4 md:mx-auto space-y-12 my-6 pb-24">
         
         {{-- Test Input Component --}}
         <section>
-            <h1 class="text-2xl font-bold text-text-main mb-6">Test Input Component</h1>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Input Components</h1>
             
             <div class="space-y-6">
                 {{-- Input base --}}
@@ -37,6 +37,30 @@
                         disabled 
                     />
                 </div>
+
+                {{-- Text Input (Alternative) --}}
+                <x-forms.textinput id="test-textinput" name="nickname" label="Nickname" prefix="@" placeholder="username" />
+            </div>
+        </section>
+
+        {{-- Test Advanced Form Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Advanced Form Components</h1>
+            <div class="space-y-6">
+                <x-forms.textarea id="test-textarea" name="bio" label="Biography" placeholder="Tell us about yourself" helpText="Max 500 chars" />
+                
+                <x-forms.select id="test-select" name="role" label="Role" :options="[['value' => 'admin', 'text' => 'Admin'], ['value' => 'user', 'text' => 'User']]" />
+                
+                <x-forms.datepicker id="test-date" name="event_date" label="Event Date" />
+                
+                <x-forms.toggle id="test-toggle" name="notifications" text="Enable Notifications" />
+                
+                <div>
+                    <label class="block mb-4 text-sm font-medium text-text-main">OTP Input</label>
+                    <x-forms.otp-input length="4" />
+                </div>
+                
+                <x-forms.filepicker name="avatar" />
             </div>
         </section>
 
@@ -75,19 +99,6 @@
                         <x-forms.button disabled>Disabilitato</x-forms.button>
                     </div>
                 </div>
-
-                {{-- Example: Trading --}}
-                <div>
-                    <h3 class="text-sm font-medium text-text-muted mb-3">Trading</h3>
-                    <div class="flex gap-3">
-                        <x-forms.button variant="success" class="flex-1">
-                            Compra $DOGE
-                        </x-forms.button>
-                        <x-forms.button variant="danger" class="flex-1">
-                            Vendi $DOGE
-                        </x-forms.button>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -115,16 +126,49 @@
                         <x-ui.badge-change :value="3.5" size="lg" />
                     </div>
                 </div>
-
-                {{-- With/without icon --}}
-                <div>
-                    <h3 class="text-sm font-medium text-text-muted mb-3">With/without Icon</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <x-ui.badge-change :value="5.43" :showIcon="true" />
-                        <x-ui.badge-change :value="-2.18" :showIcon="false" />
-                    </div>
-                </div>
             </div>
+        </section>
+
+        {{-- Test UI Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test UI Components</h1>
+            <div class="space-y-6">
+                <x-ui.empty-state icon="inbox" title="No Messages" message="Your inbox is empty." />
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <x-ui.stat-card title="Total Users" value="1,234" />
+                    <x-ui.trend-card title="Revenue" value="$50k" variation="12.5" />
+                </div>
+
+                <x-ui.options-card title="Security" description="Manage your password and 2FA" icon="security" />
+
+                @php
+                    $tableCols = [
+                        ['label' => 'Name', 'key' => 'name'],
+                        ['label' => 'Role', 'key' => 'role'],
+                        ['label' => 'Status', 'render' => fn($row) => $row['active'] ? '<span class="text-green-500 font-bold">Active</span>' : '<span class="text-red-500 font-bold">Inactive</span>']
+                    ];
+                    $tableRows = [
+                        ['name' => 'John Doe', 'role' => 'Admin', 'active' => true],
+                        ['name' => 'Jane Smith', 'role' => 'User', 'active' => false],
+                    ];
+                @endphp
+                <x-ui.table caption="Users List" :columns="$tableCols" :rows="$tableRows" />
+            </div>
+        </section>
+
+        {{-- Test Modals & Toasts --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Modals & Toasts</h1>
+            <div class="flex flex-wrap gap-4">
+                <x-forms.button onclick="showModal('confirmation-modal')">Confirm Modal</x-forms.button>
+                <x-forms.button onclick="showNotificationModal('success', 'Great!', 'Operation successful.')">Notify Modal</x-forms.button>
+                <x-forms.button onclick="window.showToast('success', 'This is a toast message!')">Show Toast</x-forms.button>
+            </div>
+            
+            <x-ui.confirmation-modal id="confirmation-modal" />
+            <x-ui.notify-modal id="notificationModal" />
+            <x-ui.toast />
         </section>
 
         {{-- Test Meme Card Components --}}
@@ -167,19 +211,15 @@
                             creatorName="Mario Rossi"
                             status="new"
                             tradeUrl="#"
-                        />
-                        
-                        <x-meme.card 
-                            name="Meme Everywhere"
-                            image="storage/test/meme.webp" 
-                            ticker="MEVR"
-                            :price="127.30"
-                            :change="-3.2"
-                            creatorName="Luigi Verdi"
-                            status="pending"
-                            tradeUrl="#"
+                            alt="Meme alt text"
                         />
                     </div>
+                </div>
+
+                {{-- Skeleton --}}
+                <div>
+                    <h3 class="text-sm font-medium text-text-muted mb-3">Skeleton Loading</h3>
+                    <x-meme.skeleton />
                 </div>
             </div>
         </section>
@@ -207,29 +247,86 @@
                         <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
                     </div>
                 </div>
-
-                {{-- Active state --}}
-                <div>
-                    <h3 class="text-sm font-medium text-text-muted mb-3">Active state</h3>
-                    <div class="flex flex-wrap gap-3">
-                        <x-ui.chip active>Tutti</x-ui.chip>
-                        <x-ui.chip variant="outline">Top Gainer</x-ui.chip>
-                    </div>
-                </div>
-
-                {{-- Marketplace Filters --}}
-                <div>
-                    <h3 class="text-sm font-medium text-text-muted mb-3">Marketplace Filters</h3>
-                    <div class="bg-surface-50 rounded-lg p-4 border border-surface-200">
-                        <div class="flex gap-2 overflow-x-auto">
-                            <x-ui.chip variant="white">Tutti</x-ui.chip>
-                            <x-ui.chip variant="outline" icon="🔥">Top Gainer</x-ui.chip>
-                            <x-ui.chip variant="outline" icon="🆕">New Listing</x-ui.chip>
-                            <x-ui.chip variant="outline" icon="⚠️">High Risk</x-ui.chip>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
+
+        {{-- Test Leaderboard Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Leaderboard Components</h1>
+            <div class="space-y-6">
+                <x-leaderboard.podium 
+                    :first="['username' => 'Winner', 'avatar' => 'https://ui-avatars.com/api/?name=W', 'net_worth' => 50000]"
+                    :second="['username' => 'RunnerUp', 'avatar' => 'https://ui-avatars.com/api/?name=R', 'net_worth' => 40000]"
+                    :third="['username' => 'Third', 'avatar' => 'https://ui-avatars.com/api/?name=T', 'net_worth' => 30000]"
+                />
+                
+                <x-leaderboard.user-position-card rank="42" username="You" netWorth="15000" percentile="5" />
+                
+                <x-leaderboard.user-rank-row rank="5" username="Another User" netWorth="25000" />
+            </div>
+        </section>
+
+        {{-- Test Portfolio Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Portfolio Components</h1>
+            <div class="space-y-6">
+                <x-portfolio.net-worth-hero netWorth="12345.67" dailyChange="123.45" dailyChangePct="1.2" />
+                <x-portfolio.allocation-chart invested="8000" liquid="4345.67" />
+            </div>
+        </section>
+
+        {{-- Test Profile Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Profile Components</h1>
+            <div class="space-y-6 bg-surface-50 p-4 rounded-xl">
+                <x-profile.stats-grid registrationDate="01/01/2024" totalTrades="50" badgeCount="3" memeCount="2" />
+                
+                <x-profile.settings-button label="Account Settings" sublabel="Manage your account" />
+                
+                <x-profile.menu-options />
+            </div>
+        </section>
+
+        {{-- Test Trading Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Trading Components</h1>
+            <div class="space-y-6">
+                <x-trading.price-header :price="100.50" :priceChange="['percentage' => 5.2]" ticker="TEST" />
+                
+                 @php
+                    $mockMemeSimple = new \stdClass();
+                    $mockMemeSimple->title = "Test Meme";
+                    $mockMemeSimple->category = (object)['name' => 'Funny'];
+                    $mockMemeSimple->image_path = 'test.jpg';
+                    $mockMemeSimple->creator_id = 1;
+                    $mockMemeSimple->text_alt = "Alt text";
+                @endphp
+                <x-trading.chart-toggle :meme="$mockMemeSimple" />
+            </div>
+        </section>
+
+        {{-- Test Navigation Components --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Navigation Components</h1>
+            <div class="relative h-16 bg-surface-100 overflow-hidden rounded-lg">
+                <x-navigation.ticker :memes="[
+                    ['ticker' => 'TEST', 'change' => 10], 
+                    ['ticker' => 'DOGE', 'change' => -5]
+                ]" />
+            </div>
+        </section>
+
+        {{-- Test Admin Modals --}}
+        <section>
+            <h1 class="text-2xl font-bold text-text-main mb-6">Test Admin Modals</h1>
+            <div class="flex gap-4">
+                <x-forms.button onclick="showModal('editEventModal')">Edit Event Modal</x-forms.button>
+                <x-forms.button onclick="showModal('moderation-modal')">Moderation Modal</x-forms.button>
+            </div>
+            
+            <x-admin.event-modal />
+            <x-admin.moderation-modal />
+        </section>
+
     </main>
 </x-base>
