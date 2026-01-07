@@ -9,6 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use \App\Models\Gamification\UserBadge;
+use \App\Models\Gamification\Badge;
+use App\Models\Utility\Notification;
+use \App\Models\Market\Watchlist;
+use \App\Models\Market\Meme;
+use \App\Models\Admin\AdminAction;
+use \App\Models\Admin\MarketCommunication;
 
 class User extends Authenticatable
 {
@@ -72,40 +79,40 @@ class User extends Authenticatable
 
     public function createdMemes(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Meme::class, 'creator_id');
+        return $this->hasMany(Meme::class, 'creator_id');
     }
 
     public function approvedMemes(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Meme::class, 'approved_by');
+        return $this->hasMany(Meme::class, 'approved_by');
     }
 
     public function badges(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Gamification\Badge::class, 'user_badges')
-            ->using(\App\Models\Gamification\UserBadge::class)
+        return $this->belongsToMany(Badge::class, 'user_badges')
+            ->using(UserBadge::class)
             ->withPivot('awarded_at')
             ->withTimestamps();
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(\App\Models\Utility\Notification::class);
+        return $this->hasMany(Notification::class);
     }
 
     public function watchlist(): HasMany
     {
-        return $this->hasMany(\App\Models\Market\Watchlist::class);
+        return $this->hasMany(Watchlist::class);
     }
 
     public function marketCommunications(): HasMany
     {
-        return $this->hasMany(\App\Models\Admin\MarketCommunication::class, 'admin_id');
+        return $this->hasMany(MarketCommunication::class, 'admin_id');
     }
 
     public function adminActions(): HasMany
     {
-        return $this->hasMany(\App\Models\Admin\AdminAction::class, 'admin_id');
+        return $this->hasMany(AdminAction::class, 'admin_id');
     }
 
     // Helper Methods
@@ -134,7 +141,6 @@ class User extends Authenticatable
         return $this->is_suspended;
     }
 
-    // Accessors
     protected function formattedBalance(): Attribute
     {
         return Attribute::make(

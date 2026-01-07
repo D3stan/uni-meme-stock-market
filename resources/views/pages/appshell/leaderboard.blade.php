@@ -9,28 +9,25 @@
         
         {{-- Time Period Filters --}}
         <nav aria-label="Filtri temporali" class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 justify-center">
-            <button 
-                onclick="filterLeaderboard('all')" 
-                data-filter="all"
-                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all bg-brand text-surface-50 shadow-lg shadow-brand/20"
+            <a 
+                href="{{ route('leaderboard', ['period' => 'all']) }}" 
+                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all {{ ($period ?? 'all') === 'all' ? 'bg-brand text-surface-50 shadow-lg shadow-brand/20' : 'bg-surface-200 text-text-main hover:bg-surface-200/80' }}"
             >
                 Tutti
-            </button>
-            <button 
-                onclick="filterLeaderboard('week')" 
-                data-filter="week"
-                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all bg-surface-200 text-text-main hover:bg-surface-200/80"
+            </a>
+            <a 
+                href="{{ route('leaderboard', ['period' => 'week']) }}" 
+                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all {{ ($period ?? 'all') === 'week' ? 'bg-brand text-surface-50 shadow-lg shadow-brand/20' : 'bg-surface-200 text-text-main hover:bg-surface-200/80' }}"
             >
                 Questa Settimana
-            </button>
-            <button 
-                onclick="filterLeaderboard('month')" 
-                data-filter="month"
-                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all bg-surface-200 text-text-main hover:bg-surface-200/80"
+            </a>
+            <a 
+                href="{{ route('leaderboard', ['period' => 'month']) }}" 
+                class="filter-chip px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all {{ ($period ?? 'all') === 'month' ? 'bg-brand text-surface-50 shadow-lg shadow-brand/20' : 'bg-surface-200 text-text-main hover:bg-surface-200/80' }}"
             >
                 Questo Mese
-            </button>
-        </div>
+            </a>
+        </nav>
         
         {{-- Podium (Top 3) --}}
         @if(isset($topThree) && count($topThree) > 0)
@@ -50,6 +47,7 @@
                         :username="$user['username']"
                         :avatar="$user['avatar']"
                         :netWorth="$user['net_worth']"
+                        :recentBadge="$currentUserPosition['recent_badge'] ?? null"
                         :isCurrentUser="$user['is_current_user'] ?? false"
                     />
                 @endif
@@ -62,41 +60,5 @@
                 </x-ui.empty-state>
             @endforelse
         </div>
-        
-        {{-- Current User Position (if not in top visible) --}}
-        @if(isset($currentUserPosition) && $currentUserPosition && ($currentUserPosition['rank'] ?? 0) > 10)
-            <div class="pt-6">
-                <x-leaderboard.user-position-card 
-                    :rank="$currentUserPosition['rank']"
-                    :username="$currentUserPosition['username']"
-                    :avatar="$currentUserPosition['avatar']"
-                    :netWorth="$currentUserPosition['net_worth']"
-                    :percentile="$currentUserPosition['percentile'] ?? null"
-                    :hasBadge="$currentUserPosition['has_badge'] ?? false"
-                />
-            </div>
-        @endif
-        
     </div>
-    
-    @push('page-scripts')
-        <script>
-            function filterLeaderboard(period) {
-                // Update active state on chips
-                document.querySelectorAll('.filter-chip').forEach(chip => {
-                    const filter = chip.getAttribute('data-filter');
-                    if (filter === period) {
-                        chip.classList.remove('bg-surface-200', 'text-text-main', 'hover:bg-surface-200/80');
-                        chip.classList.add('bg-brand', 'text-surface-50', 'shadow-lg', 'shadow-brand/20');
-                    } else {
-                        chip.classList.remove('bg-brand', 'text-surface-50', 'shadow-lg', 'shadow-brand/20');
-                        chip.classList.add('bg-surface-200', 'text-text-main', 'hover:bg-surface-200/80');
-                    }
-                });
-                
-                // TODO: Fetch filtered data from server
-                console.log('Filtering by:', period);
-            }
-        </script>
-    @endpush
 </x-app>

@@ -8,6 +8,7 @@ use App\Models\Financial\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class MarketplaceController extends Controller
 {
@@ -156,36 +157,68 @@ class MarketplaceController extends Controller
         // Get user's portfolio positions with meme details
         $positions = Portfolio::where('user_id', $user->id)
             ->with(['meme.category'])
-            ->get()
-            ->map(function ($position) {
-                $currentValue = $position->quantity * $position->meme->current_price;
-                $costBasis = $position->quantity * $position->avg_buy_price;
-                $pnlAmount = $currentValue - $costBasis;
-                $pnlPct = $costBasis > 0 ? ($pnlAmount / $costBasis) * 100 : 0;
-                
-                return [
-                    'meme' => $position->meme,
-                    'quantity' => $position->quantity,
-                    'avg_buy_price' => $position->avg_buy_price,
-                    'current_value' => $currentValue,
-                    'pnl_amount' => $pnlAmount,
-                    'pnl_pct' => $pnlPct,
-                ];
-            });
+            ->get();
+            
+        // Fetch 24h prices for all memes in portfolio to calculate daily change
+        $memeIds = $positions->pluck('meme_id')->toArray();
+        $prices24h = collect();
         
-        // Calculate total invested value
-        $totalInvested = $positions->sum('current_value');
+        if (!empty($memeIds)) {
+            $prices24h = \App\Models\Market\Meme::whereIn('memes.id', $memeIds)
+                ->leftJoin('price_histories as ph_24h', function ($join) {
+                    $join->on('ph_24h.id', '=', \Illuminate\Support\Facades\DB::raw("
+                        (SELECT id FROM price_histories 
+                         WHERE meme_id = memes.id 
+                         AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                         ORDER BY recorded_at ASC, id ASC
+                         LIMIT 1)
+                    "));
+                })
+                ->select(
+                    'memes.id',
+                    \Illuminate\Support\Facades\DB::raw('COALESCE(ph_24h.price, memes.base_price) as price_24h_ago')
+                )
+                ->pluck('price_24h_ago', 'id');
+        }
+        
+        $totalInvested = 0;
+        $portfolioStartValue = 0;
+
+        $positions = $positions->map(function ($position) use ($prices24h, &$totalInvested, &$portfolioStartValue) {
+            $meme = $position->meme;
+            $currentPrice = $meme->current_price;
+            $price24hAgo = $prices24h->get($meme->id) ?? $meme->base_price;
+            
+            $currentValue = $position->quantity * $currentPrice;
+            $startValue = $position->quantity * $price24hAgo;
+            
+            $totalInvested += $currentValue;
+            $portfolioStartValue += $startValue;
+
+            $costBasis = $position->quantity * $position->avg_buy_price;
+            $pnlAmount = $currentValue - $costBasis;
+            $pnlPct = $costBasis > 0 ? ($pnlAmount / $costBasis) * 100 : 0;
+            
+            return [
+                'meme' => $position->meme,
+                'quantity' => $position->quantity,
+                'avg_buy_price' => $position->avg_buy_price,
+                'current_value' => $currentValue,
+                'pnl_amount' => $pnlAmount,
+                'pnl_pct' => $pnlPct,
+            ];
+        });
         
         // Get liquid balance
         $liquidBalance = $user->cfu_balance;
         
         // Calculate net worth
         $netWorth = $liquidBalance + $totalInvested;
+        $startNetWorth = $liquidBalance + $portfolioStartValue;
         
-        // Calculate daily change (mock for now - would need price_histories table)
-        // TODO: Implement real daily change calculation using price_histories
-        $dailyChange = $netWorth * 0.125; // Mock: +12.5%
-        $dailyChangePct = 12.5; // Mock
+        // Calculate daily change
+        $dailyChange = $totalInvested - $portfolioStartValue;
+        $dailyChangePct = $startNetWorth > 0 ? ($dailyChange / $startNetWorth) * 100 : 0;
         
         // Format balance for top bar
         $balance = $user->cfu_balance;
@@ -208,6 +241,15 @@ class MarketplaceController extends Controller
     public function leaderboard(Request $request)
     {
         $currentUser = Auth::user();
+        
+        // Get filter from request (default: 'all')
+        $period = $request->get('period', 'all');
+        
+        // Validate period
+        $validPeriods = ['all', 'week', 'month'];
+        if (!in_array($period, $validPeriods)) {
+            $period = 'all';
+        }
         
         // Get all traders (non-admin users) with their portfolio values
         $allUsers = User::where('role', '!=', 'admin')
@@ -253,7 +295,19 @@ class MarketplaceController extends Controller
                     $percentile = ceil(($ranking['rank'] / $totalUsers) * 100);
                     $currentUserPosition['percentile'] = $percentile;
                 }
-                $currentUserPosition['has_badge'] = false; // TODO: Check if user has any badges
+                
+                // Get most recent badge
+                Log::info($currentUser->badges()->orderBy('user_badges.awarded_at', 'desc')->first());
+                $recentBadge = $currentUser->badges()
+                    ->orderBy('user_badges.awarded_at', 'desc')
+                    ->first();
+                    
+                $currentUserPosition['recent_badge'] = $recentBadge ? [
+                    'name' => $recentBadge->name,
+                    'icon_path' => $recentBadge->icon_path,
+                    'description' => $recentBadge->description,
+                ] : null;
+                
                 break;
             }
         }
@@ -266,6 +320,7 @@ class MarketplaceController extends Controller
             'topThree' => $topThree,
             'rankings' => $rankings,
             'currentUserPosition' => $currentUserPosition,
+            'period' => $period,
         ]);
     }
 }
