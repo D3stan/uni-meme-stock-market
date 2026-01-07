@@ -29,10 +29,10 @@
     <section class="border-b border-surface-200 bg-gradient-to-r from-brand/10 to-transparent shrink-0">
         <div class="px-4 py-3">
             <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-brand text-lg">campaign</span>
+                <span class="material-icons text-brand text-lg" aria-hidden="true">campaign</span>
                 <h3 class="text-sm font-semibold text-text-main">Eventi Attivi</h3>
             </div>
-            <div class="space-y-2 max-h-32 overflow-y-auto hide-scrollbar">
+            <div class="space-y-2">
                 @foreach($communications as $comm)
                 <div class="flex items-start gap-2 p-2 bg-surface-100/80 rounded-lg border border-brand/20 relative group">
                     <span class="material-icons text-brand-warning text-sm mt-0.5" aria-hidden="true">schedule</span>
@@ -69,7 +69,7 @@
     </div>
 
     {{-- Content (loaded via fetch) --}}
-    <div id="notification-content" class="overflow-y-auto flex-1 p-4">
+    <div id="notification-content" class="overflow-y-auto flex-1 p-4 custom-scrollbar">
         {{-- Loading state --}}
         <div id="notification-loading" class="flex flex-col items-center justify-center h-48">
             <div class="w-8 h-8 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
