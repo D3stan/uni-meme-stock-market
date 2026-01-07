@@ -1,7 +1,6 @@
 <x-app :active="'market'" :balance="$balance">
     <x-ui.modal id="onboarding-bonus" :show="session('show_onboarding_modal', false)">
         <div class="p-8 text-center">
-            <div class="mb-4">🎉</div>
             <h2 class="text-3xl font-bold mb-2 text-text-main">Benvenuto su AlmaStreet!</h2>
             <p class="text-5xl font-black text-brand mb-2">+100 CFU</p>
             <p class="text-text-muted mb-6">Usa questi CFU per iniziare a fare trading!</p>

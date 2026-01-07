@@ -310,8 +310,8 @@
             <h1 class="text-2xl font-bold text-text-main mb-6">Test Navigation Components</h1>
             <div class="relative h-16 bg-surface-100 overflow-hidden rounded-lg">
                 <x-navigation.ticker :memes="[
-                    ['ticker' => 'TEST', 'change' => 10], 
-                    ['ticker' => 'DOGE', 'change' => -5]
+                    ['id' => 1, 'ticker' => 'TEST', 'change' => 10], 
+                    ['id' => 2, 'ticker' => 'DOGE', 'change' => -5]
                 ]" />
             </div>
         </section>
