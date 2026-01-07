@@ -32,15 +32,15 @@
     
     // Landing mode uses transparent background but keeps borders
     $containerClasses = $isLandingMode 
-        ? 'flex items-center gap-3 p-3 cursor-pointer border border-surface-200 rounded-lg'
-        : 'flex items-center gap-3 bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow cursor-pointer border-2 border-surface-200';
+        ? 'flex items-center gap-3 p-3 w-full text-left border border-surface-200 rounded-lg'
+        : 'flex items-center gap-3 w-full text-left bg-surface-100 rounded-2xl p-3 shadow-md hover:shadow-lg transition-shadow border-2 border-surface-200';
 @endphp
 
-<div {{ $attributes->merge(['class' => $containerClasses]) }}>
+<button type="button" {{ $attributes->merge(['class' => $containerClasses]) }}>
     @if($isLandingMode && $rank)
         {{-- Ranking Number --}}
         <div class="flex-shrink-0 w-8 text-center">
-            <span class="text-2xl font-bold text-text-muted">{{ $rank }}</span>
+            <span class="text-2xl font-bold text-text-muted" aria-label="Posizione {{ $rank }}">{{ $rank }}</span>
         </div>
     @endif
     
@@ -60,12 +60,12 @@
     @if($isPortfolioMode)
         {{-- Portfolio Mode: Quantity & Value --}}
         <div class="flex-shrink-0 text-center">
-            <p class="text-sm font-bold text-text-main">{{ number_format($quantity) }} pz</p>
-            <p class="text-xs text-text-muted font-mono">≈{{ number_format($currentValue, 0) }} CFU</p>
+            <p class="text-sm font-bold text-text-main" aria-label="{{ number_format($quantity) }} pezzi">{{ number_format($quantity) }} pz</p>
+            <p class="text-xs text-text-muted font-mono" aria-label="Valore stimato {{ number_format($currentValue, 0) }} CFU">≈{{ number_format($currentValue, 0) }} CFU</p>
         </div>
     @elseif(!$isLandingMode)
         {{-- Market Mode: Sparkline Chart --}}
-        <div class="flex-shrink-0 w-20 h-6">
+        <div class="flex-shrink-0 w-20 h-6" aria-hidden="true">
             <svg viewBox="0 0 80 24" class="w-full h-full" preserveAspectRatio="none">
                 <polyline
                     points="0,18 20,12 40,15 60,8 80,{{ $isPositive ? '6' : '18' }}"
@@ -93,4 +93,4 @@
             <x-ui.badge-change :value="$change" size="md" />
         </div>
     @endif
-</div>
+</button>

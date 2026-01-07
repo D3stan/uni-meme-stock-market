@@ -8,7 +8,7 @@
         </header>
         
         {{-- Time Period Filters --}}
-        <nav aria-label="Filtri temporali" class="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+        <nav aria-label="Filtri temporali" class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 justify-center">
             <button 
                 onclick="filterLeaderboard('all')" 
                 data-filter="all"
@@ -42,7 +42,7 @@
         @endif
         
         {{-- Remaining Rankings (4th onwards) --}}
-        <div class="space-y-3 pt-4">
+        <div class="space-y-4 pt-4">
             @forelse($rankings ?? [] as $user)
                 @if($user['rank'] > 3)
                     <x-leaderboard.user-rank-row 

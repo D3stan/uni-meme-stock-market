@@ -1,4 +1,4 @@
-<div class="card-base animate-pulse">
+<div class="card-base animate-pulse" aria-hidden="true">
     {{-- Header Card --}}
     <div class="flex items-center justify-between p-4">
         <div class="flex items-center gap-3">
