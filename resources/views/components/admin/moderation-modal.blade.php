@@ -38,7 +38,7 @@
             <form id="rejectForm" method="POST" class="flex-1">
                 @csrf
                 <x-forms.button type="submit" variant="danger" size="lg" class="w-full">
-                    <span class="material-icons text-lg">close</span>
+                    <span class="material-icons text-lg" aria-hidden="true">close</span>
                     Rifiuta
                 </x-forms.button>
             </form>
@@ -46,7 +46,7 @@
             <form id="approveForm" method="POST" class="flex-1">
                 @csrf
                 <x-forms.button type="submit" variant="primary" size="lg" class="w-full">
-                    <span class="material-icons text-lg">check</span>
+                    <span class="material-icons text-lg" aria-hidden="true">check</span>
                     Approva
                 </x-forms.button>
             </form>

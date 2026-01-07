@@ -46,7 +46,7 @@
             </thead>
             <tbody class="divide-y divide-surface-200">
                 @forelse($rows as $row)
-                    <tr class="hover:bg-surface-200 transition-colors">
+                    <tr class="group hover:bg-surface-200 transition-colors">
                         @foreach($columns as $index => $column)
                             @php
                                 $key = $column['key'] ?? '';
@@ -60,7 +60,7 @@
                                 $wrapClass = $wrap ? 'whitespace-normal break-words' : 'whitespace-nowrap';
                                 $hasRenderCallback = isset($column['render']) && is_callable($column['render']);
                                 $isFirstColumn = $index === 0;
-                                $stickyCellClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-10 bg-surface-100' : '';
+                                $stickyCellClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-10 bg-surface-100 group-hover:bg-surface-200 transition-colors' : '';
                             @endphp
                             
                             @if($isFirstColumn)
