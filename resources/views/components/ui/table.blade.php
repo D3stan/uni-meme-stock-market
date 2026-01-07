@@ -7,13 +7,17 @@
     'actions' => null, // Slot per azioni nella caption
 ])
 
+@php
+    $tableId = 'table-' . uniqid();
+@endphp
+
 <div class="bg-surface-100 rounded-2xl border border-surface-200 overflow-hidden">
     <div class="overflow-x-auto focus:ring-2 focus:ring-brand outline-none" 
      tabindex="0" 
      role="region" 
-     aria-labelledby="table-caption">
+     aria-labelledby="{{ $tableId }}">
         <table class="w-full">
-            <caption class="py-4 px-6">
+            <caption id="{{ $tableId }}" class="py-4 px-6">
                 <div class="flex items-center justify-between">
                     <p class="text-left">{{ $caption }}</p>
                     @if($actions)
