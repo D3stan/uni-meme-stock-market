@@ -37,13 +37,14 @@
                 'label' => 'Messaggio',
                 'key' => 'message',
                 'wrap' => true,
+                'class' => 'min-w-[60vw] md:min-w-0',
                 'render' => fn($row) => '<span class="text-text-muted">' . htmlspecialchars(str($row->message)->limit(50)) . '</span>'
             ],
             [
                 'label' => 'Scadenza',
                 'key' => 'expires_at',
                 'render' => fn($row) => $row->expires_at 
-                    ? '<span class="text-text-muted">' . $row->expires_at->format('d/m/Y H:i') . '</span>'
+                    ? '<span class="text-text-muted">' . $row->expires_at->format('d/m/Y') . '<br>' . $row->expires_at->format('H:i') . '</span>'
                     : '<span class="badge-info">PERMANENTE</span>'
             ],
             [

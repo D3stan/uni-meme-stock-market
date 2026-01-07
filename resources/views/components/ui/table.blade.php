@@ -37,8 +37,9 @@
                             };
                             $isFirstColumn = $index === 0;
                             $stickyClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-20 bg-surface-200' : '';
+                            $customClass = $column['class'] ?? '';
                         @endphp
-                        <th scope="col" class="px-6 py-4 {{ $alignClass }} {{ $stickyClass }} text-xs font-semibold text-text-muted uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-4 {{ $alignClass }} {{ $stickyClass }} {{ $customClass }} text-xs font-semibold text-text-muted uppercase tracking-wider">
                             {{ $column['label'] }}
                         </th>
                     @endforeach
@@ -61,10 +62,11 @@
                                 $hasRenderCallback = isset($column['render']) && is_callable($column['render']);
                                 $isFirstColumn = $index === 0;
                                 $stickyCellClass = $isFirstColumn ? 'sticky md:static left-0 md:left-auto z-10 bg-surface-100 group-hover:bg-surface-200 transition-colors' : '';
+                                $customClass = $column['class'] ?? '';
                             @endphp
                             
                             @if($isFirstColumn)
-                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} {{ $stickyCellClass }} text-sm text-text-muted {{ $alignClass }}">
+                                <th scope="row" class="px-6 py-4 {{ $wrapClass }} {{ $stickyCellClass }} {{ $customClass }} text-sm text-text-muted {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
@@ -74,7 +76,7 @@
                                     @endif
                                 </th>
                             @else
-                                <td class="px-6 py-4 {{ $wrapClass }} text-sm text-text-muted {{ $alignClass }}">
+                                <td class="px-6 py-4 {{ $wrapClass }} {{ $customClass }} text-sm text-text-muted {{ $alignClass }}">
                                     @if($hasRenderCallback)
                                         {!! $column['render']($row) !!}
                                     @elseif($key)
