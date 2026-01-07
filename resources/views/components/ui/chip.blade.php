@@ -11,7 +11,7 @@
     $variantClasses = match($variant) {
         'white' => 'bg-text-main text-surface-50 border border-surface-200 hover:bg-surface-200',
         'success' => 'bg-brand text-surface-50 border border-brand hover:bg-brand-light',
-        default => 'bg-transparent text-text-muted border border-surface-200 hover:bg-surface-200',
+        default => 'bg-surface-100 text-text-muted border border-surface-200 hover:bg-surface-200',
     };
     
     if ($active) {
