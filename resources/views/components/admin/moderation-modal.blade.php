@@ -28,7 +28,7 @@
 
         {{-- Text Alternative --}}
         <div class="mb-6 p-4 bg-surface-100 rounded-lg border border-surface-200">
-            <x-forms.textarea for="meme-alt-text" title="Alternativa Testuale" id="meme-alt-text" name="text_alt" 
+            <x-forms.textarea for="meme-alt-text" title="Alternativa Testuale" id="meme-alt-text" name="text_alt" label="Alternativa testuale"
                 placeholder="Descrivi il contenuto del meme per gli screen reader..." 
             />
         </div>
