@@ -103,6 +103,8 @@ describe('executeBuy', function () {
     })->throws(MarketSuspendedException::class);
 
     it('throws exception when meme is within trading delay', function () {
+        GlobalSetting::where('key', 'trading_delay_hours')->update(['value' => '8']);
+
         $user = User::factory()->create(['cfu_balance' => 100.00]);
         $meme = Meme::factory()->create([
             'status' => 'approved',

@@ -100,13 +100,14 @@ class MarketService
             ->whereNotNull('approved_at');
 
         $query->leftJoin('price_histories as ph_24h', function ($join) {
-            $join->on('ph_24h.id', '=', DB::raw('
+            $twentyFourHoursAgo = now()->subHours(24);
+            $join->on('ph_24h.id', '=', DB::raw("
                 (SELECT id FROM price_histories 
                  WHERE meme_id = memes.id 
-                 AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                 AND recorded_at >= '{$twentyFourHoursAgo}'
                  ORDER BY recorded_at ASC, id ASC
                  LIMIT 1)
-            '));
+            "));
         });
 
         $query->select(

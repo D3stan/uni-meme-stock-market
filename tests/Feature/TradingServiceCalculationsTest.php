@@ -189,6 +189,8 @@ describe('previewOrder', function () {
     })->throws(MarketSuspendedException::class);
 
     it('throws exception for meme within trading delay window', function () {
+        GlobalSetting::where('key', 'trading_delay_hours')->update(['value' => '8']);
+
         $meme = Meme::factory()->create([
             'status' => 'approved',
             'approved_at' => now()->subHours(5), // Less than 8 hours
