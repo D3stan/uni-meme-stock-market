@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +15,11 @@ use Illuminate\Validation\Rules\Password;
 class ProfileController extends Controller
 {
     /**
-     * Serve avatar image from storage
+     * Serves the user's avatar image from secure storage.
+     *
+     * @param int|string $userId
+     * @param string $filename
+     * @return Response
      */
     public function serveAvatar($userId, $filename)
     {
@@ -28,7 +36,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the settings page
+     * Displays the user profile settings page.
+     *
+     * @return View
      */
     public function showSettings()
     {
@@ -39,11 +49,16 @@ class ProfileController extends Controller
         ]);
     }
 
+    /**
+     * Updates user profile information, including name and avatar image.
+     *
+     * @param Request $request
+     * @return RedirectResponse|JsonResponse
+     */
     public function updateSettings(Request $request)
     {
         $user = Auth::user();
 
-        // Define max file size in KB for validation
         $maxFileSizeKB = 2048; // 2MB
         $maxFileSizeBytes = $maxFileSizeKB * 1024;
         $maxFileSizeMB = $maxFileSizeKB / 1024;
@@ -59,14 +74,11 @@ class ProfileController extends Controller
                 'avatar.mimes' => 'Formato immagine non supportato. Usa: jpeg, png, jpg, gif.',
             ]);
 
-            // Update name
             $user->name = $validated['name'];
 
-            // Handle avatar upload
             if ($request->hasFile('avatar')) {
                 $file = $request->file('avatar');
                 
-                // Additional file size check in bytes
                 if ($file->getSize() > $maxFileSizeBytes) {
                     if ($request->expectsJson() || $request->wantsJson()) {
                         return response()->json([
@@ -78,19 +90,15 @@ class ProfileController extends Controller
                         ->with('error', "L'immagine è troppo grande. Dimensione massima: {$maxFileSizeMB}MB.");
                 }
                 
-                // Delete old avatar if exists
                 $userDir = 'data/' . $user->id;
                 if ($user->avatar && Storage::exists($userDir . '/' . $user->avatar)) {
                     Storage::delete($userDir . '/' . $user->avatar);
                 }
 
-                // Ensure user directory exists
                 Storage::makeDirectory($userDir);
                 
-                // Get the file extension
                 $extension = $file->getClientOriginalExtension();
                 
-                // Store with fixed name: avatar.{extension}
                 $filename = 'avatar.' . $extension;
                 $file->storeAs($userDir, $filename);
                 $user->avatar = $filename;
@@ -136,7 +144,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update password
+     * Updates the user's password.
+     *
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function updatePassword(Request $request)
     {
@@ -153,7 +164,6 @@ class ProfileController extends Controller
             $user->password = Hash::make($validated['new_password']);
             $user->save();
 
-            // Clear the password change flag if it exists
             session()->forget('needs_password_change');
 
             return redirect()->route('profile.settings')
@@ -166,7 +176,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Deactivate account
+     * Deactivates the user's account by suspending it.
+     *
+     * @return RedirectResponse
      */
     public function deactivate()
     {
@@ -188,21 +200,20 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete account permanently
+     * Permanently deletes the user's account and associated data.
+     *
+     * @return RedirectResponse
      */
     public function delete()
     {
         $user = Auth::user();
 
         try {
-            // Delete avatar if exists
             $userDir = 'data/' . $user->id;
             if ($user->avatar && Storage::exists($userDir . '/' . $user->avatar)) {
                 Storage::delete($userDir . '/' . $user->avatar);
             }
 
-            // Soft delete or hard delete based on your requirements
-            // For now, we'll use hard delete
             $user->delete();
 
             Auth::logout();

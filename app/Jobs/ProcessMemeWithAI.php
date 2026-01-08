@@ -18,28 +18,37 @@ class ProcessMemeWithAI implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The number of times the job may be attempted.
+     * Maximum number of retry attempts if the job fails.
      */
     public int $tries = 3;
 
     /**
-     * The number of seconds to wait before retrying.
+     * Number of seconds to wait between retry attempts.
      */
     public int $backoff = 10;
 
     /**
-     * Create a new job instance.
+     * Initialize the job with the meme to be analyzed.
+     *
+     * @param Meme $meme
      */
     public function __construct(
         public Meme $meme
     ) {}
 
     /**
-     * Execute the job.
+     * Process meme through AI content analysis and auto-moderation.
+     * 
+     * Analyzes meme image via Gemini API to generate alt text and determine content appropriateness.
+     * If AI deems content appropriate, auto-approves and dispatches approval notification.
+     * Otherwise, meme remains pending for manual review. Gracefully handles API unavailability.
+     *
+     * @param GeminiService $geminiService
+     * @param NotificationDispatcher $notificationDispatcher
+     * @return void
      */
     public function handle(GeminiService $geminiService, NotificationDispatcher $notificationDispatcher): void
     {
-        // Skip if Gemini is not configured
         if (!$geminiService->isConfigured()) {
             Log::info('Skipping AI processing - Gemini not configured', [
                 'meme_id' => $this->meme->id
@@ -47,7 +56,6 @@ class ProcessMemeWithAI implements ShouldQueue
             return;
         }
 
-        // Build the image path
         $imagePath = "data/{$this->meme->creator_id}/{$this->meme->image_path}";
 
         Log::info('Starting AI meme analysis', [
@@ -55,10 +63,8 @@ class ProcessMemeWithAI implements ShouldQueue
             'image_path' => $imagePath
         ]);
 
-        // Call Gemini API
         $result = $geminiService->analyzeMeme($imagePath);
 
-        // If analysis failed, meme stays in pending
         if (!$result) {
             Log::warning('AI analysis failed, meme stays pending', [
                 'meme_id' => $this->meme->id
@@ -66,12 +72,10 @@ class ProcessMemeWithAI implements ShouldQueue
             return;
         }
 
-        // Update meme with results
         $updateData = [
             'text_alt' => $result['alt_text'] ?? null,
         ];
 
-        // Approve if successful
         if (!empty($result['is_appropriate']) && $result['is_appropriate'] === true) {
             $updateData['status'] = 'approved';
             $updateData['approved_at'] = now();
@@ -90,7 +94,10 @@ class ProcessMemeWithAI implements ShouldQueue
     }
 
     /**
-     * Handle a job failure.
+     * Log detailed failure information when job exhausts all retry attempts.
+     *
+     * @param Throwable $exception
+     * @return void
      */
     public function failed(Throwable $exception): void
     {

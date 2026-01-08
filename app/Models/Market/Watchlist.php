@@ -16,12 +16,21 @@ class Watchlist extends Model
         'meme_id',
     ];
 
-    // Relationships
+    /**
+     * Retrieve the user who added this meme to their watchlist.
+     *
+     * @return BelongsTo<User, Watchlist>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Retrieve the meme being monitored in this watchlist entry.
+     *
+     * @return BelongsTo<Meme, Watchlist>
+     */
     public function meme(): BelongsTo
     {
         return $this->belongsTo(Meme::class);

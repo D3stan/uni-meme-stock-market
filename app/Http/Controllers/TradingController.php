@@ -20,22 +20,21 @@ class TradingController extends Controller
     }
 
     /**
-     * Display the Trade Station page for a specific meme.
+     * Displays the trading station for a specific meme, including current holdings and risk analysis.
+     *
+     * @param Meme $meme
+     * @return View
      */
     public function show(Meme $meme): View
     {
-        // Load relationships for the view
         $meme->load(['creator', 'category']);
 
-        // Get user's current holdings for this meme
         $userHoldings = Portfolio::where('user_id', Auth::id())
             ->where('meme_id', $meme->id)
             ->first();
 
-        // Calculate 24h price change
         $priceChange24h = $this->calculate24hChange($meme);
 
-        // Risk
         $risk = $this->marketService->isHighRiskMeme($meme);
 
         return view('pages.appshell.trade-station', [
@@ -47,7 +46,10 @@ class TradingController extends Controller
     }
 
     /**
-     * Preview an order (calculate costs without executing).
+     * Prepares an order preview by calculating potential costs and effects without executing the transaction.
+     *
+     * @param PreviewOrderRequest $request
+     * @return JsonResponse
      */
     public function preview(PreviewOrderRequest $request): JsonResponse
     {
@@ -73,7 +75,10 @@ class TradingController extends Controller
     }
 
     /**
-     * Execute a trade (buy or sell).
+     * Executes a buy or sell order for a meme, handling potential slippage.
+     *
+     * @param ExecuteOrderRequest $request
+     * @return JsonResponse
      */
     public function execute(ExecuteOrderRequest $request): JsonResponse
     {
@@ -97,7 +102,6 @@ class TradingController extends Controller
                 );
             }
 
-            // Reload user to get updated balance
             $user->refresh();
 
             return response()->json([
@@ -112,7 +116,6 @@ class TradingController extends Controller
                 ],
             ]);
         } catch (\App\Exceptions\Market\SlippageExceededException $e) {
-            // Slippage detected - client should re-preview
             return response()->json([
                 'success' => false,
                 'slippage_detected' => true,
@@ -131,12 +134,14 @@ class TradingController extends Controller
     }
 
     /**
-     * Get price history for chart rendering.
-     * Returns last 50 data points at specified intervals.
+     * Retrieves historical price data for a meme, aggregated by the specified time period.
+     *
+     * @param Meme $meme
+     * @param string $period
+     * @return JsonResponse
      */
     public function getPriceHistory(Meme $meme, string $period = '1d'): JsonResponse
     {
-        // Define interval in hours and max data points
         $config = match($period) {
             '1h' => ['interval' => 1, 'limit' => 50],   // Last 50 hours
             '4h' => ['interval' => 4, 'limit' => 50],   // Last ~8 days
@@ -148,13 +153,11 @@ class TradingController extends Controller
         $limit = $config['limit'];
         $totalHours = $interval * $limit;
 
-        // Get all price histories within the timeframe
         $allRecords = $meme->priceHistories()
             ->where('recorded_at', '>=', now()->subHours($totalHours))
             ->orderBy('recorded_at', 'asc')
             ->get(['price', 'recorded_at']);
 
-        // Group by interval and take the last (close) price for each bucket
         $groupedData = [];
         $currentBucket = null;
 
@@ -165,14 +168,12 @@ class TradingController extends Controller
                 $currentBucket = $bucketKey;
             }
             
-            // Overwrite with latest price in this bucket (close price)
             $groupedData[$bucketKey] = [
                 'time' => $record->recorded_at->timestamp,
                 'value' => (float) $record->price,
             ];
         }
 
-        // Get last N points and ensure chronological order
         $priceHistory = array_values(array_slice($groupedData, -$limit));
 
         return response()->json([
@@ -182,7 +183,10 @@ class TradingController extends Controller
     }
 
     /**
-     * Get user's current holdings for a specific meme.
+     * Retrieves the authenticated user's current holdings for the specified meme.
+     *
+     * @param Meme $meme
+     * @return JsonResponse
      */
     public function getCurrentHoldings(Meme $meme): JsonResponse
     {
@@ -203,7 +207,10 @@ class TradingController extends Controller
     }
 
     /**
-     * Get current market data for polling updates.
+     * Retrieves current market data for a meme to support live updates.
+     *
+     * @param Meme $meme
+     * @return JsonResponse
      */
     public function getMarketData(Meme $meme): JsonResponse
     {
@@ -220,7 +227,10 @@ class TradingController extends Controller
     }
 
     /**
-     * Calculate 24h price change percentage.
+     * Calculates the absolute and percentage price change of a meme over the last 24 hours.
+     *
+     * @param Meme $meme
+     * @return array
      */
     private function calculate24hChange(Meme $meme): array
     {

@@ -3,22 +3,19 @@
 namespace App\Services;
 
 use App\Jobs\ProcessMemeWithAI;
+use App\Models\Financial\Transaction;
 use App\Models\Market\Category;
 use App\Models\Market\Meme;
-use App\Models\Financial\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CreateService
 {
     /**
      * Get all categories.
-     *
-     * @return Collection
      */
     public function getCategories(): Collection
     {
@@ -27,9 +24,6 @@ class CreateService
 
     /**
      * Get user's current balance.
-     *
-     * @param User $user
-     * @return float
      */
     public function getUserBalance(User $user): float
     {
@@ -38,9 +32,6 @@ class CreateService
 
     /**
      * Check if ticker already exists.
-     *
-     * @param string $ticker
-     * @return bool
      */
     public function tickerExists(string $ticker): bool
     {
@@ -48,26 +39,19 @@ class CreateService
     }
 
     /**
-     * Create a new meme and store the image.
+     * Create a new meme, store the image, and process the listing fee transaction.
      *
-     * @param array $data
-     * @param UploadedFile $image
-     * @param User $user
-     * @return Meme
      * @throws \Exception
      */
     public function createMeme(array $data, UploadedFile $image, User $user): Meme
     {
         $meme = DB::transaction(function () use ($data, $image, $user) {
-            // Unique filename
             $extension = $image->getClientOriginalExtension();
-            $filename = Str::uuid() . '.' . $extension;
-            
-            // Store image in storage/app/public/data/{user_id}/
+            $filename = Str::uuid().'.'.$extension;
+
             $path = "data/{$user->id}";
             $image->storeAs($path, $filename, 'public');
 
-            // Create meme record
             $meme = Meme::create([
                 'creator_id' => $user->id,
                 'category_id' => $data['category_id'],
@@ -79,10 +63,9 @@ class CreateService
                 'slope' => 0.01,
                 'current_price' => 10.00,
                 'circulating_supply' => 0,
-                'status' => 'pending', 
+                'status' => 'pending',
             ]);
 
-            // Create transaction for fee
             $user->decrement('cfu_balance', 20.00);
             Transaction::create([
                 'user_id' => $user->id,

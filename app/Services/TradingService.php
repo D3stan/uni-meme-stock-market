@@ -18,33 +18,29 @@ class TradingService
 {
     /**
      * Trading delay in hours after meme approval before trading can begin.
-     * TODO: Make this configurable via Admin Panel (GlobalSettings).
      */
     private const TRADING_DELAY_HOURS = 8;
 
     /**
      * Maximum allowed slippage tolerance in CFU for price change protection.
      * If the price changes by more than this amount, the user must re-confirm.
-     * TODO: Make this configurable via Admin Panel (GlobalSettings).
      */
     private const SLIPPAGE_TOLERANCE_CFU = 0.01;
 
     /**
      * Check if trading is allowed for a meme (status and delay checks).
-     * 
+     *
      * @throws MarketSuspendedException
      */
     private function validateTradingAllowed(Meme $meme): void
     {
-        // Check if market is suspended
         if ($meme->status === 'suspended') {
             throw new MarketSuspendedException($meme->ticker);
         }
 
-        // Check if trading is enabled (delay from approval)
         $tradingDelayHours = (int) GlobalSetting::get('trading_delay_hours', self::TRADING_DELAY_HOURS);
         $tradingEnabledAt = $meme->approved_at?->copy()->addHours($tradingDelayHours);
-        
+
         if ($tradingEnabledAt && now()->isBefore($tradingEnabledAt)) {
             throw new MarketSuspendedException(
                 $meme->ticker,
@@ -54,10 +50,8 @@ class TradingService
     }
 
     /**
-     * Calculate the total cost for buying k shares using the integral formula.
-     * Formula: CostTotal = P_base * k + (M/2) * ((S+k)² - S²)
-     *
-     * @return array ['subtotal' => float, 'fee' => float, 'total' => float]
+     * Calculate the total cost for buying k shares using the integral formula:
+     * CostTotal = P_base * k + (M/2) * ((S+k)² - S²)
      */
     public function calculateBuyCost(Meme $meme, int $quantity): array
     {
@@ -69,7 +63,6 @@ class TradingService
         $slope = (float) $meme->slope;
         $currentSupply = $meme->circulating_supply;
 
-        // Integral formula for buying
         $subtotal = ($pBase * $quantity) +
                     (($slope / 2) * ((pow($currentSupply + $quantity, 2)) - pow($currentSupply, 2)));
 
@@ -87,10 +80,8 @@ class TradingService
     }
 
     /**
-     * Calculate the total income for selling k shares using the integral formula.
-     * Formula: IncomeTotal = P_base * k + (M/2) * (S² - (S-k)²)
-     *
-     * @return array ['subtotal' => float, 'fee' => float, 'total' => float]
+     * Calculate the total income for selling k shares using the integral formula:
+     * IncomeTotal = P_base * k + (M/2) * (S² - (S-k)²)
      */
     public function calculateSellIncome(Meme $meme, int $quantity): array
     {
@@ -102,7 +93,6 @@ class TradingService
         $slope = (float) $meme->slope;
         $currentSupply = $meme->circulating_supply;
 
-        // Integral formula for selling
         $subtotal = ($pBase * $quantity) +
                     (($slope / 2) * (pow($currentSupply, 2) - pow($currentSupply - $quantity, 2)));
 
@@ -121,7 +111,6 @@ class TradingService
 
     /**
      * Preview an order without executing it.
-     * Used for the "Anteprima Ordine" step.
      *
      * @param  string  $type  'buy' or 'sell'
      */
@@ -137,9 +126,8 @@ class TradingService
     }
 
     /**
-     * Execute a buy order with full atomicity and concurrency control.
-     *
-     * @param  float|null  $expectedTotal  If provided, throws SlippageExceededException if price changed
+     * Execute a buy order with full atomicity, concurrency control, and slippage protection.
+     * Locks relevant database rows to prevent race conditions.
      *
      * @throws InsufficientFundsException
      * @throws MarketSuspendedException
@@ -148,46 +136,35 @@ class TradingService
     public function executeBuy(User $user, Meme $meme, int $quantity, ?float $expectedTotal = null): Transaction
     {
         return DB::transaction(function () use ($user, $meme, $quantity, $expectedTotal) {
-            // Lock the meme row to prevent race conditions
             $meme = Meme::where('id', $meme->id)->lockForUpdate()->first();
 
-            // Lock the user row
             $user = User::where('id', $user->id)->lockForUpdate()->first();
 
-            // Validate trading is allowed (TOCTOU protection - checks again after lock)
             $this->validateTradingAllowed($meme);
 
-            // Calculate actual cost with current supply
             $calculation = $this->calculateBuyCost($meme, $quantity);
 
-            // Check slippage if expectedTotal was provided
             if ($expectedTotal !== null && abs($calculation['total'] - $expectedTotal) > self::SLIPPAGE_TOLERANCE_CFU) {
                 throw SlippageExceededException::withTotal($expectedTotal, $calculation['total']);
             }
 
-            // Check user balance
             if ($user->cfu_balance < $calculation['total']) {
                 throw new InsufficientFundsException($calculation['total'], $user->cfu_balance);
             }
 
-            // Deduct CFU from user
             $user->cfu_balance -= $calculation['total'];
             $user->save();
 
-            // Mint new shares (increase supply)
             $meme->circulating_supply += $quantity;
 
-            // Update cached price (eager update)
             $meme->current_price = $meme->base_price + ($meme->slope * $meme->circulating_supply);
             $meme->save();
 
-            // Update or create portfolio entry
             $portfolio = Portfolio::firstOrNew([
                 'user_id' => $user->id,
                 'meme_id' => $meme->id,
             ]);
 
-            // Calculate new average buy price
             if ($portfolio->exists) {
                 $oldValue = $portfolio->quantity * $portfolio->avg_buy_price;
                 $newValue = $quantity * $calculation['estimated_price'];
@@ -199,7 +176,6 @@ class TradingService
             }
             $portfolio->save();
 
-            // Record transaction
             $transaction = Transaction::create([
                 'user_id' => $user->id,
                 'meme_id' => $meme->id,
@@ -212,7 +188,6 @@ class TradingService
                 'executed_at' => now(),
             ]);
 
-            // Record price history snapshot
             PriceHistory::create([
                 'meme_id' => $meme->id,
                 'price' => $meme->current_price,
@@ -226,9 +201,8 @@ class TradingService
     }
 
     /**
-     * Execute a sell order with full atomicity and concurrency control.
-     *
-     * @param  float|null  $expectedTotal  If provided, throws SlippageExceededException if price changed
+     * Execute a sell order with full atomicity, concurrency control, and slippage protection.
+     * Locks relevant database rows to prevent race conditions.
      *
      * @throws InsufficientSharesException
      * @throws MarketSuspendedException
@@ -237,59 +211,46 @@ class TradingService
     public function executeSell(User $user, Meme $meme, int $quantity, ?float $expectedTotal = null): Transaction
     {
         return DB::transaction(function () use ($user, $meme, $quantity, $expectedTotal) {
-            // Lock the meme row
             $meme = Meme::where('id', $meme->id)->lockForUpdate()->first();
 
-            // Lock the user row
             $user = User::where('id', $user->id)->lockForUpdate()->first();
 
-            // Check market status
             if ($meme->status === 'suspended') {
                 throw new MarketSuspendedException($meme->ticker);
             }
 
-            // Find portfolio entry
             $portfolio = Portfolio::where('user_id', $user->id)
                 ->where('meme_id', $meme->id)
                 ->lockForUpdate()
                 ->first();
 
-            // Check if user has enough shares
             if (! $portfolio || $portfolio->quantity < $quantity) {
                 $available = $portfolio ? $portfolio->quantity : 0;
                 throw new InsufficientSharesException($quantity, $available, $meme->ticker);
             }
 
-            // Calculate actual income with current supply
             $calculation = $this->calculateSellIncome($meme, $quantity);
 
-            // Check slippage if expectedTotal was provided
             if ($expectedTotal !== null && abs($calculation['total'] - $expectedTotal) > self::SLIPPAGE_TOLERANCE_CFU) {
                 throw SlippageExceededException::withTotal($expectedTotal, $calculation['total']);
             }
 
-            // Credit CFU to user
             $user->cfu_balance += $calculation['total'];
             $user->save();
 
-            // Burn shares (decrease supply)
             $meme->circulating_supply -= $quantity;
 
-            // Update cached price (eager update)
             $meme->current_price = $meme->base_price + ($meme->slope * $meme->circulating_supply);
             $meme->save();
 
-            // Update portfolio
             $portfolio->quantity -= $quantity;
 
             if ($portfolio->quantity == 0) {
-                // Remove portfolio entry if no shares left
                 $portfolio->delete();
             } else {
                 $portfolio->save();
             }
 
-            // Record transaction
             $transaction = Transaction::create([
                 'user_id' => $user->id,
                 'meme_id' => $meme->id,
@@ -302,7 +263,6 @@ class TradingService
                 'executed_at' => now(),
             ]);
 
-            // Record price history snapshot
             PriceHistory::create([
                 'meme_id' => $meme->id,
                 'price' => $meme->current_price,

@@ -15,7 +15,11 @@ class Category extends Model
         'slug',
     ];
 
-    // Relationships
+    /**
+     * Retrieve all memes categorized under this category.
+     *
+     * @return HasMany<Meme>
+     */
     public function memes(): HasMany
     {
         return $this->hasMany(Meme::class);

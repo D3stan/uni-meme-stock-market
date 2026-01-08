@@ -22,7 +22,9 @@ class AdminController extends Controller
     }
 
     /**
-     * Show admin panel dashboard.
+     * Prepares and renders the main administration dashboard view with current system statistics.
+     *
+     * @return View
      */
     public function index(): View
     {
@@ -31,7 +33,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Show transaction ledger.
+     * Retrieves and displays the system-wide transaction ledger, optionally filtered by transaction type.
+     *
+     * @param Request $request
+     * @return View
      */
     public function ledger(Request $request): View
     {
@@ -48,7 +53,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Show notifications list.
+     * Displays a list of system notifications, allowing filtering by status or type.
+     *
+     * @param Request $request
+     * @return View
      */
     public function notifications(Request $request): View
     {
@@ -65,7 +73,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Show market communications list.
+     * Lists market communications and events with their current status and statistics.
+     *
+     * @param Request $request
+     * @return View
      */
     public function events(Request $request): View
     {
@@ -82,7 +93,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Update market communication.
+     * Updates an existing market communication entry.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
      */
     public function updateEvent(Request $request, int $id): RedirectResponse
     {
@@ -102,7 +117,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Create new market communication.
+     * Creates a new market communication initiated by the currently authenticated admin.
+     *
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function createEvent(Request $request): RedirectResponse
     {
@@ -123,7 +141,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Show moderation page.
+     * Displays the meme moderation interface, showing pending submissions and approval statistics.
+     *
+     * @param Request $request
+     * @return View
      */
     public function moderation(Request $request): View
     {
@@ -140,11 +161,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Approve a meme.
+     * Approves a specific meme, optionally updating its alternative text, and dispatches an approval notification.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
      */
     public function approveMeme(Request $request, int $id): RedirectResponse
     {
-        // Update text_alt
         if ($request->has('text_alt')) {
             $meme = Meme::findOrFail($id);
             $meme->text_alt = $request->input('text_alt');
@@ -159,7 +183,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Reject a meme.
+     * Rejects a meme submission and notifies the creator.
+     *
+     * @param int $id
+     * @return RedirectResponse
      */
     public function rejectMeme(int $id): RedirectResponse
     {

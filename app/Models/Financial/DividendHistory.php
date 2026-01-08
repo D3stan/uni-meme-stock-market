@@ -30,7 +30,11 @@ class DividendHistory extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the meme that distributed this dividend to its shareholders.
+     *
+     * @return BelongsTo<Meme, DividendHistory>
+     */
     public function meme(): BelongsTo
     {
         return $this->belongsTo(Meme::class);
