@@ -52,7 +52,7 @@ Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve*
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/D3stan/uni-meme-stock-market
    cd uni-meme-stock-market
    ```
 
