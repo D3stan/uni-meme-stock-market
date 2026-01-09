@@ -109,48 +109,6 @@ class MarketService
             });
     }
 
-    /**
-     * Get market surveillance data including top gainers/losers, whale alerts, and fees.
-     */
-    public function getMarketSurveillanceData(): array
-    {
-        $topGainers = Meme::whereNotNull('approved_at')
-            ->where('status', 'approved')
-            ->orderByDesc('current_price')
-            ->limit(10)
-            ->get();
-
-        $topLosers = Meme::whereNotNull('approved_at')
-            ->where('status', 'approved')
-            ->orderBy('current_price')
-            ->limit(10)
-            ->get();
-
-        $whaleAlerts = DB::table('portfolios')
-            ->join('memes', 'portfolios.meme_id', '=', 'memes.id')
-            ->join('users', 'portfolios.user_id', '=', 'users.id')
-            ->select(
-                'users.name',
-                'users.email',
-                'memes.ticker',
-                'portfolios.quantity',
-                'memes.circulating_supply',
-                DB::raw('(portfolios.quantity / memes.circulating_supply * 100) as ownership_percentage')
-            )
-            ->whereRaw('portfolios.quantity / memes.circulating_supply > 0.10')
-            ->orderByDesc('ownership_percentage')
-            ->get();
-
-        $totalFeesCollected = Transaction::whereIn('type', ['buy', 'sell', 'listing_fee'])
-            ->sum('fee_amount');
-
-        return [
-            'top_gainers' => $topGainers,
-            'top_losers' => $topLosers,
-            'whale_alerts' => $whaleAlerts,
-            'total_fees_collected' => $totalFeesCollected,
-        ];
-    }
 
     /**
      * Get top movers for landing page including volume data.
