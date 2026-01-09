@@ -6,11 +6,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OtpVerificationRequest extends FormRequest
 {
+    /**
+     * Allow all users to submit OTP verification attempts.
+     *
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Define validation rules for OTP verification.
+     * 
+     * Ensures email exists in pending verifications table and code is exactly 6 numeric digits.
+     *
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [
@@ -19,6 +31,11 @@ class OtpVerificationRequest extends FormRequest
         ];
     }
 
+    /**
+     * Provide custom English error messages for validation failures.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

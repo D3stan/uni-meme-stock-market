@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Services\CreateService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,10 +21,10 @@ class CreateController extends Controller
     }
 
     /**
-     * Display the create meme page.
-     * 
+     * Prepares the meme creation view with available categories and user balance.
+     *
      * @param Request $request
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create(Request $request)
     {
@@ -33,10 +36,10 @@ class CreateController extends Controller
     }
 
     /**
-     * Check if ticker already exists (AJAX).
-     * 
+     * Checks if a proposed ticker symbol already exists in the database via AJAX.
+     *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function checkTicker(Request $request)
     {
@@ -47,14 +50,13 @@ class CreateController extends Controller
     }
 
     /**
-     * Store a new meme.
-     * 
+     * Validates and stores a new meme submission, charging the listing fee if the user has sufficient funds.
+     *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        // Validation
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|min:3|max:50',
             'ticker' => 'required|string|min:3|max:6|unique:memes,ticker',
@@ -70,7 +72,6 @@ class CreateController extends Controller
                 ->with('error', 'Errore nella validazione dei dati.');
         }
 
-        // Check user balance
         $user = Auth::user();
         if (!$this->createService->hasSufficientFundsForListing($user)) {
             $fee = $this->createService->getListingFee();
@@ -80,8 +81,7 @@ class CreateController extends Controller
         }
 
         try {
-            // Create meme
-            $meme = $this->createService->createMeme(
+            $this->createService->createMeme(
                 $request->only(['title', 'ticker', 'category_id', 'text_alt']),
                 $request->file('image'),
                 $user

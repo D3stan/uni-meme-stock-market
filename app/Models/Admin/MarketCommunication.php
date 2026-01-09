@@ -3,10 +3,10 @@
 namespace App\Models\Admin;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class MarketCommunication extends Model
 {
@@ -27,13 +27,22 @@ class MarketCommunication extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the administrator who created this market communication.
+     *
+     * @return BelongsTo<User, MarketCommunication>
+     */
     public function admin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
 
-    // Scopes
+    /**
+     * Filter to only communications that are currently active and not expired.
+     *
+     * @param  Builder<MarketCommunication>  $query
+     * @return Builder<MarketCommunication>
+     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true)
@@ -43,6 +52,12 @@ class MarketCommunication extends Model
             });
     }
 
+    /**
+     * Filter to only communications that have passed their expiration date.
+     *
+     * @param  Builder<MarketCommunication>  $query
+     * @return Builder<MarketCommunication>
+     */
     public function scopeExpired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());

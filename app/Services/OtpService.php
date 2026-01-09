@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Utility\OtpVerification;
 use App\Mail\OtpMail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Utility\OtpVerification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OtpService
 {
@@ -25,54 +25,48 @@ class OtpService
     private bool $shouldSendEmail = false;
 
     /**
-     * Generate and send OTP code to the given email
+     * Generate and send OTP code to the given email, cleaning up expired tokens first.
      */
     public function generateAndSend(string $email, string $userName): string
     {
-        // Clean up any expired OTPs for this email
         $this->cleanupExpiredOtps($email);
 
-        // Generate 6-digit OTP code
         $code = $this->generateCode();
 
-        // Store hashed OTP in database
         OtpVerification::create([
             'email' => $email,
             'code_hash' => hash('sha256', $code),
             'expires_at' => now()->addMinutes(self::OTP_EXPIRY_MINUTES),
         ]);
 
-        // Send email (or log if in development mode)
         $this->sendOtpEmail($email, $userName, $code);
 
         return $code;
     }
 
     /**
-     * Verify the OTP code for the given email
+     * Verify the OTP code for the given email.
      */
     public function verify(string $email, string $code): bool
     {
-        // Development bypass: always accept DEV_OTP_CODE
         if ($code === self::DEV_OTP_CODE) {
             Log::info('OTP verification bypassed with development code', ['email' => $email]);
+
             return true;
         }
 
-        // Find the most recent valid OTP for this email
         $otp = OtpVerification::forEmail($email)
             ->valid()
             ->latest()
             ->first();
 
-        if (!$otp) {
+        if (! $otp) {
             return false;
         }
 
-        // Verify the code
         if ($otp->verifyCode($code)) {
-            // Delete the OTP after successful verification
             $otp->delete();
+
             return true;
         }
 
@@ -80,7 +74,7 @@ class OtpService
     }
 
     /**
-     * Generate a random 6-digit OTP code
+     * Generate a random 6-digit OTP code.
      */
     private function generateCode(): string
     {
@@ -88,16 +82,14 @@ class OtpService
     }
 
     /**
-     * Send OTP email or log it in development mode
+     * Send OTP email or log it in development mode.
      */
     private function sendOtpEmail(string $email, string $userName, string $code): void
     {
         if ($this->shouldSendEmail) {
-            // Production: Actually send the email
             Mail::to($email)->send(new OtpMail($code, $userName));
             Log::info('OTP email sent', ['email' => $email]);
         } else {
-            // Development: Just log the OTP code
             Log::info('OTP generated (email sending disabled)', [
                 'email' => $email,
                 'code' => $code,
@@ -107,7 +99,7 @@ class OtpService
     }
 
     /**
-     * Clean up expired OTPs for the given email
+     * Clean up expired OTPs for the given email.
      */
     private function cleanupExpiredOtps(string $email): void
     {
@@ -117,7 +109,7 @@ class OtpService
     }
 
     /**
-     * Enable actual email sending (for production)
+     * Enable actual email sending (for production).
      */
     public function enableEmailSending(): void
     {
@@ -125,7 +117,7 @@ class OtpService
     }
 
     /**
-     * Check if there's a valid OTP for the given email
+     * Check if there's a valid OTP for the given email.
      */
     public function hasValidOtp(string $email): bool
     {

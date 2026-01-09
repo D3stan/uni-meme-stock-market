@@ -7,11 +7,24 @@ use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
+    /**
+     * Allow all users to attempt registration.
+     *
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Define validation rules for new user registration.
+     * 
+     * Restricts registration to institutional email addresses (@unibo.it or @studio.unibo.it)
+     * and enforces password complexity with minimum 8 characters including at least one number.
+     *
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [
@@ -33,6 +46,11 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /**
+     * Provide custom English error messages for institutional email and password requirements.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

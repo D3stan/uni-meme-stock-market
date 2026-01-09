@@ -35,7 +35,11 @@ class PriceHistory extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the meme that this historical price data belongs to.
+     *
+     * @return BelongsTo<Meme, PriceHistory>
+     */
     public function meme(): BelongsTo
     {
         return $this->belongsTo(Meme::class);

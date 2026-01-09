@@ -34,7 +34,7 @@
                         :active="$filter === 'top_gainer'"
                         variant="{{ $filter === 'top_gainer' ? 'success' : 'outline' }}"
                     >
-                        Top Gainer
+                        Top Performance
                     </x-ui.chip>
                 </a>
                 
@@ -44,7 +44,7 @@
                         :active="$filter === 'new_listing'"
                         variant="{{ $filter === 'new_listing' ? 'success' : 'outline' }}"
                     >
-                        New Listing
+                        Nuove Quotazioni
                     </x-ui.chip>
                 </a>
                 
@@ -54,7 +54,7 @@
                         :active="$filter === 'high_risk'"
                         variant="{{ $filter === 'high_risk' ? 'success' : 'outline' }}"
                     >
-                        High Risk
+                        Rischio Elevato
                     </x-ui.chip>
                 </a>
             </div>

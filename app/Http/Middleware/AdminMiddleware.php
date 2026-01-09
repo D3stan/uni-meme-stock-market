@@ -10,18 +10,21 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Verify user authentication and admin role before allowing access.
+     * 
+     * Redirects unauthenticated users to login page, and non-admin users to market page.
+     * Only allows the request to proceed if the user is both authenticated and has admin privileges.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Request $request
+     * @param Closure $next
+     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // If the user is not authenticated, redirect to the login page URL.
         if (! Auth::check()) {
             return redirect('/login')->with('error', 'Effettua il login.');
         }
 
-        // If the authenticated user is not an admin, redirect to the market page.
         if (! Auth::user()->isAdmin()) {
             return redirect('/market')->with('error', 'Non hai i permessi necessari.');
         }

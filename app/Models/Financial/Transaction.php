@@ -2,12 +2,12 @@
 
 namespace App\Models\Financial;
 
-use App\Models\User;
 use App\Models\Market\Meme;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Transaction extends Model
 {
@@ -40,18 +40,31 @@ class Transaction extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the user who executed this transaction.
+     *
+     * @return BelongsTo<User, Transaction>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Retrieve the meme that was traded in this transaction.
+     *
+     * @return BelongsTo<Meme, Transaction>
+     */
     public function meme(): BelongsTo
     {
         return $this->belongsTo(Meme::class);
     }
 
-    // Accessors
+    /**
+     * Format the transaction execution time as a human-readable relative time.
+     *
+     * @return Attribute<string, never>
+     */
     protected function humanExecutedAt(): Attribute
     {
         return Attribute::make(
@@ -59,10 +72,15 @@ class Transaction extends Model
         );
     }
 
+    /**
+     * Format the total transaction amount as a human-readable CFU string.
+     *
+     * @return Attribute<string, never>
+     */
     protected function netWorthFormatted(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format($this->total_amount, 2) . ' CFU'
+            get: fn () => number_format($this->total_amount, 2).' CFU'
         );
     }
 }

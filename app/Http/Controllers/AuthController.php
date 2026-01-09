@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Financial\Transaction;
 use App\Services\OtpService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +24,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Show the registration form
+     * Displays the user registration form.
+     *
+     * @return View
      */
     public function showRegister(): View
     {
@@ -30,16 +34,17 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle registration request
+     * Processes a registration request by generating an OTP and storing partial user data in the session.
+     *
+     * @param RegisterRequest $request
+     * @return RedirectResponse
      */
     public function register(RegisterRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
-        // Generate and send OTP
         $this->otpService->generateAndSend($validated['email'], $validated['name']);
 
-        // Store registration data in session for later completion
         session([
             'pending_registration' => [
                 'name' => $validated['name'],
@@ -53,9 +58,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Show the OTP verification form
+     * Displays the OTP verification form if a pending registration or password reset exists.
+     *
+     * @return View|RedirectResponse
      */
-    public function showOtpVerification(): View
+    public function showOtpVerification(): View|RedirectResponse
     {
         $pendingRegistration = session('pending_registration');
         $pendingPasswordReset = session('pending_password_reset');
@@ -74,7 +81,10 @@ class AuthController extends Controller
     }
 
     /**
-     * Verify OTP and complete registration
+     * Verifies the provided OTP code and finalizes the registration or password reset process.
+     *
+     * @param OtpVerificationRequest $request
+     * @return RedirectResponse
      */
     public function verifyOtp(OtpVerificationRequest $request): RedirectResponse
     {
@@ -87,26 +97,21 @@ class AuthController extends Controller
                 ->with('error', 'No pending registration found. Please register first.');
         }
 
-        // Get the email from either registration or password reset
         $email = $validated['email'] ?? ($pendingRegistration['email'] ?? $pendingPasswordReset['email']);
 
-        // Verify OTP
         if (!$this->otpService->verify($email, $validated['code'])) {
             return back()
                 ->withErrors(['code' => 'Invalid or expired verification code.'])
                 ->withInput();
         }
 
-        // Handle password reset flow
         if ($pendingPasswordReset) {
-            // Find user and log them in
             $user = User::where('email', $email)->first();
             
             if ($user) {
                 Auth::login($user);
                 session()->forget('pending_password_reset');
                 
-                // Set flag to show password change prompt
                 session()->flash('needs_password_change', true);
                 session()->flash('toast', [
                     'type' => 'warning',
@@ -120,8 +125,6 @@ class AuthController extends Controller
                 ->with('error', 'Utente non trovato.');
         }
 
-        // Handle registration flow
-        // Create user and grant bonus in a transaction
         DB::transaction(function () use ($pendingRegistration) {
             $user = User::create([
                 'name' => $pendingRegistration['name'],
@@ -132,7 +135,6 @@ class AuthController extends Controller
                 'role' => 'trader',
             ]);
 
-            // Record the signup bonus transaction
             Transaction::create([
                 'user_id' => $user->id,
                 'meme_id' => null,
@@ -145,14 +147,11 @@ class AuthController extends Controller
                 'executed_at' => now(),
             ]);
 
-            // Log the user in
             Auth::login($user);
         });
 
-        // Clear pending registration from session
         session()->forget('pending_registration');
 
-        // Set flag for onboarding modal
         session()->flash('show_onboarding_modal', true);
 
         return redirect()->route('market')
@@ -160,7 +159,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Show the login form
+     * Displays the login form.
+     *
+     * @return View
      */
     public function showLogin(): View
     {
@@ -168,13 +169,15 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle login request
+     * Authenticates a user after verifying email status and account suspension state.
+     *
+     * @param LoginRequest $request
+     * @return RedirectResponse
      */
     public function login(LoginRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
-        // Check if email is verified (user exists and email_verified_at is set)
         $user = User::where('email', $validated['email'])->first();
 
         if (!$user || !$user->email_verified_at) {
@@ -183,21 +186,18 @@ class AuthController extends Controller
                 ->withInput($request->only('email'));
         }
 
-        // Check if user is suspended
         if ($user->isSuspended()) {
             return back()
                 ->withErrors(['email' => 'Your account has been suspended. Please contact support.'])
                 ->withInput($request->only('email'));
         }
 
-        // Attempt to log the user in
         $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            // Check if user needs to change password
             if (session('needs_password_change')) {
                 session()->flash('toast', [
                     'type' => 'warning',
@@ -214,9 +214,12 @@ class AuthController extends Controller
     }
 
     /**
-     * Send password reset OTP
+     * Initiates the password reset flow by sending an OTP to the user's email.
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function sendPasswordResetOtp(\Illuminate\Http\Request $request)
+    public function sendPasswordResetOtp(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email', 'exists:users,email']
@@ -227,10 +230,8 @@ class AuthController extends Controller
         $email = $request->input('email');
         $user = User::where('email', $email)->first();
 
-        // Generate and send OTP
         $this->otpService->generateAndSend($email, $user->name);
 
-        // Store password reset request in session
         session([
             'pending_password_reset' => [
                 'email' => $email,
@@ -244,7 +245,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle logout request
+     * Logs out the currently authenticated user and invalidates the session.
+     *
+     * @return RedirectResponse
      */
     public function logout(): RedirectResponse
     {

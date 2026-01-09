@@ -13,6 +13,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+/**
+ * Configure trading service and global settings before each test.
+ * Sets 2% tax rate and disables trading delay for immediate execution.
+ */
 beforeEach(function () {
     $this->service = new TradingService;
     GlobalSetting::create(['key' => 'tax_rate', 'value' => '0.02']);
@@ -28,19 +32,15 @@ describe('concurrent buy operations', function () {
             'circulating_supply' => 0,
         ]);
 
-        // Execute 5 purchases sequentially (simulating concurrent requests)
         foreach ($users as $user) {
             $this->service->executeBuy($user, $meme, 5);
         }
 
-        // Verify final supply is exactly 25
         $meme->refresh();
         expect($meme->circulating_supply)->toBe(25);
 
-        // Verify all transactions were recorded
         expect(Transaction::where('type', 'buy')->count())->toBe(5);
 
-        // Verify each user has their portfolio
         foreach ($users as $user) {
             $portfolio = Portfolio::where('user_id', $user->id)
                 ->where('meme_id', $meme->id)
@@ -58,12 +58,10 @@ describe('concurrent buy operations', function () {
             'circulating_supply' => 0,
         ]);
 
-        // First purchase should succeed
         $this->service->executeBuy($user, $meme, 10);
 
         $remainingBalance = $user->fresh()->cfu_balance;
 
-        // Second purchase should fail (insufficient funds)
         try {
             $this->service->executeBuy($user, $meme, 10);
             $this->fail('Expected InsufficientFundsException');
@@ -71,10 +69,8 @@ describe('concurrent buy operations', function () {
             // Expected
         }
 
-        // Balance should not have changed from first attempt
         expect($user->fresh()->cfu_balance)->toBe($remainingBalance);
 
-        // Supply should only reflect first purchase
         expect($meme->fresh()->circulating_supply)->toBe(10);
     });
 
@@ -87,7 +83,6 @@ describe('concurrent buy operations', function () {
             'circulating_supply' => 50,
         ]);
 
-        // Seller has existing shares
         Portfolio::create([
             'user_id' => $seller->id,
             'meme_id' => $meme->id,
@@ -95,17 +90,14 @@ describe('concurrent buy operations', function () {
             'avg_buy_price' => 4.00,
         ]);
 
-        // Execute buy
         $this->service->executeBuy($buyer, $meme, 10);
         $supplyAfterBuy = $meme->fresh()->circulating_supply;
         expect($supplyAfterBuy)->toBe(60);
 
-        // Execute sell
         $this->service->executeSell($seller, $meme, 10);
         $supplyAfterSell = $meme->fresh()->circulating_supply;
         expect($supplyAfterSell)->toBe(50);
 
-        // Net effect: back to original supply
         expect($supplyAfterSell)->toBe(50);
     });
 
@@ -118,19 +110,16 @@ describe('concurrent buy operations', function () {
             'current_price' => 1.00,
         ]);
 
-        // User 1 buys 10 shares
         $this->service->executeBuy($users[0], $meme, 10);
         $meme->refresh();
         $expectedPrice1 = 1.00 + (0.10 * 10);
         expect((float) $meme->current_price)->toBe($expectedPrice1);
 
-        // User 2 buys 15 shares
         $this->service->executeBuy($users[1], $meme, 15);
         $meme->refresh();
         $expectedPrice2 = 1.00 + (0.10 * 25);
         expect((float) $meme->current_price)->toBe($expectedPrice2);
 
-        // User 3 buys 5 shares
         $this->service->executeBuy($users[2], $meme, 5);
         $meme->refresh();
         $expectedPrice3 = 1.00 + (0.10 * 30);
@@ -154,18 +143,15 @@ describe('concurrent sell operations', function () {
             'avg_buy_price' => 5.00,
         ]);
 
-        // First sell should succeed
         $this->service->executeSell($user, $meme, 5);
 
         $supplyAfterFirst = $meme->fresh()->circulating_supply;
         expect($supplyAfterFirst)->toBe(45);
 
-        // Second sell of remaining shares should succeed
         $this->service->executeSell($user, $meme, 5);
 
         expect($meme->fresh()->circulating_supply)->toBe(40);
 
-        // Third sell should fail (no shares left)
         try {
             $this->service->executeSell($user, $meme, 1);
             $this->fail('Expected InsufficientSharesException');
@@ -173,7 +159,6 @@ describe('concurrent sell operations', function () {
             // Expected
         }
 
-        // Supply should not have decreased further
         expect($meme->fresh()->circulating_supply)->toBe(40);
     });
 
@@ -185,7 +170,6 @@ describe('concurrent sell operations', function () {
             'circulating_supply' => 100,
         ]);
 
-        // Each seller has 20 shares
         foreach ($sellers as $seller) {
             Portfolio::create([
                 'user_id' => $seller->id,
@@ -195,15 +179,12 @@ describe('concurrent sell operations', function () {
             ]);
         }
 
-        // All sellers sell 10 shares each
         foreach ($sellers as $seller) {
             $this->service->executeSell($seller, $meme, 10);
         }
 
-        // Supply should decrease by 30 total
         expect($meme->fresh()->circulating_supply)->toBe(70);
 
-        // Each seller should have 10 shares remaining
         foreach ($sellers as $seller) {
             $portfolio = Portfolio::where('user_id', $seller->id)
                 ->where('meme_id', $meme->id)
@@ -225,14 +206,12 @@ describe('transaction rollback on failure', function () {
         $initialBalance = $user->cfu_balance;
         $initialSupply = $meme->circulating_supply;
 
-        // Try to buy with slippage protection that will fail
         try {
             $this->service->executeBuy($user, $meme, 10, 5.00); // Wrong expected total
         } catch (SlippageExceededException $e) {
             // Expected
         }
 
-        // Verify complete rollback
         expect($user->fresh()->cfu_balance)->toBe($initialBalance);
         expect($meme->fresh()->circulating_supply)->toBe($initialSupply);
         expect(Portfolio::count())->toBe(0);
@@ -240,14 +219,13 @@ describe('transaction rollback on failure', function () {
     });
 
     it('maintains database consistency after failed operations', function () {
-        $user = User::factory()->create(['cfu_balance' => 10.00]); // Low balance
+        $user = User::factory()->create(['cfu_balance' => 10.00]);
         $meme = Meme::factory()->approved()->create([
             'base_price' => 1.00,
             'slope' => 0.10,
             'circulating_supply' => 0,
         ]);
 
-        // Attempt multiple failed purchases
         for ($i = 0; $i < 5; $i++) {
             try {
                 $this->service->executeBuy($user, $meme, 10);
@@ -256,7 +234,6 @@ describe('transaction rollback on failure', function () {
             }
         }
 
-        // State should remain unchanged
         expect((float) $user->fresh()->cfu_balance)->toBe(10.00);
         expect($meme->fresh()->circulating_supply)->toBe(0);
         expect(Transaction::count())->toBe(0);
@@ -296,7 +273,7 @@ describe('edge cases with supply at zero', function () {
         $this->service->executeSell($user, $meme, 10);
 
         expect($meme->fresh()->circulating_supply)->toBe(0);
-        expect((float) $meme->fresh()->current_price)->toBe(1.00); // Back to base price
+        expect((float) $meme->fresh()->current_price)->toBe(1.00);
     });
 
     it('can buy again after supply returns to zero', function () {
@@ -308,15 +285,12 @@ describe('edge cases with supply at zero', function () {
             'circulating_supply' => 0,
         ]);
 
-        // User1 buys
         $this->service->executeBuy($user1, $meme, 10);
         expect($meme->fresh()->circulating_supply)->toBe(10);
 
-        // User1 sells all
         $this->service->executeSell($user1, $meme, 10);
         expect($meme->fresh()->circulating_supply)->toBe(0);
 
-        // User2 can buy at base price again
         $preview = $this->service->previewOrder($meme, 'buy', 10);
         $this->service->executeBuy($user2, $meme, 10);
 
@@ -333,9 +307,8 @@ describe('transaction history integrity', function () {
             'circulating_supply' => 0,
         ]);
 
-        // Execute multiple operations
         $this->service->executeBuy($user, $meme, 5);
-        sleep(1); // Ensure distinct timestamps
+        sleep(1);
         $this->service->executeBuy($user, $meme, 10);
         sleep(1);
         $this->service->executeSell($user, $meme, 3);
@@ -352,7 +325,6 @@ describe('transaction history integrity', function () {
         expect($transactions[2]->type)->toBe('sell');
         expect($transactions[2]->quantity)->toBe(3);
 
-        // Verify cfu_balance_after is correctly tracked
         expect($transactions[0]->cfu_balance_after)->toBeLessThan(200.00);
         expect($transactions[1]->cfu_balance_after)->toBeLessThan($transactions[0]->cfu_balance_after);
         expect($transactions[2]->cfu_balance_after)->toBeGreaterThan($transactions[1]->cfu_balance_after);

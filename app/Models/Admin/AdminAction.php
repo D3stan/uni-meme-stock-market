@@ -30,12 +30,21 @@ class AdminAction extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the administrator who performed this action.
+     *
+     * @return BelongsTo<User, AdminAction>
+     */
     public function admin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    /**
+     * Retrieve the polymorphic entity that this action was performed on.
+     *
+     * @return MorphTo<Model, AdminAction>
+     */
     public function target(): MorphTo
     {
         return $this->morphTo();

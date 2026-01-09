@@ -2,24 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Market\Meme;
-use App\Models\Financial\Transaction;
-use App\Models\Admin\GlobalSetting;
 use App\Models\Admin\AdminAction;
+use App\Models\Admin\GlobalSetting;
 use App\Models\Admin\MarketCommunication;
-use Illuminate\Support\Facades\DB;
+use App\Models\Financial\Transaction;
+use App\Models\Market\Meme;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MarketService
 {
     /**
-     * Create a market-wide communication message.
-     * 
-     * @param User $admin
-     * @param string $message
-     * @param Carbon|null $expiresAt
-     * @return MarketCommunication
+     * Create a market-wide communication message and log the admin action.
      */
     public function createMarketCommunication(
         User $admin,
@@ -34,7 +29,6 @@ class MarketService
                 'expires_at' => $expiresAt,
             ]);
 
-            // Log admin action
             AdminAction::create([
                 'admin_id' => $admin->id,
                 'action_type' => 'create_communication',
@@ -49,11 +43,7 @@ class MarketService
     }
 
     /**
-     * Deactivate a market communication.
-     * 
-     * @param User $admin
-     * @param MarketCommunication $communication
-     * @return bool
+     * Deactivate a market communication and log the admin action.
      */
     public function deactivateMarketCommunication(
         User $admin,
@@ -63,7 +53,6 @@ class MarketService
             $communication->is_active = false;
             $communication->save();
 
-            // Log admin action
             AdminAction::create([
                 'admin_id' => $admin->id,
                 'action_type' => 'deactivate_communication',
@@ -78,18 +67,14 @@ class MarketService
     }
 
     /**
-     * Update a global setting.
-     * 
-     * @param User $admin
-     * @param string $key
-     * @param mixed $value
-     * @return bool
+     * Update a global setting and log the admin action.
+     *
+     * @param  mixed  $value
      */
     public function updateGlobalSetting(User $admin, string $key, $value): bool
     {
         GlobalSetting::set($key, $value);
 
-        // Log admin action
         AdminAction::create([
             'admin_id' => $admin->id,
             'action_type' => 'update_setting',
@@ -103,10 +88,9 @@ class MarketService
     }
 
     /**
-     * Get memes for marketplace with filtering support.
-     * 
-     * @param string $filter 'all', 'top_gainer', 'new_listing', 'high_risk'
-     * @param int $perPage
+     * Get memes for marketplace with filtering and 24h price change calculation.
+     *
+     * @param  string  $filter  'all', 'top_gainer', 'new_listing', 'high_risk'
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
@@ -115,12 +99,12 @@ class MarketService
             ->where('status', 'approved')
             ->whereNotNull('approved_at');
 
-        // Add price change 24h calculation
         $query->leftJoin('price_histories as ph_24h', function ($join) {
+            $twentyFourHoursAgo = now()->subHours(24);
             $join->on('ph_24h.id', '=', DB::raw("
                 (SELECT id FROM price_histories 
                  WHERE meme_id = memes.id 
-                 AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                 AND recorded_at >= '{$twentyFourHoursAgo}'
                  ORDER BY recorded_at ASC, id ASC
                  LIMIT 1)
             "));
@@ -136,61 +120,51 @@ class MarketService
             END as pct_change_24h')
         );
 
-        // Apply filters
         switch ($filter) {
             case 'top_gainer':
-                // Top gainers: highest positive percentage change in 24h
                 $query->orderByRaw('pct_change_24h DESC')
-                      ->orderBy('memes.id', 'desc');
+                    ->orderBy('memes.id', 'desc');
                 break;
 
             case 'new_listing':
-                // New listings: approved in the last 7 days
                 $query->where('approved_at', '>=', now()->subDays(7))
                     ->orderByDesc('approved_at')
                     ->orderBy('memes.id', 'desc');
                 break;
 
             case 'high_risk':
-                // High risk: high slope (volatile) OR low circulating supply
                 $query->where(function ($q) {
-                    $q->where('slope', '>=', 0.01) // High slope = more volatile
-                        ->orWhere('circulating_supply', '<', 100); // Low supply = risky
+                    $q->where('slope', '>=', 0.01)
+                        ->orWhere('circulating_supply', '<', 100);
                 })
-                ->orderByDesc('slope')
-                ->orderBy('memes.id', 'desc');
+                    ->orderByDesc('slope')
+                    ->orderBy('memes.id', 'desc');
                 break;
 
             case 'all':
             default:
-                // All: ordered by market cap (current_price * circulating_supply)
                 $query->orderByRaw('(memes.current_price * memes.circulating_supply) DESC')
-                      ->orderBy('memes.id', 'desc');
+                    ->orderBy('memes.id', 'desc');
                 break;
         }
 
-        // Paginate results
         $memes = $query->paginate($perPage);
 
-        // Add computed attributes to each meme
         $memes->getCollection()->transform(function ($meme) {
-            // Calculate 24h volume (sum of all transaction amounts in last 24h)
             $volume24h = Transaction::where('meme_id', $meme->id)
                 ->whereIn('type', ['buy', 'sell'])
                 ->where('executed_at', '>=', now()->subHours(24))
                 ->sum('total_amount');
 
-            // Determine status badge
             $statusBadge = null;
             if ($meme->approved_at && $meme->approved_at->diffInDays(now()) <= 7) {
                 $statusBadge = 'new';
             }
-            
-            // Return formatted data for frontend
+
             return [
                 'id' => $meme->id,
-                'image' => $meme->image_path ? asset('storage/data/' . $meme->creator_id . '/' . $meme->image_path) : null,
-                'text_alt'=> $meme->text_alt,
+                'image' => $meme->image_path ? asset('storage/data/'.$meme->creator_id.'/'.$meme->image_path) : null,
+                'text_alt' => $meme->text_alt,
                 'name' => $meme->title,
                 'ticker' => $meme->ticker,
                 'price' => round($meme->current_price, 2),
@@ -212,10 +186,7 @@ class MarketService
     }
 
     /**
-     * Return if meme is 'high_risk'
-     * 
-     * @param Meme $meme
-     * @return bool
+     * Check if a meme is considered high risk based on slope or supply.
      */
     public function isHighRiskMeme(Meme $meme): bool
     {
@@ -223,9 +194,8 @@ class MarketService
     }
 
     /**
-     * Get top gainers for ticker tape.
-     * 
-     * @param int $limit
+     * Get top gainers for the ticker tape.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getTickerMemes(int $limit = 10)
@@ -267,28 +237,22 @@ class MarketService
     }
 
     /**
-     * Get market surveillance data for admins.
-     * 
-     * @return array
+     * Get market surveillance data including top gainers/losers, whale alerts, and fees.
      */
     public function getMarketSurveillanceData(): array
     {
-        // Top gainers (24h)
         $topGainers = Meme::whereNotNull('approved_at')
             ->where('status', 'approved')
             ->orderByDesc('current_price')
             ->limit(10)
             ->get();
 
-        // Top losers (24h) - would need price history comparison
-        // For now, we'll get memes with lowest current prices
         $topLosers = Meme::whereNotNull('approved_at')
             ->where('status', 'approved')
             ->orderBy('current_price')
             ->limit(10)
             ->get();
 
-        // Whale alerts (users holding >10% of any meme)
         $whaleAlerts = DB::table('portfolios')
             ->join('memes', 'portfolios.meme_id', '=', 'memes.id')
             ->join('users', 'portfolios.user_id', '=', 'users.id')
@@ -304,7 +268,6 @@ class MarketService
             ->orderByDesc('ownership_percentage')
             ->get();
 
-        // Total fees collected
         $totalFeesCollected = Transaction::whereIn('type', ['buy', 'sell', 'listing_fee'])
             ->sum('fee_amount');
 
@@ -317,19 +280,15 @@ class MarketService
     }
 
     /**
-     * Get top movers for landing page with volume data.
-     * 
-     * @param int $limit
+     * Get top movers for landing page including volume data.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getLandingPageTopMovers(int $limit = 5)
     {
         $topMemes = $this->getMarketplaceMemes('top_gainer', $limit);
-        
-        // Extract items from paginated results and ensure volume24h is included
+
         return collect($topMemes->items())->map(function ($meme) {
-            // The volume24h is already calculated in getMarketplaceMemes,
-            // but it's returned as an array, so we just return it as is
             return $meme;
         });
     }
