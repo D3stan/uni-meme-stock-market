@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
@@ -17,10 +18,10 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get notifications list (partial HTML for slide panel).
+     * Retrieves grouped notifications (read/unread) for the notification slide panel.
      *
      * @param Request $request
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(Request $request)
     {
@@ -36,7 +37,7 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get unread count (for badge updates).
+     * Returns the current count of unread notifications for badge updates.
      *
      * @return JsonResponse
      */
@@ -52,7 +53,7 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get a single notification detail.
+     * Retrieves details for a specific notification.
      *
      * @param int $id
      * @return JsonResponse
@@ -82,7 +83,7 @@ class NotificationController extends Controller
     }
 
     /**
-     * Mark a notification as read.
+     * Marks a specific notification as read and returns the new unread count.
      *
      * @param Request $request
      * @return JsonResponse
@@ -112,7 +113,7 @@ class NotificationController extends Controller
     }
 
     /**
-     * Mark all notifications as read.
+     * Marks all notifications for the current user as read.
      *
      * @return JsonResponse
      */

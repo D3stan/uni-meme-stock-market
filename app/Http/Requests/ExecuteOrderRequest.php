@@ -7,7 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 class ExecuteOrderRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Authorize only authenticated users to execute trading orders.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -15,7 +17,12 @@ class ExecuteOrderRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Define validation constraints for executing meme trading orders.
+     * 
+     * Validates meme existence, order type (buy/sell), positive quantity,
+     * and non-negative expected total for price verification.
+     *
+     * @return array<string, array<int, string>>
      */
     public function rules(): array
     {
@@ -28,7 +35,9 @@ class ExecuteOrderRequest extends FormRequest
     }
 
     /**
-     * Get custom messages for validator errors.
+     * Provide localized Italian error messages for validation failures.
+     *
+     * @return array<string, string>
      */
     public function messages(): array
     {

@@ -2,12 +2,12 @@
 
 namespace App\Models\Financial;
 
-use App\Models\User;
 use App\Models\Market\Meme;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Portfolio extends Model
 {
@@ -28,24 +28,38 @@ class Portfolio extends Model
         ];
     }
 
-    // Relationships
+    /**
+     * Retrieve the user who owns this portfolio holding.
+     *
+     * @return BelongsTo<User, Portfolio>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Retrieve the meme that this portfolio holding represents.
+     *
+     * @return BelongsTo<Meme, Portfolio>
+     */
     public function meme(): BelongsTo
     {
         return $this->belongsTo(Meme::class);
     }
 
-    // Accessors
+    /**
+     * Calculate and format the current market value of this holding.
+     *
+     * @return Attribute<string, never>
+     */
     protected function netWorthFormatted(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $currentValue = $this->quantity * $this->meme->current_price;
-                return number_format($currentValue, 2) . ' CFU';
+
+                return number_format($currentValue, 2).' CFU';
             }
         );
     }

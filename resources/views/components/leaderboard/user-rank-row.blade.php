@@ -4,6 +4,7 @@
     'avatar' => null,
     'netWorth' => 0,
     'isCurrentUser' => false,
+    'recentBadge' => null,
 ])
 
 <div role="listitem" class="card-base p-4 mx-4 lg:mx-auto lg:max-w-[60%] hover:bg-surface-200/50 transition-colors {{ $isCurrentUser ? 'ring-2 ring-brand' : '' }}">
@@ -25,6 +26,11 @@
         {{-- User Info --}}
         <div class="flex-1 min-w-0">
             <p class="text-text-main font-bold text-base truncate">{{ $username }}</p>
+            @if($recentBadge)
+            <p class="text-amber-500 text-xs truncate mt-0.5" title="{{ $recentBadge['description'] }}">
+                {{ $recentBadge['name'] }}
+            </p>
+            @endif
         </div>
         
         {{-- Net Worth --}}

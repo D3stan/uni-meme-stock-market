@@ -4,7 +4,6 @@
     'avatar' => null,
     'netWorth' => 0,
     'percentile' => null,
-    'hasBadge' => false,
 ])
 
 <article class="card-base p-4 bg-gradient-to-r from-brand/20 to-brand/5 border-2 border-brand shadow-lg shadow-brand/20" aria-label="La tua posizione in classifica">

@@ -19,17 +19,17 @@ class BadgeSeeder extends Seeder
                 'icon_path' => 'badges/first-trade.png',
             ],
             [
-                'name' => 'Diamond Hands 💎',
+                'name' => 'Diamond Hands',
                 'description' => 'Mantieni un meme per più di 30 giorni',
                 'icon_path' => 'badges/diamond-hands.png',
             ],
             [
-                'name' => 'Paper Hands 📄',
+                'name' => 'Paper Hands',
                 'description' => 'Vendi in perdita del 50% o più',
                 'icon_path' => 'badges/paper-hands.png',
             ],
             [
-                'name' => 'Whale 🐋',
+                'name' => 'Whale',
                 'description' => 'Possiedi più di 10,000 CFU',
                 'icon_path' => 'badges/whale.png',
             ],
@@ -49,7 +49,7 @@ class BadgeSeeder extends Seeder
                 'icon_path' => 'badges/diversified.png',
             ],
             [
-                'name' => 'Stonks Master 📈',
+                'name' => 'Stonks Master',
                 'description' => 'Guadagna 500% su un singolo meme',
                 'icon_path' => 'badges/stonks-master.png',
             ],
@@ -59,7 +59,7 @@ class BadgeSeeder extends Seeder
                 'icon_path' => 'badges/early-adopter.png',
             ],
             [
-                'name' => 'Lucky Trader 🍀',
+                'name' => 'Lucky Trader',
                 'description' => 'Vendi al prezzo massimo storico',
                 'icon_path' => 'badges/lucky-trader.png',
             ],

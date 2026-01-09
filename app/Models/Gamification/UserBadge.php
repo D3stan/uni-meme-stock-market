@@ -2,8 +2,8 @@
 
 namespace App\Models\Gamification;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class UserBadge extends Pivot
 {
@@ -20,7 +20,11 @@ class UserBadge extends Pivot
         ];
     }
 
-    // Accessor for formatted awarded date
+    /**
+     * Format the badge awarded date as a readable string.
+     *
+     * @return Attribute<string|null, never>
+     */
     protected function awardedAtFormatted(): Attribute
     {
         return Attribute::make(

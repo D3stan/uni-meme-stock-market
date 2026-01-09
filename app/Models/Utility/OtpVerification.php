@@ -2,9 +2,9 @@
 
 namespace App\Models\Utility;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class OtpVerification extends Model
 {
@@ -27,26 +27,41 @@ class OtpVerification extends Model
         ];
     }
 
-    // Scopes
+    /**
+     * Filter to only OTP codes that have not expired yet.
+     *
+     * @param  Builder<OtpVerification>  $query
+     * @return Builder<OtpVerification>
+     */
     public function scopeValid(Builder $query): Builder
     {
         return $query->where('expires_at', '>', now());
     }
 
+    /**
+     * Filter to only OTP codes for a specific email address.
+     *
+     * @param  Builder<OtpVerification>  $query
+     * @return Builder<OtpVerification>
+     */
     public function scopeForEmail(Builder $query, string $email): Builder
     {
         return $query->where('email', $email);
     }
 
-    // Helper method to check if OTP is expired
+    /**
+     * Determine if this OTP code has passed its expiration timestamp.
+     */
     public function isExpired(): bool
     {
         return $this->expires_at->isPast();
     }
 
-    // Helper method to verify code
+    /**
+     * Verify if the provided code matches the stored hash and is not expired.
+     */
     public function verifyCode(string $code): bool
     {
-        return !$this->isExpired() && hash_equals($this->code_hash, hash('sha256', $code));
+        return ! $this->isExpired() && hash_equals($this->code_hash, hash('sha256', $code));
     }
 }

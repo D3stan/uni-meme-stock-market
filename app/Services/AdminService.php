@@ -2,19 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Market\Meme;
-use App\Models\Financial\Transaction;
-use App\Models\Utility\Notification;
 use App\Models\Admin\MarketCommunication;
+use App\Models\Financial\Transaction;
+use App\Models\Market\Meme;
+use App\Models\User;
+use App\Models\Utility\Notification;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AdminService
 {
     /**
      * Get dashboard summary statistics for users, memes, and fees (with weekly variation).
-     *
-     * @return array
      */
     public function getDashboardStats(): array
     {
@@ -48,10 +46,9 @@ class AdminService
 
     /**
      * Get transactions ordered by most recent first.
-     * 
-     * @param string $type Transaction type filter (all, buy, sell, bonus, dividend, listing_fee)
-     * @param int $perPage Number of transactions per page
-     * @return LengthAwarePaginator
+     *
+     * @param  string  $type  Transaction type filter (all, buy, sell, bonus, dividend, listing_fee)
+     * @param  int  $perPage  Number of transactions per page
      */
     public function getTransactions(string $type = 'all', int $perPage = 20): LengthAwarePaginator
     {
@@ -68,8 +65,6 @@ class AdminService
 
     /**
      * Get transaction statistics.
-     * 
-     * @return array
      */
     public function getTransactionStats(): array
     {
@@ -92,10 +87,9 @@ class AdminService
 
     /**
      * Get notifications ordered by most recent first.
-     * 
-     * @param string $filter Notification filter (all, read, unread, global)
-     * @param int $perPage Number of notifications per page
-     * @return LengthAwarePaginator
+     *
+     * @param  string  $filter  Notification filter (all, read, unread, global)
+     * @param  int  $perPage  Number of notifications per page
      */
     public function getNotifications(string $filter = 'all', int $perPage = 20): LengthAwarePaginator
     {
@@ -120,8 +114,6 @@ class AdminService
 
     /**
      * Get notification statistics.
-     * 
-     * @return array
      */
     public function getNotificationStats(): array
     {
@@ -142,10 +134,9 @@ class AdminService
 
     /**
      * Get market communications ordered by most recent first.
-     * 
-     * @param string $filter Communication filter (all, active, expired)
-     * @param int $perPage Number of communications per page
-     * @return LengthAwarePaginator
+     *
+     * @param  string  $filter  Communication filter (all, active, expired)
+     * @param  int  $perPage  Number of communications per page
      */
     public function getMarketCommunications(string $filter = 'all', int $perPage = 20): LengthAwarePaginator
     {
@@ -167,8 +158,6 @@ class AdminService
 
     /**
      * Get market communication statistics.
-     * 
-     * @return array
      */
     public function getMarketCommunicationStats(): array
     {
@@ -187,10 +176,6 @@ class AdminService
 
     /**
      * Update market communication.
-     * 
-     * @param int $id
-     * @param array $data
-     * @return MarketCommunication
      */
     public function updateMarketCommunication(int $id, array $data): MarketCommunication
     {
@@ -202,9 +187,6 @@ class AdminService
 
     /**
      * Create new market communication.
-     * 
-     * @param array $data
-     * @return MarketCommunication
      */
     public function createMarketCommunication(array $data): MarketCommunication
     {
@@ -213,10 +195,9 @@ class AdminService
 
     /**
      * Get memes for moderation.
-     * 
-     * @param string $filter Filter type (all, pending, approved, suspended)
-     * @param int $perPage Number of items per page
-     * @return LengthAwarePaginator
+     *
+     * @param  string  $filter  Filter type (all, pending, approved, suspended)
+     * @param  int  $perPage  Number of items per page
      */
     public function getMemes(string $filter = 'all', int $perPage = 20): LengthAwarePaginator
     {
@@ -239,8 +220,6 @@ class AdminService
 
     /**
      * Get meme statistics for moderation.
-     * 
-     * @return array
      */
     public function getMemeStats(): array
     {
@@ -285,9 +264,6 @@ class AdminService
 
     /**
      * Reject (suspend) a meme.
-     * 
-     * @param int $id
-     * @return Meme
      */
     public function rejectMeme(int $id): Meme
     {

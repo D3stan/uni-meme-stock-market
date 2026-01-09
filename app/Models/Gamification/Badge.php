@@ -17,7 +17,11 @@ class Badge extends Model
         'icon_path',
     ];
 
-    // Relationships
+    /**
+     * Retrieve all users who have been awarded this badge.
+     *
+     * @return BelongsToMany<User>
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_badges')

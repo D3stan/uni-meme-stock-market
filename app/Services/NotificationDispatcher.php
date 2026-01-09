@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Financial\Transaction;
 use App\Models\Market\Meme;
 use App\Models\User;
-use App\Models\Financial\Transaction;
 
 class NotificationDispatcher
 {
@@ -15,9 +15,6 @@ class NotificationDispatcher
 
     /**
      * Send notification when a meme is approved.
-     *
-     * @param Meme $meme
-     * @return void
      */
     public function memeApproved(Meme $meme): void
     {
@@ -35,9 +32,6 @@ class NotificationDispatcher
 
     /**
      * Send notification when a meme is rejected.
-     *
-     * @param Meme $meme
-     * @return void
      */
     public function memeRejected(Meme $meme): void
     {
@@ -54,9 +48,6 @@ class NotificationDispatcher
 
     /**
      * Broadcast notification to all users when a new meme is approved and available for trading.
-     *
-     * @param Meme $meme
-     * @return void
      */
     public function newMemeApprovedBroadcast(Meme $meme): void
     {
@@ -77,11 +68,6 @@ class NotificationDispatcher
 
     /**
      * Send notification when a dividend is received.
-     *
-     * @param User $user
-     * @param float $amount
-     * @param string $ticker
-     * @return void
      */
     public function dividendReceived(User $user, float $amount, string $ticker): void
     {
@@ -98,14 +84,11 @@ class NotificationDispatcher
 
     /**
      * Send notification when a transaction is completed successfully.
-     *
-     * @param Transaction $transaction
-     * @return void
      */
     public function transactionCompleted(Transaction $transaction): void
     {
         $type = $transaction->type === 'buy' ? 'acquisto' : 'vendita';
-        
+
         $this->notificationService->createNotification(
             $transaction->user,
             '✅ Transazione Completata',
@@ -120,15 +103,10 @@ class NotificationDispatcher
 
     /**
      * Send notification when a transaction fails.
-     *
-     * @param User $user
-     * @param string $reason
-     * @param string|null $ticker
-     * @return void
      */
     public function transactionFailed(User $user, string $reason, ?string $ticker = null): void
     {
-        $message = $ticker 
+        $message = $ticker
             ? sprintf('Transazione per $%s fallita: %s', $ticker, $reason)
             : sprintf('Transazione fallita: %s', $reason);
 
@@ -137,5 +115,5 @@ class NotificationDispatcher
             '❌ Errore Transazione',
             $message
         );
-    }   
+    }
 }
