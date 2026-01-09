@@ -27,8 +27,9 @@ class CreateController extends Controller
     {
         $categories = $this->createService->getCategories();
         $balance = $this->createService->getUserBalance(Auth::user());
+        $fee = $this->createService->getListingFee();
         
-        return view('pages.meme.create', compact('categories', 'balance'));
+        return view('pages.meme.create', compact('categories', 'balance', 'fee'));
     }
 
     /**
@@ -71,10 +72,11 @@ class CreateController extends Controller
 
         // Check user balance
         $user = Auth::user();
-        if ($user->cfu_balance < 20.00) {
+        if (!$this->createService->hasSufficientFundsForListing($user)) {
+            $fee = $this->createService->getListingFee();
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Saldo insufficiente per pagare la fee di listing (20 CFU).');
+                ->with('error', "Saldo insufficiente per pagare la fee di listing ({$fee} CFU).");
         }
 
         try {

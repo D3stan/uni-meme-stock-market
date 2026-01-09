@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 
 class CreateService
 {
+    public const LISTING_FEE = 21.00;
+
     /**
      * Get all categories.
      *
@@ -34,6 +36,27 @@ class CreateService
     public function getUserBalance(User $user): float
     {
         return $user->cfu_balance;
+    }
+
+    /**
+     * Get the listing fee amount.
+     *
+     * @return float
+     */
+    public function getListingFee(): float
+    {
+        return self::LISTING_FEE;
+    }
+
+    /**
+     * Check if user has sufficient funds to pay the listing fee.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasSufficientFundsForListing(User $user): bool
+    {
+        return $user->cfu_balance >= self::LISTING_FEE;
     }
 
     /**
@@ -83,15 +106,15 @@ class CreateService
             ]);
 
             // Create transaction for fee
-            $user->decrement('cfu_balance', 20.00);
+            $user->decrement('cfu_balance', self::LISTING_FEE);
             Transaction::create([
                 'user_id' => $user->id,
                 'meme_id' => $meme->id,
                 'type' => 'listing_fee',
                 'quantity' => null,
                 'price_per_share' => null,
-                'fee_amount' => 20.00,
-                'total_amount' => -20.00,
+                'fee_amount' => self::LISTING_FEE,
+                'total_amount' => -self::LISTING_FEE,
                 'cfu_balance_after' => $user->fresh()->cfu_balance,
                 'executed_at' => now(),
             ]);

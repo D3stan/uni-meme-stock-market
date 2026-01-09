@@ -1,4 +1,4 @@
-<x-app active="create" title="Upload" :balance="$balance">
+<x-app active="create" title="Upload" :balance="$balance" :fee="$fee">
     
     <div class="max-w-2xl mx-auto pb-24">
         <form id="uploadMemeForm" action="{{ route('meme.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -64,19 +64,19 @@
 
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-text-muted">Costo Listing (Fee)</span>
-                        <span class="text-sm font-mono text-brand-danger">- 20.00 CFU</span>
+                        <span class="text-sm font-mono text-brand-danger">- {{ number_format($fee, 2)}} CFU</span>
                     </div>
 
                     <div class="border-t border-surface-200 pt-3">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-semibold text-text-main">Saldo dopo listing</span>
-                            <span class="text-base font-mono font-bold {{ $balance >= 20 ? 'text-brand' : 'text-brand-danger' }}">
-                                {{ number_format($balance - 20, 2) }} CFU
+                            <span class="text-base font-mono font-bold {{ $balance >=  $fee ? 'text-brand' : 'text-brand-danger' }}">
+                                {{ number_format($balance - $fee, 2) }} CFU
                             </span>
                         </div>
                     </div>
 
-                    @if($balance < 20)
+                    @if($balance < $fee)
                         <div class="bg-brand-danger/20 border border-brand-danger/30 rounded-lg p-3 flex items-center gap-2">
                             <span aria-hidden="true" class="material-icons text-brand-danger text-lg">warning</span>
                             <span class="text-sm text-brand-danger font-medium">Saldo insufficiente</span>
