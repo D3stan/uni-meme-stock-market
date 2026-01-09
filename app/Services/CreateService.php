@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
 class CreateService
 {
-    public const LISTING_FEE = 21.00;
+    public const LISTING_FEE = 20.00;
 
     /**
      * Get all categories.
