@@ -133,8 +133,8 @@
                             
                             {{-- Lock Text --}}
                             <div class="text-center mb-4">
-                                <h3 class="text-lg font-bold text-text-main mb-1">Market Data Locked</h3>
-                                <p class="text-sm text-text-muted">Join other students trading CFUs.</p>
+                                <h3 class="text-lg font-bold text-text-main mb-1">Dati di Mercato</h3>
+                                <p class="text-sm text-text-muted">Unisciti ad ad Almastreet per scoprire di più.</p>
                             </div>
                             
                             {{-- CTA Button (Pill-shaped) --}}
