@@ -29,7 +29,7 @@ class NotificationController extends Controller
         $notifications = $this->notificationService->getNotificationsGrouped($user);
         $unreadCount = $this->notificationService->getUnreadCount($user);
 
-        return view('pages.notification.partials.list', [
+        return view('pages.notification.list', [
             'unread' => $notifications['unread'],
             'read' => $notifications['read'],
             'unreadCount' => $unreadCount,
