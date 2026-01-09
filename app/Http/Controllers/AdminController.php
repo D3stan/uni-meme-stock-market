@@ -150,7 +150,9 @@ class AdminController extends Controller
             $request->input('text_alt')
         );
 
-        $this->notificationDispatcher->memeApproved($meme);
+        if ($meme->wasChanged('status')) {
+            $this->notificationDispatcher->memeApproved($meme);
+        }
 
         return redirect()->route('admin.moderation')->with('success', 'Meme approvato con successo');
     }
