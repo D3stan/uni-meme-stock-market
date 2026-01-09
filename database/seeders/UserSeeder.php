@@ -22,13 +22,14 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'cfu_balance' => 10000.00,
             'is_suspended' => false,
+            'avatar' => 'avatar.png'
         ]);
 
         // Regular traders
         $traders = [
-            ['name' => 'Mario Rossi', 'email' => 'mario.rossi@studio.unibo.it', 'cfu_balance' => 1250.00],
+            ['name' => 'Mario Rossi', 'email' => 'mario.rossi@studio.unibo.it', 'cfu_balance' => 1250.00, 'avatar' =>'profile.jpg'],
             ['name' => 'Laura Bianchi', 'email' => 'laura.bianchi@studio.unibo.it', 'cfu_balance' => 2100.00],
-            ['name' => 'Giuseppe Verdi', 'email' => 'giuseppe.verdi@studio.unibo.it', 'cfu_balance' => 850.00],
+            ['name' => 'Giuseppe Verdi', 'email' => 'giuseppe.verdi@studio.unibo.it', 'cfu_balance' => 850.00, 'avatar' =>'front.png'],
             ['name' => 'Anna Ferrari', 'email' => 'anna.ferrari@studio.unibo.it', 'cfu_balance' => 3200.00],
             ['name' => 'Luca Conti', 'email' => 'luca.conti@studio.unibo.it', 'cfu_balance' => 1500.00],
         ];
@@ -42,6 +43,7 @@ class UserSeeder extends Seeder
                 'role' => 'trader',
                 'cfu_balance' => $trader['cfu_balance'],
                 'is_suspended' => false,
+                'avatar' => $trader['avatar'] ?? null
             ]);
         }
     }
