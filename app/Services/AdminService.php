@@ -262,16 +262,23 @@ class AdminService
      * 
      * @param int $id
      * @param int $adminId
+     * @param string|null $textAlt
      * @return Meme
      */
-    public function approveMeme(int $id, int $adminId): Meme
+    public function approveMeme(int $id, int $adminId, ?string $textAlt = null): Meme
     {
         $meme = Meme::findOrFail($id);
-        $meme->update([
+        $data = [
             'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => $adminId,
-        ]);
+        ];
+
+        if ($textAlt !== null) {
+            $data['text_alt'] = $textAlt;
+        }
+
+        $meme->update($data);
 
         return $meme;
     }

@@ -144,15 +144,12 @@ class AdminController extends Controller
      */
     public function approveMeme(Request $request, int $id): RedirectResponse
     {
-        // Update text_alt
-        if ($request->has('text_alt')) {
-            $meme = Meme::findOrFail($id);
-            $meme->text_alt = $request->input('text_alt');
-            $meme->save();
-        }
-        
-        $this->adminService->approveMeme($id, Auth::id());
-        $meme = Meme::findOrFail($id);
+        $meme = $this->adminService->approveMeme(
+            $id,
+            Auth::id(),
+            $request->input('text_alt')
+        );
+
         $this->notificationDispatcher->memeApproved($meme);
 
         return redirect()->route('admin.moderation')->with('success', 'Meme approvato con successo');
