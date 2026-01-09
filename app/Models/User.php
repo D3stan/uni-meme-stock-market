@@ -16,18 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Models\Financial\Portfolio;
 use App\Models\Financial\Transaction;
-use App\Models\Market\Meme;
-use App\Models\Gamification\Badge;
-use App\Models\Gamification\UserBadge;
-use App\Models\Utility\Notification;
-use App\Models\Market\Watchlist;
-use App\Models\Admin\MarketCommunication;
-use App\Models\Admin\AdminAction;
 
 class User extends Authenticatable
 {

@@ -55,17 +55,6 @@ class CreateService
 
     /**
      * Check if ticker already exists.
-     *
-     * @param string $ticker
-     * @return bool
-     */
-    public function hasSufficientFundsForListing(User $user): bool
-    {
-        return $user->cfu_balance >= self::LISTING_FEE;
-    }
-
-    /**
-     * Check if ticker already exists.
      */
     public function tickerExists(string $ticker): bool
     {
