@@ -1,14 +1,14 @@
 <x-admin title="Ledger di Mercato" label="Indietro" icon="arrow_back" href="{{ route('admin.admin') }}">
 
     {{-- Statistics --}}
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         <x-ui.stat-card title="Totale" :value="number_format($stats['total'])" color="text-main" />
         <x-ui.stat-card title="Acquisti" :value="number_format($stats['buy'])" color="brand" />
         <x-ui.stat-card title="Vendite" :value="number_format($stats['sell'])" color="brand-danger" />
         <x-ui.stat-card title="Bonus" :value="number_format($stats['bonus'])" color="brand-accent" />
         <x-ui.stat-card title="Dividendi" :value="number_format($stats['dividend'])" color="brand-accent" />
         <x-ui.stat-card title="Volume" :value="'€' . number_format($stats['volume'], 0)" color="text-main" />
-    </div>
+    </section>
 
     {{-- Filters --}}
     <nav class="flex gap-2 mb-6 overflow-x-auto pb-2">

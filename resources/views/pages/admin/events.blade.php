@@ -1,12 +1,12 @@
 <x-admin title="Gestione Eventi" label="Indietro" icon="arrow_back" href="{{ route('admin.admin') }}">
 
     {{-- Statistics --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="text-main" />
         <x-ui.stat-card title="Attivi" :value="number_format($stats['active'])" color="brand" />
         <x-ui.stat-card title="Scaduti" :value="number_format($stats['expired'])" color="brand-danger" />
         <x-ui.stat-card title="Permanenti" :value="number_format($stats['permanent'])" color="brand-accent" />
-    </div>
+    </section>
 
     {{-- Filters --}}
     <nav class="flex gap-2 mb-6 overflow-x-auto pb-2">

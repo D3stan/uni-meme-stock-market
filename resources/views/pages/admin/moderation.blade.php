@@ -1,12 +1,12 @@
 <x-admin title="Moderazione Meme" label="Indietro" icon="arrow_back" href="{{ route('admin.admin') }}">
 
     {{-- Statistics --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <x-ui.stat-card title="Totali" :value="number_format($stats['total'])" color="text-main" />
         <x-ui.stat-card title="In Attesa" :value="number_format($stats['pending'])" color="brand-accent" />
         <x-ui.stat-card title="Approvati" :value="number_format($stats['approved'])" color="brand" />
         <x-ui.stat-card title="Rifiutati" :value="number_format($stats['suspended'])" color="brand-danger" />
-    </div>
+    </section>
 
     {{-- Filters --}}
     <nav class="flex gap-2 mb-6 overflow-x-auto pb-2">
