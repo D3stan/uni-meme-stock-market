@@ -76,6 +76,8 @@ Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve*
 5. **Start local dev server**
    ```bash
    composer run dev
+   php artisan schedule:work
+   php artisan queue:work
    ```
 
 6. **Enjoy**  
@@ -83,6 +85,7 @@ Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve*
     * login with:  
         * admin@studio.unibo.it / password
         * mario.rossi@studio.unibo.it / password 
+    * execute dividend distribution manually with `php artisan dividends:distribute`
    
 
 ## 🎓 Academic Context
