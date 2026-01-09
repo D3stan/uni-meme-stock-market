@@ -88,6 +88,21 @@ class Meme extends Model
     }
 
     // Scopes
+    public function scopeWith24hStats(Builder $query): Builder
+    {
+        return $query->addSelect([
+            'price_24h_ago' => PriceHistory::select('price')
+                ->whereColumn('meme_id', 'memes.id')
+                ->where('recorded_at', '>=', now()->subHours(24))
+                ->orderBy('recorded_at', 'asc')
+                ->limit(1),
+            'volume_24h' => Transaction::selectRaw('COALESCE(SUM(total_amount), 0)')
+                ->whereColumn('meme_id', 'memes.id')
+                ->whereIn('type', ['buy', 'sell'])
+                ->where('executed_at', '>=', now()->subHours(24))
+        ]);
+    }
+
     public function scopeApproved(Builder $query): Builder
     {
         return $query->where('status', 'approved');
@@ -108,6 +123,21 @@ class Meme extends Model
     {
         return Attribute::make(
             get: fn () => number_format($this->current_price, 2) . ' CFU'
+        );
+    }
+
+    protected function pctChange24h(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $price24hAgo = $this->price_24h_ago ?? $this->base_price;
+                
+                if ($price24hAgo <= 0) {
+                    return 0;
+                }
+
+                return (($this->current_price - $price24hAgo) / $price24hAgo) * 100;
+            }
         );
     }
 

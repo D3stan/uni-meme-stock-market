@@ -112,81 +112,43 @@ class MarketService
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
     {
         $query = Meme::with(['creator:id,name,email,avatar', 'category:id,name'])
-            ->where('status', 'approved')
-            ->whereNotNull('approved_at');
-
-        // Add price change 24h calculation
-        $query->leftJoin('price_histories as ph_24h', function ($join) {
-            $join->on('ph_24h.id', '=', DB::raw("
-                (SELECT id FROM price_histories 
-                 WHERE meme_id = memes.id 
-                 AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
-                 ORDER BY recorded_at ASC, id ASC
-                 LIMIT 1)
-            "));
-        });
-
-        $query->select(
-            'memes.*',
-            DB::raw('COALESCE(ph_24h.price, memes.base_price) as price_24h_ago'),
-            DB::raw('CASE 
-                WHEN COALESCE(ph_24h.price, memes.base_price) > 0 
-                THEN ((memes.current_price - COALESCE(ph_24h.price, memes.base_price)) / COALESCE(ph_24h.price, memes.base_price) * 100)
-                ELSE 0 
-            END as pct_change_24h')
-        );
+            ->approved()
+            ->whereNotNull('approved_at')
+            ->with24hStats();
 
         // Apply filters
         switch ($filter) {
             case 'top_gainer':
-                // Top gainers: highest positive percentage change in 24h
-                $query->orderByRaw('pct_change_24h DESC')
-                      ->orderBy('memes.id', 'desc');
+                $query->orderByRaw('((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price) * 100) DESC')
+                      ->orderBy('id', 'desc');
                 break;
 
             case 'new_listing':
-                // New listings: approved in the last 7 days
                 $query->where('approved_at', '>=', now()->subDays(7))
                     ->orderByDesc('approved_at')
-                    ->orderBy('memes.id', 'desc');
+                    ->orderBy('id', 'desc');
                 break;
 
             case 'high_risk':
-                // High risk: high slope (volatile) OR low circulating supply
                 $query->where(function ($q) {
-                    $q->where('slope', '>=', 0.01) // High slope = more volatile
-                        ->orWhere('circulating_supply', '<', 100); // Low supply = risky
+                    $q->where('slope', '>=', 0.01)
+                        ->orWhere('circulating_supply', '<', 100);
                 })
                 ->orderByDesc('slope')
-                ->orderBy('memes.id', 'desc');
+                ->orderBy('id', 'desc');
                 break;
 
             case 'all':
             default:
-                // All: ordered by market cap (current_price * circulating_supply)
-                $query->orderByRaw('(memes.current_price * memes.circulating_supply) DESC')
-                      ->orderBy('memes.id', 'desc');
+                $query->orderByRaw('(current_price * circulating_supply) DESC')
+                      ->orderBy('id', 'desc');
                 break;
         }
 
-        // Paginate results
         $memes = $query->paginate($perPage);
 
         // Add computed attributes to each meme
         $memes->getCollection()->transform(function ($meme) {
-            // Calculate 24h volume (sum of all transaction amounts in last 24h)
-            $volume24h = Transaction::where('meme_id', $meme->id)
-                ->whereIn('type', ['buy', 'sell'])
-                ->where('executed_at', '>=', now()->subHours(24))
-                ->sum('total_amount');
-
-            // Determine status badge
-            $statusBadge = null;
-            if ($meme->approved_at && $meme->approved_at->diffInDays(now()) <= 7) {
-                $statusBadge = 'new';
-            }
-            
-            // Return formatted data for frontend
             return [
                 'id' => $meme->id,
                 'image' => $meme->image_path ? asset('storage/data/' . $meme->creator_id . '/' . $meme->image_path) : null,
@@ -194,13 +156,13 @@ class MarketService
                 'name' => $meme->title,
                 'ticker' => $meme->ticker,
                 'price' => round($meme->current_price, 2),
-                'change' => round($meme->pct_change_24h ?? 0, 2),
+                'change' => round($meme->pct_change_24h, 2),
                 'creatorId' => $meme->creator_id,
                 'creatorName' => $meme->creator->name ?? 'Unknown',
                 'creatorAvatar' => $meme->creator->avatarUrl(),
-                'status' => $statusBadge,
+                'status' => ($meme->approved_at && $meme->approved_at->diffInDays(now()) <= 7) ? 'new' : null,
                 'marketCap' => round($meme->current_price * $meme->circulating_supply, 2),
-                'volume24h' => round($volume24h, 2),
+                'volume24h' => round($meme->volume_24h, 2),
                 'circulatingSupply' => $meme->circulating_supply,
                 'isHighRisk' => $meme->slope >= 0.01 || $meme->circulating_supply < 100,
                 'categoryName' => $meme->category->name ?? null,
@@ -230,30 +192,10 @@ class MarketService
      */
     public function getTickerMemes(int $limit = 10)
     {
-        return Meme::where('status', 'approved')
+        return Meme::approved()
             ->whereNotNull('approved_at')
-            ->leftJoin('price_histories as ph_24h', function ($join) {
-                $join->on('memes.id', '=', 'ph_24h.meme_id')
-                    ->where('ph_24h.recorded_at', '>=', now()->subHours(24))
-                    ->where('ph_24h.recorded_at', '=', function ($subQuery) {
-                        $subQuery->select(DB::raw('MIN(recorded_at)'))
-                            ->from('price_histories as ph_inner')
-                            ->whereColumn('ph_inner.meme_id', 'memes.id')
-                            ->where('ph_inner.recorded_at', '>=', now()->subHours(24));
-                    });
-            })
-            ->select(
-                'memes.id',
-                'memes.ticker',
-                'memes.current_price',
-                DB::raw('COALESCE(ph_24h.price, memes.base_price) as price_24h_ago'),
-                DB::raw('CASE 
-                    WHEN COALESCE(ph_24h.price, memes.base_price) > 0 
-                    THEN ((memes.current_price - COALESCE(ph_24h.price, memes.base_price)) / COALESCE(ph_24h.price, memes.base_price) * 100)
-                    ELSE 0 
-                END as pct_change_24h')
-            )
-            ->orderByRaw('ABS(pct_change_24h) DESC')
+            ->with24hStats()
+            ->orderByRaw('ABS(((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price) * 100)) DESC')
             ->limit($limit)
             ->get()
             ->map(function ($meme) {
@@ -261,7 +203,7 @@ class MarketService
                     'id' => $meme->id,
                     'ticker' => $meme->ticker,
                     'price' => round($meme->current_price, 2),
-                    'change' => round($meme->pct_change_24h ?? 0, 2),
+                    'change' => round($meme->pct_change_24h, 2),
                 ];
             });
     }
