@@ -58,26 +58,12 @@ Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve*
 
 2. **Install dependencies**
    ```bash
-   composer install
-   npm install
+   composer run setup
    ```
 
-3. **Configure environment**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-4. **Setup database**
-   ```bash
-   php artisan migrate --seed
-   ```
-
-5. **Start local dev server**
+3. **Start local dev server**
    ```bash
    composer run dev
-   php artisan schedule:work
-   php artisan queue:work
    ```
 
 6. **Enjoy**  
