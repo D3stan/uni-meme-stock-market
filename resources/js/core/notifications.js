@@ -113,7 +113,7 @@
             attachItemListeners();
 
         } catch (error) {
-            console.error('Error loading notifications:', error);
+            console.error('Errore caricamento notifiche:', error);
             content.innerHTML = `
                 <div class="flex flex-col items-center justify-center h-48 text-center">
                     <span class="material-icons text-4xl text-brand-danger mb-3">error</span>
@@ -180,7 +180,7 @@
                 loadNotifications();
             }
         } catch (error) {
-            console.error('Error marking as read:', error);
+            console.error('Errore marcatura come letto:', error);
         }
     }
 
@@ -205,7 +205,7 @@
                 loadNotifications();
             }
         } catch (error) {
-            console.error('Error marking all as read:', error);
+            console.error('Errore marcatura tutti come letti:', error);
         }
     }
 
@@ -259,7 +259,7 @@
                 );
             }
         } catch (error) {
-            console.error('Error loading notification detail:', error);
+            console.error('Errore caricamento dettaglio notifica:', error);
         }
     }
 

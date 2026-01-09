@@ -70,7 +70,7 @@ function handleFormSubmit(e) {
         }
     })
     .catch(error => {
-        console.error('Form submission error:', error);
+        console.error('Errore invio form:', error);
         NotificationService.error(error.message || 'Si è verificato un errore. Riprova.');
     });
 }

@@ -29,9 +29,9 @@ class OrderModal {
         this.btnSpinner = document.getElementById('btn-spinner');
         this.btnText = document.getElementById('btn-text');
         
-        // Debug: Check if critical elements exist
-        if (!this.modal) console.error('OrderModal: order-modal element not found');
-        if (!this.backdrop) console.error('OrderModal: order-modal-backdrop element not found');
+        // Debug: Controlla se elementi critici esistono
+        if (!this.modal) console.error('OrderModal: elemento order-modal non trovato');
+        if (!this.backdrop) console.error('OrderModal: elemento order-modal-backdrop non trovato');
         
         // Display elements
         this.userBalance = document.getElementById('user-balance');
@@ -122,7 +122,7 @@ class OrderModal {
         
         // Show modal with proper visibility
         if (!this.modal || !this.backdrop) {
-            console.error('OrderModal: Cannot open modal - elements not found');
+            console.error('OrderModal: Impossibile aprire modale - elementi non trovati');
             return;
         }
         
@@ -207,7 +207,7 @@ class OrderModal {
             }
             return false;
         } catch (error) {
-            console.error('Preview failed:', error);
+            console.error('Anteprima fallita:', error);
             NotificationService.error(error.message || 'Errore nel calcolo dell\'anteprima');
             this.clearPreview();
             return false;
@@ -269,7 +269,7 @@ class OrderModal {
             if (error.status === 409 && error.data.slippage_detected) {
                 this.handleSlippage(error.data);
             } else {
-                // Other error - show toast but keep modal open
+                // Altro errore - mostra notifica ma mantieni modale aperta
                 NotificationService.error(error.message || 'Errore nell\'esecuzione dell\'ordine');
             }
         } finally {

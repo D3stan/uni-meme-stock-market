@@ -97,7 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/notifications', [AdminController::class, 'notifications'])->name('notifications');
 });
 
-// Test routes (can be removed in production)
+// Test routes
 Route::get('/test-components', function () {
     return view('test-components');
 });

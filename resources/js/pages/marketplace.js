@@ -44,7 +44,7 @@ export function initMarketplace() {
                 checkAllLoaded();
             } else {
                 img.addEventListener('load', checkAllLoaded);
-                img.addEventListener('error', checkAllLoaded); // Proceed even on error
+                img.addEventListener('error', checkAllLoaded); // Procedi anche in caso di errore
             }
         });
     }
@@ -83,14 +83,14 @@ export function initMarketplace() {
                 lastPage = true;
             }
         } catch (e) {
-            // Optionally show error
+            // Opzionalmente mostra errore
         } finally {
             skeleton.classList.add('hidden');
             isLoading = false;
         }
     }
 
-    // Scroll event listener while reaching the endo of the page
+    // Listener evento scroll per raggiungere la fine della pagina
     window.addEventListener('scroll', () => {
         if (lastPage || isLoading) return;
         const scrollY = window.scrollY || window.pageYOffset;

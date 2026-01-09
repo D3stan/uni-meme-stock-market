@@ -47,7 +47,7 @@ class PriceUpdateService {
                 EventBus.emit('price:updated', response.data);
             }
         } catch (error) {
-            console.error('Price update failed:', error);
+            console.error('Aggiornamento prezzo fallito:', error);
         }
     }
 

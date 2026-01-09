@@ -13,7 +13,7 @@ class TradingPage {
         this.data = window.TRADING_DATA;
         
         if (!this.data) {
-            console.error('TRADING_DATA not found');
+            console.error('TRADING_DATA non trovato');
             return;
         }
         
@@ -163,8 +163,8 @@ class TradingPage {
             }
         }
         
-        // Note: Chart data is NOT updated on polling to prevent duplicate points
-        // Chart only updates when user changes period or after a trade execution
+        // Nota: I dati del grafico NON vengono aggiornati al polling per prevenire punti duplicati
+        // Il grafico si aggiorna solo quando l'utente cambia periodo o dopo l'esecuzione di un trade
     }
 
     /**
@@ -204,7 +204,7 @@ class TradingPage {
     }
 }
 
-// Initialize when DOM is ready
+// Inizializza quando il DOM è pronto
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         new TradingPage();

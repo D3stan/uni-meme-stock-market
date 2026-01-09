@@ -23,13 +23,13 @@
                     NotificationService.show(toast.message, toast.type || 'info');
                 })
                 .catch(error => {
-                    console.error('Error loading NotificationService:', error);
+                    console.error('Errore caricamento NotificationService:', error);
                 });
 
             // Clean up the data attribute after use
             delete document.body.dataset.toast;
         } catch (error) {
-            console.error('Error parsing toast data:', error);
+            console.error('Errore parsing dati toast:', error);
         }
     }
 

@@ -3,7 +3,7 @@
         
         {{-- Hero Section: Title --}}
         <header class="text-center space-y-2 py-4">
-            <h1 class="text-4xl font-black text-text-main">Dean's List</h1>
+            <h1 class="text-4xl font-black text-text-main">Leaderboard</h1>
             <p class="text-text-muted text-base">I migliori trader dell'ateneo</p>
         </header>
         
@@ -56,7 +56,7 @@
                     icon="emoji_events"
                     message="Nessun trader in classifica"
                 >
-                    <p class="text-text-muted text-sm">Inizia a fare trading per apparire nella Dean's List!</p>
+                    <p class="text-text-muted text-sm">Inizia a fare trading per apparire nella Leaderboard!</p>
                 </x-ui.empty-state>
             @endforelse
         </div>

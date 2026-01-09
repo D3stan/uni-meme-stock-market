@@ -51,7 +51,7 @@ export function initLogin() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Errore:', error);
             errorDiv.textContent = 'Errore durante l\'invio della richiesta.';
             errorDiv.classList.remove('hidden');
         });

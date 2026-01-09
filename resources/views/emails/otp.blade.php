@@ -92,30 +92,30 @@
         </div>
 
         <div class="greeting">
-            Hello {{ $userName }},
+            Ciao {{ $userName }},
         </div>
 
         <div class="content">
-            <p>Welcome to <strong>AlmaStreet</strong> - The Academic Stock Market!</p>
-            <p>To complete your registration and start trading, please use the verification code below:</p>
+            <p>Benvenuto su <strong>AlmaStreet</strong> - Il Mercato Azionario Accademico!</p>
+            <p>Per completare la tua registrazione e iniziare a fare trading, usa il codice di verifica qui sotto:</p>
         </div>
 
         <div class="otp-box">
-            <div class="otp-label">Your Verification Code</div>
+            <div class="otp-label">Il tuo Codice di Verifica</div>
             <div class="otp-code">{{ $otpCode }}</div>
         </div>
 
         <div class="expiry">
-            ⏰ This code will expire in <strong>10 minutes</strong>
+            ⏰ Questo codice scadrà tra <strong>10 minuti</strong>
         </div>
 
         <div class="warning">
-            <strong>⚠️ Security Notice:</strong> Never share this code with anyone. AlmaStreet staff will never ask for your verification code.
+            <strong>⚠️ Avviso di Sicurezza:</strong> Non condividere mai questo codice con nessuno. Lo staff di AlmaStreet non ti chiederà mai il tuo codice di verifica.
         </div>
 
         <div class="footer">
-            <p>If you didn't request this code, please ignore this email.</p>
-            <p>&copy; {{ date('Y') }} AlmaStreet - Academic Stock Market. All rights reserved.</p>
+            <p>Se non hai richiesto questo codice, ignora questa email.</p>
+            <p>&copy; {{ date('Y') }} AlmaStreet - Mercato Azionario Accademico. Tutti i diritti riservati.</p>
         </div>
     </div>
 </body>

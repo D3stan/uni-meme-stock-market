@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error checking ticker:', error);
+            console.error('Errore controllo ticker:', error);
         });
     }
 

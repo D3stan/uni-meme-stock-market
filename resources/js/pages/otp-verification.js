@@ -109,10 +109,10 @@ export function initOtpVerification() {
                     }
                 }).then(response => {
                     if (response.ok) {
-                        console.log('OTP resent successfully');
+                        console.log('OTP reinviato con successo');
                     }
                 }).catch(error => {
-                    console.error('Failed to resend OTP:', error);
+                    console.error('Reinvio OTP fallito:', error);
                 });
             }
         });

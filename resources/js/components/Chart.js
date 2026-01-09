@@ -19,7 +19,7 @@ class Chart {
      */
     init(memeId) {
         if (!this.container) {
-            console.error(`Chart container #${this.containerId} not found`);
+            console.error(`Contenitore grafico #${this.containerId} non trovato`);
             return;
         }
 
@@ -71,9 +71,9 @@ class Chart {
             // Load initial data
             this.loadData(this.currentPeriod);
         } catch (error) {
-            console.error('Chart initialization failed:', error);
-            // Show fallback message
-            this.container.innerHTML = '<div class="flex items-center justify-center h-full text-text-muted"><p>Chart loading error. Please refresh.</p></div>';
+            console.error('Inizializzazione grafico fallita:', error);
+            // Mostra messaggio di fallback
+            this.container.innerHTML = '<div class="flex items-center justify-center h-full text-text-muted"><p>Errore caricamento grafico. Ricarica la pagina.</p></div>';
         }
     }
 
@@ -89,10 +89,10 @@ class Chart {
                 this.updateTimeScale(period);
                 this.chart.timeScale().fitContent();
             } else {
-                console.warn('No price history data available');
+                console.warn('Nessuno storico prezzi disponibile');
             }
         } catch (error) {
-            console.error('Failed to load chart data:', error);
+            console.error('Caricamento dati grafico fallito:', error);
             this.showEmptyState();
         }
     }

@@ -40,7 +40,7 @@ class API {
 
             return data;
         } catch (error) {
-            console.error('API Error:', error);
+            console.error('Errore API:', error);
             throw error;
         }
     }
