@@ -14,27 +14,6 @@ use Illuminate\Support\Facades\DB;
 class MarketService
 {
     /**
-     * Update a global setting and log the admin action.
-     *
-     * @param  mixed  $value
-     */
-    public function updateGlobalSetting(User $admin, string $key, $value): bool
-    {
-        GlobalSetting::set($key, $value);
-
-        AdminAction::create([
-            'admin_id' => $admin->id,
-            'action_type' => 'update_setting',
-            'target_id' => null,
-            'target_type' => 'setting',
-            'reason' => sprintf('Updated setting: %s = %s', $key, $value),
-            'created_at' => now(),
-        ]);
-
-        return true;
-    }
-
-    /**
      * Get memes for marketplace with filtering and 24h price change calculation.
      */
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
