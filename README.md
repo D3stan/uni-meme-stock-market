@@ -1,59 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📈 AlmaStreet - The Academic Stock Market
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> *"Buy the dip, hodl the memes, graduate with gains."*
 
-## About Laravel
+A university-themed stock market simulator where students trade meme assets using CFU (Credito Finanziario Universitario). Powered by an Automated Market Maker (AMM) bonding curve for guaranteed liquidity and instant trading.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎯 Project Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+AlmaStreet transforms campus culture into a dynamic trading platform. Students can:
+- 📊 **Trade memes** with real-time pricing based on supply and demand
+- 💎 **Build portfolios** and compete on the leaderboard
+- 🚀 **List new memes** (for a fee) and become the next market maker
+- 🏆 **Earn badges** through gamification mechanics
+- 💰 **Collect dividends** from performing assets
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve** AMM that mints/burns shares on demand, ensuring you can always trade - no waiting for counterparties.
 
-## Learning Laravel
+## 🛠 Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Backend**
+- Laravel 12 (PHP 8.4)
+- Eloquent ORM with atomic transactions
+- MySQL database
+- Pest 4 for testing
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Frontend**
+- Vanilla JavaScript (no framework overhead)
+- Flowbite/Bootstrap for UI components
+- TradingView Lightweight Charts
+- Mobile-first, thumb-driven design
 
-## Laravel Sponsors
+## ⚡ Key Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Trading Engine
+- **Instant execution** against AMM protocol
+- **Dynamic pricing**: `P = P_base + (M × S)` where S = circulating supply
+- **Slippage protection** with preview modals
+- **Transaction fees** (2%) to prevent scalping
 
-### Premium Partners
+### Gamification
+- Real-time leaderboard
+- Achievement badges (Diamond Hands, IPO Hunter, etc.)
+- Daily dividend distribution for long-term holders
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Admin Panel ("Il Rettorato")
+- IPO approval system with pricing control
+- Market surveillance dashboard
+- Whale alerts and anomaly detection
+- Global announcements ticker
 
-## Contributing
+## 🚀 Setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd uni-meme-stock-market
+   ```
 
-## Code of Conduct
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. **Configure environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Security Vulnerabilities
+4. **Setup database**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Start local dev server**
+   ```bash
+   composer run dev
+   ```
 
-## License
+6. **Enjoy**  
+    * navigate to http://localhost:8000
+    * login with:  
+        * admin@studio.unibo.it / password
+        * mario.rossi@studio.unibo.it / password 
+   
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🎓 Academic Context
+
+This project is built for academic demonstration purposes, showcasing:
+- Complex state management with Laravel's Eloquent ORM
+- Financial transaction atomicity and concurrency handling
+- Real-time data updates without WebSockets
+- Mobile-first responsive design patterns
+- Gamification mechanics in web applications
+
+## 🔐 Authentication
+
+Registration requires institutional email verification via OTP. New users receive **100 CFU** as starting capital.
+
+## 🤝 Contributing
+
+This is an academic project. If you're a fellow student or want to suggest improvements, feel free to open issues or PRs.
+
+---
+
+*Made with ☕ and a questionable amount of meme research*
+
+**Disclaimer:** No actual CFU were harmed in the making of this application. Please don't try to trade your real university credits.
