@@ -89,9 +89,6 @@ class MarketService
 
     /**
      * Get memes for marketplace with filtering and 24h price change calculation.
-     *
-     * @param  string  $filter  'all', 'top_gainer', 'new_listing', 'high_risk'
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
     {
@@ -167,8 +164,6 @@ class MarketService
 
     /**
      * Get top gainers for the ticker tape.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public function getTickerMemes(int $limit = 10)
     {

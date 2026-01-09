@@ -181,6 +181,9 @@ class Meme extends Model
         );
     }
 
+    /**
+     * Calculate the 24-hour price change
+     */
     protected function pctChange24h(): Attribute
     {
         return Attribute::make(
@@ -198,8 +201,6 @@ class Meme extends Model
 
     /**
      * Calculate the 24-hour price change percentage with color formatting.
-     *
-     * @return Attribute<array{value: string, formatted: string, color_class: string}, never>
      */
     protected function priceChangePercentage(): Attribute
     {
