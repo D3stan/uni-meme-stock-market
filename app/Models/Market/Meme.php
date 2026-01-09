@@ -200,50 +200,6 @@ class Meme extends Model
     }
 
     /**
-     * Calculate the 24-hour price change percentage with color formatting.
-     */
-    protected function priceChangePercentage(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $priceHistory24h = $this->priceHistories()
-                    ->where('recorded_at', '<=', now()->subDay())
-                    ->orderBy('recorded_at', 'desc')
-                    ->first();
-
-                if (! $priceHistory24h) {
-                    return [
-                        'value' => '0.00',
-                        'formatted' => '0.00%',
-                        'color_class' => 'text-gray-500',
-                    ];
-                }
-
-                $oldPrice = $priceHistory24h->price;
-                $currentPrice = $this->current_price;
-
-                if ($oldPrice == 0) {
-                    return [
-                        'value' => '0.00',
-                        'formatted' => '0.00%',
-                        'color_class' => 'text-gray-500',
-                    ];
-                }
-
-                $percentageChange = (($currentPrice - $oldPrice) / $oldPrice) * 100;
-                $sign = $percentageChange > 0 ? '+' : '';
-                $colorClass = $percentageChange > 0 ? 'text-green-500' : ($percentageChange < 0 ? 'text-red-500' : 'text-gray-500');
-
-                return [
-                    'value' => number_format($percentageChange, 2),
-                    'formatted' => $sign.number_format($percentageChange, 2).'%',
-                    'color_class' => $colorClass,
-                ];
-            }
-        );
-    }
-
-    /**
      * Calculate the current price using the bonding curve formula.
      */
     public function calculateCurrentPrice(): float
