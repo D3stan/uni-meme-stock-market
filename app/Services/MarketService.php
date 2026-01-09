@@ -14,59 +14,6 @@ use Illuminate\Support\Facades\DB;
 class MarketService
 {
     /**
-     * Create a market-wide communication message and log the admin action.
-     */
-    public function createMarketCommunication(
-        User $admin,
-        string $message,
-        ?Carbon $expiresAt = null
-    ): MarketCommunication {
-        return DB::transaction(function () use ($admin, $message, $expiresAt) {
-            $communication = MarketCommunication::create([
-                'admin_id' => $admin->id,
-                'message' => $message,
-                'is_active' => true,
-                'expires_at' => $expiresAt,
-            ]);
-
-            AdminAction::create([
-                'admin_id' => $admin->id,
-                'action_type' => 'create_communication',
-                'target_id' => $communication->id,
-                'target_type' => 'communication',
-                'reason' => 'Market communication posted',
-                'created_at' => now(),
-            ]);
-
-            return $communication;
-        });
-    }
-
-    /**
-     * Deactivate a market communication and log the admin action.
-     */
-    public function deactivateMarketCommunication(
-        User $admin,
-        MarketCommunication $communication
-    ): bool {
-        return DB::transaction(function () use ($admin, $communication) {
-            $communication->is_active = false;
-            $communication->save();
-
-            AdminAction::create([
-                'admin_id' => $admin->id,
-                'action_type' => 'deactivate_communication',
-                'target_id' => $communication->id,
-                'target_type' => 'communication',
-                'reason' => 'Market communication deactivated',
-                'created_at' => now(),
-            ]);
-
-            return true;
-        });
-    }
-
-    /**
      * Update a global setting and log the admin action.
      *
      * @param  mixed  $value
