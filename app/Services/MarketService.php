@@ -109,7 +109,6 @@ class MarketService
             });
     }
 
-
     /**
      * Get top movers for landing page including volume data.
      *
