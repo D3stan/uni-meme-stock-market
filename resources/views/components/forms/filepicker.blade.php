@@ -1,6 +1,7 @@
 @props([
     'name' => 'image',
     'id' => null,
+    'label' => null,
     'accept' => 'image/*',
     'maxSize' => '10MB',
     'emptyText' => 'Tocca per caricare',
@@ -17,8 +18,12 @@
 @endphp
 
 <div class="p-6">
+    @if(isset($label) && $label)
+        <label for="{{ $inputId }}" class="block text-xs font-semibold text-text-muted uppercase mb-2">
+            {{ $label }}
+        </label>
+    @endif
     <button type="button" id="{{ $uploadBoxId }}" class="w-full relative h-60 border-2 border-dashed border-surface-200 rounded-xl bg-surface-50 flex flex-col items-center justify-center cursor-pointer hover:border-brand transition-colors focus:outline-none focus:ring-4 focus:ring-brand/20">
-        
         {{-- Empty State --}}
         <div id="{{ $emptyStateId }}" class="text-center">
             <span aria-hidden="true" class="material-icons text-text-muted text-5xl mb-3">upload</span>

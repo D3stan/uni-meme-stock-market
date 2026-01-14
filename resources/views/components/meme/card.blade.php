@@ -66,10 +66,8 @@
         </div>
         
         {{-- Bottone Trade --}}
-        <a href="{{ $tradeUrl }}" class="block w-full">
-            <x-forms.button variant="primary" class="w-full" size="lg">
-                Trade
-            </x-forms.button>
-        </a>
+        <x-forms.button variant="primary" class="w-full" size="lg"  onclick="window.location='{{ $tradeUrl }}'">
+            Trade
+        </x-forms.button>
     </div>
 </article>

@@ -42,7 +42,7 @@
 
         {{-- Quantity Input --}}
         <div class="mb-6">
-            <label class="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">
+            <label for="quantity-input" class="block text-xs font-semibold text-text-muted uppercase tracking-wide mb-2">
                 Quantità azioni
             </label>
             <input 

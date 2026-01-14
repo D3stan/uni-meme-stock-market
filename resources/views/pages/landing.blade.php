@@ -46,11 +46,10 @@
             
             {{-- CTA Button --}}
             <div class="mb-12">
-                <a href="{{ route('auth.register') }}" class="inline-block w-full sm:w-auto">
-                    <x-forms.button variant="primary" size="lg" rounded="full" class="sm:w-auto px-20 py-4 text-base font-bold shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30">
-                        Inizia a fare Trading
-                    </x-forms.button>
-                </a>
+                <x-forms.button variant="primary" size="lg" rounded="full" class="w-full sm:w-auto px-20 py-4 text-base font-bold shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30"
+                    onclick="window.location='{{ route('auth.register') }}'">
+                    Inizia a fare Trading
+                </x-forms.button>
                 <p class="text-sm text-text-muted mt-3">
                     Registrati con la tua email istituzionale • 100 CFU gratis
                 </p>

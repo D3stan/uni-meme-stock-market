@@ -19,44 +19,40 @@
     <div id="main-market-content" class="sticky top-[84px] lg:top-[112px] z-20 outline-none" tabindex="-1">
         <nav aria-label="Filtri di mercato" class="overflow-x-auto hide-scrollbar px-4 py-3 bg-surface-50/80 backdrop-blur-sm border-b border-surface-200 rounded-b-xl">
             <div class="flex gap-2 min-w-max">
-                <a href="{{ route('market', ['filter' => 'all']) }}" class="whitespace-nowrap">
-                    <x-ui.chip 
-                        :active="$filter === 'all'"
-                        variant="{{ $filter === 'all' ? 'success' : 'white' }}"
-                    >
-                        Tutti
-                    </x-ui.chip>
-                </a>
-                
-                <a href="{{ route('market', ['filter' => 'top_gainer']) }}" class="whitespace-nowrap">
-                    <x-ui.chip 
-                        icon="🔥" 
-                        :active="$filter === 'top_gainer'"
-                        variant="{{ $filter === 'top_gainer' ? 'success' : 'outline' }}"
-                    >
-                        Top Performance
-                    </x-ui.chip>
-                </a>
-                
-                <a href="{{ route('market', ['filter' => 'new_listing']) }}" class="whitespace-nowrap">
-                    <x-ui.chip 
-                        icon="🆕" 
-                        :active="$filter === 'new_listing'"
-                        variant="{{ $filter === 'new_listing' ? 'success' : 'outline' }}"
-                    >
-                        Nuove Quotazioni
-                    </x-ui.chip>
-                </a>
-                
-                <a href="{{ route('market', ['filter' => 'high_risk']) }}" class="whitespace-nowrap">
-                    <x-ui.chip 
-                        icon="⚠️" 
-                        :active="$filter === 'high_risk'"
-                        variant="{{ $filter === 'high_risk' ? 'success' : 'outline' }}"
-                    >
-                        Rischio Elevato
-                    </x-ui.chip>
-                </a>
+                <x-ui.chip 
+                    :active="$filter === 'all'"
+                    variant="{{ $filter === 'all' ? 'success' : 'white' }}"
+                    onclick="window.location='{{ route('market', ['filter' => 'all']) }}'"
+                >
+                    Tutti
+                </x-ui.chip>
+            
+                <x-ui.chip 
+                    icon="🔥" 
+                    :active="$filter === 'top_gainer'"
+                    variant="{{ $filter === 'top_gainer' ? 'success' : 'outline' }}"
+                    onclick="window.location='{{ route('market', ['filter' => 'top_gainer']) }}'"
+                >
+                    Top Performance
+                </x-ui.chip>
+            
+                <x-ui.chip 
+                    icon="🆕" 
+                    :active="$filter === 'new_listing'"
+                    variant="{{ $filter === 'new_listing' ? 'success' : 'outline' }}"
+                    onclick="window.location='{{ route('market', ['filter' => 'new_listing']) }}'"
+                >
+                    Nuove Quotazioni
+                </x-ui.chip>
+            
+                <x-ui.chip 
+                    icon="⚠️" 
+                    :active="$filter === 'high_risk'"
+                    variant="{{ $filter === 'high_risk' ? 'success' : 'outline' }}"
+                    onclick="window.location='{{ route('market', ['filter' => 'high_risk']) }}'"
+                >
+                    Rischio Elevato
+                </x-ui.chip>
             </div>
         </nav>
     </div>

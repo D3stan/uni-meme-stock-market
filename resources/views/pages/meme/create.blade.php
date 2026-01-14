@@ -8,6 +8,7 @@
             <x-forms.filepicker
                 id="memeImage"
                 name="image"
+                label="Immagine"
                 accept="image/*"
                 emptyText="Tocca per caricare un meme"
                 formats=".JPG, .PNG .WEBP .GIF .HEIC supportati"
