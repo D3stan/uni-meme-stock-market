@@ -180,15 +180,21 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if (!$user || !$user->email_verified_at) {
+        if (!$user) {
             return back()
-                ->withErrors(['email' => 'This email has not been verified yet. Please complete registration.'])
+                ->withErrors(['email' => 'Impossibile trovare il tuo account Almastreet'])
+                ->withInput($request->only('email'));
+        }
+
+        if (!$user->email_verified_at) {
+            return back()
+                ->withErrors(['email' => 'Questo account non è stato ancora verificato.'])
                 ->withInput($request->only('email'));
         }
 
         if ($user->isSuspended()) {
             return back()
-                ->withErrors(['email' => 'Your account has been suspended. Please contact support.'])
+                ->withErrors(['email' => 'Il tuo account è stato sospeso. Contatta il supporto.'])
                 ->withInput($request->only('email'));
         }
 
@@ -209,7 +215,7 @@ class AuthController extends Controller
         }
 
         return back()
-            ->withErrors(['email' => 'The provided credentials do not match our records.'])
+            ->withErrors(['email' => 'Le credenziali fornite non corrispondono.'])
             ->withInput($request->only('email'));
     }
 
@@ -257,6 +263,6 @@ class AuthController extends Controller
         request()->session()->regenerateToken();
 
         return redirect()->route('welcome')
-            ->with('success', 'You have been logged out successfully.');
+            ->with('success', 'Ti sei disconnesso con successo.');
     }
 }

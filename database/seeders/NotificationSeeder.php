@@ -35,6 +35,7 @@ class NotificationSeeder extends Seeder
                 
                 switch ($type) {
                     case 1: // Dividend received
+                        if ($memes->isEmpty()) continue 2;
                         $meme = $memes->random();
                         $amount = rand(50, 500) / 100;
                         Notification::create([
@@ -47,6 +48,7 @@ class NotificationSeeder extends Seeder
                         break;
                         
                     case 2: // Transaction completed
+                        if ($memes->isEmpty()) continue 2;
                         $meme = $memes->random();
                         Notification::create([
                             'user_id' => $trader->id,
@@ -58,6 +60,7 @@ class NotificationSeeder extends Seeder
                         break;
                         
                     case 3: // Price alert
+                        if ($memes->isEmpty()) continue 2;
                         $meme = $memes->random();
                         $change = rand(10, 50);
                         Notification::create([
@@ -70,7 +73,9 @@ class NotificationSeeder extends Seeder
                         break;
                         
                     case 4: // New meme listing
-                        $meme = $memes->where('approved_at', '>=', now()->subDays(7))->random();
+                        $recentMemes = $memes->where('approved_at', '>=', now()->subDays(7));
+                        if ($recentMemes->isEmpty()) continue 2;
+                        $meme = $recentMemes->random();
                         Notification::create([
                             'user_id' => $trader->id,
                             'title' => '🆕 Nuovo Meme Quotato',
