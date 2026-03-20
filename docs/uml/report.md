@@ -5,10 +5,10 @@ This report provides a high-level overview of the core backend flows of AlmaStre
 ---
 
 ## Registration & Email Verification
-- **Source**: [docs/uml/eng/registration.wsd](docs/uml/eng/registration.wsd)
+- **Source**: [registration.wsd](eng/registration.wsd)
 - **Diagram (SVG preview)**:
 
-  ![Registration & Email Verification](docs/uml/eng/export/RegistrationFlow.svg)
+  ![Registration & Email Verification](eng/export/RegistrationFlow.svg)
 - **Purpose**: Describes the end‑to‑end registration flow for a new student.
 - **Key steps**:
   - Client-side validation of the registration form (name, institutional email, password & confirmation).
@@ -19,10 +19,10 @@ This report provides a high-level overview of the core backend flows of AlmaStre
   - OTP verification with expiry handling, retry on wrong code, and final user creation with initial CFU bonus.
 
 ## Meme Lifecycle (Proposal & IPO)
-- **Source**: [docs/uml/ita/memesLifecycle.wsd](docs/uml/ita/memesLifecycle.wsd)
+- **Source**: [memesLifecycle.wsd](eng/memesLifecycle.wsd)
 - **Diagram (SVG preview)**:
 
-  ![Meme Lifecycle (Proposal & IPO)](docs/uml/eng/export/MemeLifecycle.svg)
+  ![Meme Lifecycle (Proposal & IPO)](eng/export/MemeLifecycle.svg)
 - **Purpose**: Models the lifecycle of a meme from user proposal to admin approval or rejection.
 - **Key steps**:
   - A student uploads image, title, description, and categories, and confirms the listing.
@@ -35,10 +35,10 @@ This report provides a high-level overview of the core backend flows of AlmaStre
   - On approval: admin can tune financial parameters (base price, slope/risk); backend updates status to `APPROVED` and persists the new price.
 
 ## Trading Flow (Buy with Slippage Control)
-- **Source**: [docs/uml/ita/tradingCore.wsd](docs/uml/ita/tradingCore.wsd)
+- **Source**: [tradingCore.wsd](eng/tradingCore.wsd)
 - **Diagram (SVG preview)**:
 
-  ![Trading Flow (Buy with Slippage Control)](docs/uml/eng/export/TradingFlow.svg)
+  ![Trading Flow (Buy with Slippage Control)](eng/export/TradingFlow.svg)
 - **Purpose**: Captures the user experience and backend logic when buying meme shares through the AMM bonding curve with slippage protection.
 - **Key steps**:
   - User selects a meme, enters the quantity, and requests an order preview.
@@ -50,10 +50,10 @@ This report provides a high-level overview of the core backend flows of AlmaStre
   - Otherwise, a non‑concurrent transaction debits the user balance, updates meme supply, records a historical transaction, and confirms the purchase to the UI.
 
 ## Dividends Distribution (Holding Incentive)
-- **Source**: [docs/uml/ita/dividendsDistribution.wsd](docs/uml/ita/dividendsDistribution.wsd)
+- **Source**: [dividendsDistribution.wsd](eng/dividendsDistribution.wsd)
 - **Diagram (SVG preview)**:
 
-  ![Dividends Distribution (Holding Incentive)](docs/uml/eng/export/DividendsDistribution.svg)
+  ![Dividends Distribution (Holding Incentive)](eng/export/DividendsDistribution.svg)
 - **Purpose**: Describes the scheduled job that periodically distributes dividends to long‑term holders.
 - **Key steps**:
   - A scheduler triggers the job (e.g. nightly at 02:00).
