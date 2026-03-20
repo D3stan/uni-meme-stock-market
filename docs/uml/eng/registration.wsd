@@ -1,0 +1,89 @@
+@startuml RegistrationFlow
+title AlmaStreet - Registration and Email Verification Process
+
+|#e1f5fe|Student|
+start
+:Enters Data\n(Name, Email, Password + Confirmation);
+:Clicks "Register";
+
+|#fff3e0|Frontend|
+:Validates Form on Client Side\n(Password Match, Email Format);
+
+|#e8f5e9|Backend|
+:Receives Registration Request;
+
+if (Email Domain Whitelisted?\n(e.g. @unibo.it, @studio.unibo.it)) then (No)
+    |#fff3e0|Frontend|
+    :Shows Error\n"Institutional Email Required";
+    stop
+else (Yes)
+    if (Strong Password?\n(Min 8 chars, Uppercase, Number, Symbol)) then (No)
+        |#fff3e0|Frontend|
+        :Shows Error\n"Password Too Weak";
+        stop
+    else (Yes)
+        if (Email Already Registered?) then (Yes)
+            |#fff3e0|Frontend|
+            :Shows Error\n"Email Already in Use";
+            stop
+        else (No)
+            |#e8f5e9|Backend|
+            :Generates OTP Code (6 digits);
+            :Hashes OTP (bcrypt);
+            :INSERT otp_verifications\n(email, code_hash, expires_at);
+            note right
+              OTP valid for 10 minutes
+            end note
+            :Sends Email with Code;
+            
+            |#fff3e0|Frontend|
+            :Shows OTP Verification Form;
+        endif
+    endif
+endif
+
+|#e1f5fe|Student|
+'label insert_otp
+:Enters OTP Code (6 digits);
+:Clicks "Verify";
+
+|#e8f5e9|Backend|
+if (OTP Expired?) then (Yes)
+    |#fff3e0|Frontend|
+    :Shows Alert "Code Expired";
+    :Shows Button "Request New Code";
+    
+    |#e1f5fe|Student|
+    :Requests New OTP;
+    note right
+        Returns to "Generate OTP Code"
+    end note
+    detach
+
+|#e8f5e9|Backend|
+else (No, OTP Valid)
+    if (OTP Hash Correct?) then (No)
+        |#fff3e0|Frontend|
+        :Shows Error "Wrong Code";
+        note right
+            The user can retry
+            without limits until expiry
+            Returns to "Enters OTP Code"
+        end note
+        detach
+
+    else (Yes)
+        |#e8f5e9|Backend|
+        :Start Transaction;
+        :Registers User;
+        :Adds Initial CFU Bonus;
+        :Commit Transaction;
+        
+        |#fff3e0|Frontend|
+        :Redirects to Dashboard/Marketplace;
+        :Shows Toast "Welcome!";
+        stop
+    endif
+endif
+
+@enduml

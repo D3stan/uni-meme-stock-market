@@ -1,0 +1,58 @@
+@startuml TradingFlow
+title AlmaStreet - Trading Flow (Buy with Slippage Control)
+skinparam ConditionEndStyle hline
+
+|#e1f5fe|User|
+start
+:Selects Meme;
+:Enters Quantity (Qty);
+:Clicks "Order Preview";
+
+|#fff3e0|Frontend (JS)|
+:Requests Preview Calculation from Server;
+
+|#e8f5e9|Backend|
+:Reads Current Supply;
+:Calculates Estimated Price\n(Integral Formula);
+:Adds Fee;
+:Returns Estimated Total;
+
+|Frontend (JS)|
+:Shows Summary Modal\n(Total to Pay);
+
+|User|
+:Confirms "BUY";
+
+|Backend|
+:Receives Order;
+:Reads Updated Real Supply;
+:Recalculates Real Cost;
+
+if (Price Change > Tolerance?) then (Yes, High Slippage)
+    |Frontend (JS)|
+    :Shows Alert "Price Updated";
+    note left
+        Returns to "Requests Preview Calculation from Server"
+    end note
+    detach
+
+else (No, Stable Price)
+    if (User Balance < Real Cost?) then (No)
+        |Frontend (JS)|
+        :Shows Error "Insufficient Funds";
+        stop
+    else (Yes)
+        |Backend|
+        :Start Non-Concurrent Transaction;
+        :Update User Balance;
+        :Update Meme Supply;
+        :Record Historical Transaction;
+        :Commit Transaction;
+        
+        |Frontend (JS)|
+        :Confirms Purchase;
+        :Updates UI (New Balance, Success Toast);
+        stop
+    endif
+endif
+@enduml

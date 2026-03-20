@@ -1,0 +1,57 @@
+@startuml MemeLifecycle
+title AlmaStreet - Meme Lifecycle (Proposal & IPO)
+
+|#e1f5fe|Student|
+start
+:Uploads Image, Title, Description and Categories;
+:Confirms Meme Listing;
+
+|#e8f5e9|Backend|
+if (Student Balance >= Listing Fee?) then (No)
+    :Returns Error;
+    stop
+else (Yes)
+    :Runs Image Analysis with AI;
+    if (Inappropriate Content?) then (Yes)
+        :Returns Content Error;
+        stop
+    else (No)
+    :Start Transaction;
+    :Charges Listing Cost in CFU to Student;
+    :Creates Meme Record (Status: UPLOADED);
+    :Stores Initial Price in PriceHistory;
+    :Commit Transaction;
+    :Makes Meme Visible on Market;
+    :Sends Notification to Rectorate;
+endif
+
+|#fff3e0|Rectorate (Admin)|
+:Receives notification "New Meme to Review";
+:Reviews Content (Policy Check);
+
+if (Meme Approved?) then (No)
+    |Backend|
+    :Start Transaction;
+    :Update Meme Status: REJECTED;
+    :Soft Delete record;
+    :Refund CFU to Student;
+    :Commit Transaction;
+    :Send Rejection Notification to Student;
+    stop
+else (Yes)
+    |Rectorate (Admin)|
+    :Evaluates Financial Parameters;
+    split
+        :Base Price (e.g. 1.00 CFU);
+    split again
+        :Slope (Risk/Volatility);
+    end split
+
+    |Backend|
+    :Start Transaction;
+    :Update Meme Status: APPROVED;
+    :Update Price in PriceHistory;
+    :Commit Transaction;
+    stop
+endif
+@enduml

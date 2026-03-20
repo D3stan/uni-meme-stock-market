@@ -1,0 +1,49 @@
+@startuml DividendsDistribution
+title AlmaStreet - Dividend Distribution (Holding Incentive)
+skinparam ConditionEndStyle hline
+
+|#fff3e0|Scheduler/System|
+start
+:Triggers Scheduled Job\n(e.g. Every night at 02:00);
+
+|#e8f5e9|Backend|
+:Fetches List of Active Memes;
+
+repeat
+    :Selects Current Meme;
+    :Reads Price for Last 24h;
+    
+    if (Positive Trend?) then (Yes)
+        :Calculates Total Market Value;
+        :Calculates Total Dividend\n(e.g. 1% of Market Value);
+        :Calculates Dividend per Share\n(Total Dividend / Supply);
+        
+        :Creates Snapshot of Current Supply;
+        :Fetches List of Shareholders;
+        :Start Transaction;
+
+        repeat
+            :Selects Shareholder;
+            :Calculates Personal Dividend\n(Dividend per Share x Quantity Held);
+            :Credits CFU to User Balance;
+            :Records Transaction;
+        repeat while (More Shareholders?) is (Yes) not (No);
+        
+        :Commit Transaction;
+                
+    else (No)
+        :Skips Meme\n(No Dividend);
+    endif
+    
+|Backend|
+repeat while (More Memes?) is (Yes) not (No);
+
+|#e3f2fd|Notification System|
+:Sends Summary to Shareholders\n("Single summary for all memes");
+
+:Logs Distribution Completion;
+:Updates Last Distribution Timestamp;
+
+stop
+
+@enduml
