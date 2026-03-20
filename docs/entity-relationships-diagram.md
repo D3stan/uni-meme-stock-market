@@ -1,6 +1,7 @@
 # Database Entity-Relationship Diagram
 
-Questo diagramma rappresenta la struttura del database basata sui Model di Eloquent presenti nella directory `app/Models`.
+
+This diagram provides a visual representation of the database schema for the Uni Meme Stock Market project, illustrating the main entities (tables) and their relationships. It is based on the Eloquent Models defined in the `app/Models` directory of the Laravel backend.
 
 ```mermaid
 erDiagram
