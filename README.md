@@ -29,6 +29,17 @@ Unlike traditional order-book markets, AlmaStreet uses a **Linear Bonding Curve*
 - TradingView Lightweight Charts
 - Mobile-first, thumb-driven design
 
+## 📚 Technical Documentation
+
+For a detailed look at the architecture and design choices behind AlmaStreet, please refer to the following documents:
+
+* 📂 **[Database Schema (ER Diagram)](docs/entity-relationships-diagram.md)**: A complete entity-relationship model rendered via **Mermaid**, detailing the Eloquent ORM structure and financial transaction relationships.
+* 📄 **[System Architecture & UML Report](docs/uml/report.md)**: Comprehensive technical analysis including:
+    * **Sequence Diagrams** explaining the atomic trading logic against the AMM.
+    * **Class Diagrams** for the gamification and dividend distribution engines.
+    * **State Diagrams** for order execution and slippage protection.
+* 🎨 **[UI/UX Design & Mockups](docs/mockup/report.md)**: Documentation of the design process, focusing on the **mobile-first, thumb-driven interface** and user flow optimization.
+
 ## ⚡ Key Features
 
 ### Trading Engine
