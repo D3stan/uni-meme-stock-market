@@ -18,6 +18,7 @@ class MarketService
      */
     public function getMarketplaceMemes(string $filter = 'all', int $perPage = 20)
     {
+        $since = now()->subDay();
         $query = Meme::with(['creator:id,name,email,avatar', 'category:id,name'])
             ->approved()
             ->whereNotNull('approved_at')
@@ -25,7 +26,7 @@ class MarketService
 
         switch ($filter) {
             case 'top_gainer':
-                $query->orderByRaw('((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price) * 100) DESC')
+                $query->orderByRaw('((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= ? ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= ? ORDER BY recorded_at ASC LIMIT 1), base_price) * 100) DESC', [$since, $since])
                       ->orderBy('id', 'desc');
                 break;
 
@@ -93,10 +94,11 @@ class MarketService
      */
     public function getTickerMemes(int $limit = 10)
     {
+        $since = now()->subDay();
         return Meme::approved()
             ->whereNotNull('approved_at')
             ->with24hStats()
-            ->orderByRaw('ABS(((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) ORDER BY recorded_at ASC LIMIT 1), base_price) * 100)) DESC')
+            ->orderByRaw('ABS(((current_price - COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= ? ORDER BY recorded_at ASC LIMIT 1), base_price)) / COALESCE((SELECT price FROM price_histories WHERE meme_id = memes.id AND recorded_at >= ? ORDER BY recorded_at ASC LIMIT 1), base_price) * 100)) DESC', [$since, $since])
             ->limit($limit)
             ->get()
             ->map(function ($meme) {

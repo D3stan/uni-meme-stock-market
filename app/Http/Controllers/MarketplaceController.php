@@ -163,6 +163,7 @@ class MarketplaceController extends Controller
             
         $memeIds = $positions->pluck('meme_id')->toArray();
         $prices24h = collect();
+        $since = now()->subDay()->toDateTimeString();
         
         if (!empty($memeIds)) {
             $prices24h = \App\Models\Market\Meme::whereIn('memes.id', $memeIds)
@@ -170,7 +171,7 @@ class MarketplaceController extends Controller
                     $join->on('ph_24h.id', '=', \Illuminate\Support\Facades\DB::raw("
                         (SELECT id FROM price_histories 
                          WHERE meme_id = memes.id 
-                         AND recorded_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                         AND recorded_at >= '{$since}'
                          ORDER BY recorded_at ASC, id ASC
                          LIMIT 1)
                     "));
